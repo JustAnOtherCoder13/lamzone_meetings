@@ -1,10 +1,12 @@
-package com.picone.lamzonemeetings.controller;
+package com.picone.lamzonemeetings.controller.service;
 
+import com.picone.lamzonemeetings.controller.service.ApiService;
+import com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator;
 import com.picone.lamzonemeetings.model.Meeting;
 
 import java.util.List;
 
-public class DummyMeetingService implements ApiService{
+public class DummyMeetingService implements ApiService {
     private List<Meeting> meetings = DummyApiServiceGenerator.generateMeetings();
 
     @Override

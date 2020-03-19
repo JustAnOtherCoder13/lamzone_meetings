@@ -12,18 +12,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.picone.lamzonemeetings.R;
-import com.picone.lamzonemeetings.controller.DummyMeetingService;
+import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
+import com.picone.lamzonemeetings.controller.service.DummyMeetingService;
 import com.picone.lamzonemeetings.model.Meeting;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import org.greenrobot.eventbus.EventBus;
+
+
 public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRecyclerViewAdapter.ViewHolder> {
-    private DummyMeetingService mService = new DummyMeetingService();
-    private  List<Meeting> mMeetings = mService.getMeetings();
+   // private DummyMeetingService mService = new DummyMeetingService();
+    private  List<Meeting> mMeetings ;
+
+    MeetingsRecyclerViewAdapter(List<Meeting> items) { mMeetings = items; }
 
 
     @NonNull
@@ -42,8 +47,9 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
         holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mService.deleteMeeting(meeting);
-                Log.i("test", "onClick: "+ mMeetings.size());
+                /*mService.deleteMeeting(meeting);
+                Log.i("test", "onClick: "+ mMeetings.size());*/
+                EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
             }
         });
     }
@@ -51,9 +57,6 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     @Override
     public int getItemCount() {
         return this.mMeetings.size();
-    }
-    private void initList(){
-        mMeetings = mService.getMeetings();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
