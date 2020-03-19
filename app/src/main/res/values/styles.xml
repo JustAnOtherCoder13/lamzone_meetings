@@ -7,5 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <!-- RecyclerView TextView style. -->
+    <style name="RecyclerViewItems">
+        <item name="android:layout_marginStart">70dp</item>
+        <item name="android:layout_marginEnd">70dp</item>
+        <item name="android:textAlignment">center</item>
+
+
+    </style>
+
 
 </resources>

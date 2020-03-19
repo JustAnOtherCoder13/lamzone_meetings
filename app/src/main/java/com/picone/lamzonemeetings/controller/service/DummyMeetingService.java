@@ -1,7 +1,5 @@
 package com.picone.lamzonemeetings.controller.service;
 
-import com.picone.lamzonemeetings.controller.service.ApiService;
-import com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator;
 import com.picone.lamzonemeetings.model.Meeting;
 
 import java.util.List;

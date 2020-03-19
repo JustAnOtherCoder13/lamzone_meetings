@@ -1,12 +1,10 @@
 package com.picone.lamzonemeetings.view;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
@@ -30,8 +28,6 @@ public class MeetingsActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private DummyMeetingService mService ;
     private List<Meeting> mMeetings ;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +54,15 @@ public class MeetingsActivity extends AppCompatActivity {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
+
     @Subscribe
     public void onDeleteMeeting(DeleteMeetingEvent event){
 
         initList();
         mService.deleteMeeting(event.meeting);
-        Log.i("test", "onClick: "+ mMeetings.size());
-
     }
-    private void initList(){
 
+    private void initList(){
         mMeetings = mService.getMeetings();
         mRecyclerView.setAdapter(new MeetingsRecyclerViewAdapter(mMeetings));
     }
