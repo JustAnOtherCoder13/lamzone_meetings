@@ -1,4 +1,4 @@
-package com.picone.lamzonemeetings.ui;
+package com.picone.lamzonemeetings.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 

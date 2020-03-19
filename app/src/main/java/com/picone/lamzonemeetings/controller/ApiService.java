@@ -1,4 +1,4 @@
-package com.picone.lamzonemeetings.service;
+package com.picone.lamzonemeetings.controller;
 
 import com.picone.lamzonemeetings.model.Meeting;
 
