@@ -4,7 +4,10 @@ import com.picone.lamzonemeetings.model.Meeting;
 
 import java.util.List;
 
-public class DummyMeetingService implements ApiService {
+public enum DummyMeetingService implements ApiService {
+
+    INSTANCE;
+
     private List<Meeting> meetings = DummyApiServiceGenerator.generateMeetings();
 
     @Override

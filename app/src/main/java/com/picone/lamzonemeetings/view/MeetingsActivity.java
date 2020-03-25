@@ -34,7 +34,7 @@ public class MeetingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
         ButterKnife.bind(this);
-        mService =  new DummyMeetingService();
+        mService = DummyMeetingService.INSTANCE;
         mMeetings = mService.getMeetings();
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -57,7 +57,6 @@ public class MeetingsActivity extends AppCompatActivity {
 
     @Subscribe
     public void onDeleteMeeting(DeleteMeetingEvent event){
-
         initList();
         mService.deleteMeeting(event.meeting);
     }
