@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.picone.lamzonemeetings.R;
-import com.picone.lamzonemeetings.controller.DummyMeetingService;
+import com.picone.lamzonemeetings.controller.service.DummyMeetingService;
 import com.picone.lamzonemeetings.model.Meeting;
 
 import java.util.List;
@@ -44,7 +44,6 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
             @Override
             public void onClick(View v) {
                 mService.deleteMeeting(meeting);
-                Log.i("test", "onClick: "+ mMeetings.size());
             }
         });
     }
@@ -53,9 +52,7 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     public int getItemCount() {
         return this.mMeetings.size();
     }
-    private void initList(){
-        mMeetings = mService.getMeetings();
-    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_circle_img)
