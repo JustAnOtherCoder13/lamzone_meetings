@@ -56,10 +56,16 @@ public class ListMeetingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_meeting, container, false);
         ButterKnife.bind(this,view);
+        mService =  new DummyMeetingService();
+        mMeetings = mService.getMeetings();
+
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MeetingsRecyclerViewAdapter();
         mRecyclerView.setAdapter(mAdapter);
+
+        //mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
+        initList();
         return view;
     }
     @Subscribe
