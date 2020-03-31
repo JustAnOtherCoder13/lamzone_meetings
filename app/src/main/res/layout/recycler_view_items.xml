@@ -8,43 +8,42 @@
         android:id="@+id/item_circle_img"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
+        android:layout_marginStart="10dp"
         android:src="@drawable/ic_item_circle_40dp"
         android:tint="@color/colorAccent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="10dp"
 
         />
 
     <TextView
-        style="@style/RecyclerViewItems"
         android:id="@+id/item_meeting_title_txt"
+        style="@style/RecyclerViewItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/item_circle_img"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textStyle="bold"
         android:layout_marginTop="15dp"
-        />
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/item_circle_img"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        style="@style/RecyclerViewItems"
         android:id="@+id/item_meeting_participants_txt"
+        style="@style/RecyclerViewItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="@id/item_meeting_title_txt"
-        app:layout_constraintTop_toBottomOf="@id/item_meeting_title_txt"
-        />
+        app:layout_constraintTop_toBottomOf="@id/item_meeting_title_txt" />
 
     <ImageButton
         android:id="@+id/item_delete_img_button"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
+        android:backgroundTint="@color/white"
         android:src="@drawable/ic_item_delete"
         android:tint="@android:color/black"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:backgroundTint="@color/white"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

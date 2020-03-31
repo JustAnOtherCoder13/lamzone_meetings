@@ -1,6 +1,5 @@
 package com.picone.lamzonemeetings.view;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.picone.lamzonemeetings.R;
+import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
 import com.picone.lamzonemeetings.controller.service.DummyMeetingService;
 import com.picone.lamzonemeetings.model.Meeting;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     private DummyMeetingService mService = new DummyMeetingService();
     private  List<Meeting> mMeetings = mService.getMeetings();
 
+    MeetingsRecyclerViewAdapter(List<Meeting> items) { mMeetings = items; }
 
 
     @NonNull
@@ -43,9 +46,10 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
         holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mService.deleteMeeting(meeting);
+                EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
             }
         });
+
     }
 
     @Override
@@ -63,6 +67,7 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
         public TextView mMeetingParticipants;
         @BindView(R.id.item_delete_img_button)
         public ImageButton mDeleteButton;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
