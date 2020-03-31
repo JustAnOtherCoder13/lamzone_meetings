@@ -15,15 +15,16 @@ import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.DummyMeetingService;
 import com.picone.lamzonemeetings.model.Meeting;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRecyclerViewAdapter.ViewHolder> {
+
     private DummyMeetingService mService = new DummyMeetingService();
     private  List<Meeting> mMeetings = mService.getMeetings();
+
 
 
     @NonNull

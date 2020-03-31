@@ -1,11 +1,10 @@
 package com.picone.lamzonemeetings.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
-import android.view.View;
+import android.widget.FrameLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.picone.lamzonemeetings.R;
 
@@ -14,20 +13,19 @@ import butterknife.ButterKnife;
 
 public class MeetingsActivity extends AppCompatActivity {
 
-    @BindView(R.id.container)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.fragment_place_holder)
+    FrameLayout mPlaceHolder;
 
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
         ButterKnife.bind(this);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MeetingsRecyclerViewAdapter();
-        mRecyclerView.setAdapter(mAdapter);
+        ListMeetingFragment fragment = new ListMeetingFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_place_holder, fragment);
+        ft.commit();
     }
 }
+
