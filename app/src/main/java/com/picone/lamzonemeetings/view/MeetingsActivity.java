@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.picone.lamzonemeetings.R;
@@ -19,6 +20,7 @@ public class MeetingsActivity extends AppCompatActivity {
 
     @BindView(R.id.fragment_place_holder)
     FrameLayout mPlaceHolder;
+    private Fragment mFragment;
 
 
     @Override
@@ -26,16 +28,29 @@ public class MeetingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
         ButterKnife.bind(this);
-        ListMeetingFragment fragment = ListMeetingFragment.newInstance();
+        mFragment = ListMeetingFragment.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_place_holder, fragment);
+        ft.replace(R.id.fragment_place_holder, mFragment);
         ft.commit();
     }
+
+    /*@Override
+    protected void onPause() {
+        super.onPause();
+        if (mFragment != ListMeetingFragment.newInstance()){
+            mFragment = AddNewMeetingFragment.newInstance();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_place_holder, mFragment);
+        }
+
+    }*/
 
     @Override
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+
+
 
     }
 
