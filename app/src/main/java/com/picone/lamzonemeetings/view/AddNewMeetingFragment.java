@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -64,6 +63,8 @@ public class AddNewMeetingFragment extends Fragment {
         return view;
 
     }
+
+
 
     private void returnToList() {
         ListMeetingFragment fragment = ListMeetingFragment.newInstance();

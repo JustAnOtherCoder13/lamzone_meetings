@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
-import com.picone.lamzonemeetings.controller.service.DummyMeetingService;
 import com.picone.lamzonemeetings.model.Meeting;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,10 +23,11 @@ import butterknife.ButterKnife;
 
 public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRecyclerViewAdapter.ViewHolder> {
 
-    private DummyMeetingService mService = new DummyMeetingService();
-    private  List<Meeting> mMeetings = mService.getMeetings();
+    private List<Meeting> mMeetings;
 
-    MeetingsRecyclerViewAdapter(List<Meeting> items) { mMeetings = items; }
+    MeetingsRecyclerViewAdapter(List<Meeting> items) {
+        mMeetings = items;
+    }
 
 
     @NonNull
@@ -70,7 +70,7 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }
