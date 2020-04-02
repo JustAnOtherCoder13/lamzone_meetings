@@ -7,7 +7,7 @@ public class Meeting {
     private String subject;
     private String participants;
 
-    public Meeting(int hour, String place, String subject, String participants) {
+    public Meeting(int hour, String subject,String place, String participants) {
 
         this.hour = hour;
         this.participants = participants;

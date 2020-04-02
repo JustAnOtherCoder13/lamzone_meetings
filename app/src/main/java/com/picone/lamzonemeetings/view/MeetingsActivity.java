@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.event.AddMeetingEvent;
+import com.picone.lamzonemeetings.controller.event.SortByDateEvent;
+import com.picone.lamzonemeetings.controller.event.SortByPlaceEvent;
 import com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator;
 import com.picone.lamzonemeetings.model.Meeting;
 
@@ -59,22 +61,10 @@ public class MeetingsActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.sort_by_date :
-                Collections.sort(mMeetings, new Comparator<Meeting>() {
-                    @Override
-                    public int compare(Meeting m1, Meeting m2) {
-                        Integer date1 = m1.getHour();
-                        Integer date2 = m2.getHour();
-                        return date1.compareTo(date2);
-                    }
-                });
+                EventBus.getDefault().post(new SortByDateEvent(mMeetings) );
                 return true;
             case R.id.sort_by_place :
-                Collections.sort(mMeetings, new Comparator<Meeting>(){
-                    @Override
-                    public int compare(Meeting m1, Meeting m2) {
-                        return m1.getPlace().compareTo(m2.getPlace());
-                    }
-                });
+                EventBus.getDefault().post(new SortByPlaceEvent(mMeetings));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
