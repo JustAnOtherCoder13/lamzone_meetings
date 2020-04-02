@@ -17,17 +17,18 @@ import com.picone.lamzonemeetings.model.Meeting;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRecyclerViewAdapter.ViewHolder> {
 
     private List<Meeting> mMeetings;
 
-    MeetingsRecyclerViewAdapter(List<Meeting> items) { mMeetings = items; }
+    MeetingsRecyclerViewAdapter(List<Meeting> items) {
+        mMeetings = items;
+    }
+
 
     @NonNull
     @Override
@@ -40,18 +41,22 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Meeting meeting = mMeetings.get(position);
-        holder.mMeetingTitle.setText(title(meeting));
+        holder.mMeetingTitle.setText(meeting.getSubject().concat(" ").concat(String.valueOf(meeting.getHour())).concat("h").concat(" ").concat(meeting.getPlace()));
         holder.mMeetingParticipants.setText(meeting.getParticipants());
         holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { EventBus.getDefault().post(new DeleteMeetingEvent(meeting)); }
+            public void onClick(View v) {
+                EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
+            }
         });
+
     }
 
     @Override
     public int getItemCount() {
         return this.mMeetings.size();
     }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_circle_img)
@@ -63,13 +68,9 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
         @BindView(R.id.item_delete_img_button)
         public ImageButton mDeleteButton;
 
-        ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-    }
-    private String title(Meeting meeting){
-        Random random = new Random();
-        return meeting.getPlace().concat(" - ").concat(String.valueOf(meeting.getHour()).concat("h").concat(String.valueOf(random.nextInt(60)))).concat(" - ").concat(meeting.getSubject());
     }
 }

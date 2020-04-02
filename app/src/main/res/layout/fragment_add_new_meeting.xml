@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/return_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_back_btn"
+        android:tint="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/place_spinner_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/place_spinner"
+        android:text="room"
+        app:layout_constraintBottom_toTopOf="@id/place_spinner"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/return_button"
+        app:layout_constraintRight_toLeftOf="@id/hour_spinner_label"
+        />
+
+    <Spinner
+        android:id="@+id/place_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/place_spinner_label"
+        app:layout_constraintTop_toBottomOf="@id/place_spinner_label" />
+
+    <TextView
+        android:id="@+id/hour_spinner_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/hour_spinner"
+        android:text="hour"
+        app:layout_constraintTop_toTopOf="@id/place_spinner_label"
+        app:layout_constraintLeft_toRightOf="@id/place_spinner_label"
+        app:layout_constraintRight_toLeftOf="@id/subject_editText_label"
+        />
+    <Spinner
+        android:id="@+id/hour_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/hour_spinner_label"
+        app:layout_constraintTop_toTopOf="@id/place_spinner" />
+    <TextView
+        android:id="@+id/subject_editText_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/subject_editText"
+        android:text="subject"
+        app:layout_constraintTop_toTopOf="@id/place_spinner_label"
+        app:layout_constraintLeft_toRightOf="@id/hour_spinner_label"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/subject_editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints="subject"
+        app:layout_constraintLeft_toLeftOf="@id/subject_editText_label"
+        app:layout_constraintTop_toBottomOf="@id/subject_editText_label" />
+
+    <CheckBox
+        android:id="@+id/adrien_checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="adrien@gmail.com"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subject_editText"
+
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
