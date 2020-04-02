@@ -1,7 +1,6 @@
 package com.picone.lamzonemeetings.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +46,6 @@ public class ListMeetingFragment extends Fragment {
     private List<Meeting> mMeetings;
 
 
-
     public static ListMeetingFragment newInstance() {
         return new ListMeetingFragment();
     }
@@ -55,18 +53,21 @@ public class ListMeetingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_meeting, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
-        mService =  new DummyMeetingService();
+        initView();
+        initList();
+        return view;
+    }
+
+    private void initView() {
+        mService = new DummyMeetingService();
         mMeetings = mService.getMeetings();
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -78,8 +79,6 @@ public class ListMeetingFragment extends Fragment {
                 EventBus.getDefault().post(new AddMeetingEvent());
             }
         });
-        initList();
-        return view;
     }
 
     @Override
@@ -95,15 +94,14 @@ public class ListMeetingFragment extends Fragment {
     }
 
     @Subscribe
-    public void onDeleteMeeting(DeleteMeetingEvent event){
-
+    public void onDeleteMeeting(DeleteMeetingEvent event) {
         initList();
         mService.deleteMeeting(event.meeting);
     }
 
     @Subscribe
-    public void onSortByDate (SortByDateEvent event){
-        Collections.sort(event.meetings , new Comparator<Meeting>() {
+    public void onSortByDate(SortByDateEvent event) {
+        Collections.sort(event.meetings, new Comparator<Meeting>() {
             @Override
             public int compare(Meeting m1, Meeting m2) {
                 Integer date1 = m1.getHour();
@@ -113,9 +111,10 @@ public class ListMeetingFragment extends Fragment {
         });
         mRecyclerView.setAdapter(new MeetingsRecyclerViewAdapter(event.meetings));
     }
+
     @Subscribe
-    public void onSortByPlace (SortByPlaceEvent event){
-        Collections.sort(event.meetings, new Comparator<Meeting>(){
+    public void onSortByPlace(SortByPlaceEvent event) {
+        Collections.sort(event.meetings, new Comparator<Meeting>() {
             @Override
             public int compare(Meeting m1, Meeting m2) {
                 String place1 = m1.getPlace();
@@ -124,11 +123,9 @@ public class ListMeetingFragment extends Fragment {
             }
         });
         mRecyclerView.setAdapter(new MeetingsRecyclerViewAdapter(event.meetings));
-
     }
 
-    private void initList(){
-
+    private void initList() {
         mMeetings = mService.getMeetings();
         mRecyclerView.setAdapter(new MeetingsRecyclerViewAdapter(mMeetings));
     }

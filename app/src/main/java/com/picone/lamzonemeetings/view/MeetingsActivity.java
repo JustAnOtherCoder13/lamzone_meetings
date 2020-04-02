@@ -21,8 +21,6 @@ import com.picone.lamzonemeetings.model.Meeting;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -58,12 +56,12 @@ public class MeetingsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         mMeetings = DummyApiServiceGenerator.generateMeetings();
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
-            case R.id.sort_by_date :
-                EventBus.getDefault().post(new SortByDateEvent(mMeetings) );
+            case R.id.sort_by_date:
+                EventBus.getDefault().post(new SortByDateEvent(mMeetings));
                 return true;
-            case R.id.sort_by_place :
+            case R.id.sort_by_place:
                 EventBus.getDefault().post(new SortByPlaceEvent(mMeetings));
                 return true;
             default:
@@ -84,8 +82,9 @@ public class MeetingsActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
 
     }
+
     @Subscribe
-    public void onAddMeetingEvent(AddMeetingEvent event){
+    public void onAddMeetingEvent(AddMeetingEvent event) {
 
         mFragment = AddNewMeetingFragment.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

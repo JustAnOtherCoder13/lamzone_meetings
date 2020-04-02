@@ -4,9 +4,7 @@ import com.picone.lamzonemeetings.model.Meeting;
 
 import java.util.List;
 
-public enum DummyMeetingService implements ApiService {
-
-    INSTANCE;
+public class DummyMeetingService implements ApiService {
 
     private List<Meeting> meetings = DummyApiServiceGenerator.generateMeetings();
 
@@ -16,14 +14,8 @@ public enum DummyMeetingService implements ApiService {
     }
 
     @Override
-    public void deleteMeeting(Meeting meeting) {
-        meetings.remove(meeting);
-
-    }
+    public void deleteMeeting(Meeting meeting) { meetings.remove(meeting); }
 
     @Override
-    public void addMeeting(Meeting meeting) {
-        meetings.add(meeting);
-
-    }
+    public void addMeeting(Meeting meeting) { meetings.add(meeting); }
 }

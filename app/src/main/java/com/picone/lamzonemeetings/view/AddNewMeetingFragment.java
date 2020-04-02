@@ -18,7 +18,6 @@ import com.picone.lamzonemeetings.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class AddNewMeetingFragment extends Fragment {
     @BindView(R.id.return_button)
     ImageButton mReturnButton;
@@ -36,8 +35,6 @@ public class AddNewMeetingFragment extends Fragment {
     EditText mSubjectEditText;
     @BindView(R.id.adrien_checkBox)
     CheckBox mAdrienCheckBox;
-
-
 
     public static AddNewMeetingFragment newInstance() {
         return new AddNewMeetingFragment();
@@ -61,10 +58,7 @@ public class AddNewMeetingFragment extends Fragment {
             }
         });
         return view;
-
     }
-
-
 
     private void returnToList() {
         ListMeetingFragment fragment = ListMeetingFragment.newInstance();
