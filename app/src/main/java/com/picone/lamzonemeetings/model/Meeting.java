@@ -2,12 +2,12 @@ package com.picone.lamzonemeetings.model;
 
 public class Meeting {
 
-    private int hour;
+    private String hour;
     private String place;
     private String subject;
     private String participants;
 
-    public Meeting(int hour, String subject,String place, String participants) {
+    public Meeting(String hour, String subject,String place, String participants) {
 
         this.hour = hour;
         this.participants = participants;
@@ -16,11 +16,11 @@ public class Meeting {
 
     }
 
-    public int getHour() {
+    public String getHour() {
         return hour;
     }
 
-    public void setHour(int hour) { this.hour = hour; }
+    public void setHour(String hour) { this.hour = hour; }
 
     public String getPlace() {
         return place;

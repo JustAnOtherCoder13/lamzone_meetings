@@ -1,6 +1,7 @@
 package com.picone.lamzonemeetings.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.picone.lamzonemeetings.R;
+import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddMeetingEvent;
+import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.SortByDateEvent;
 import com.picone.lamzonemeetings.controller.event.SortByPlaceEvent;
-import com.picone.lamzonemeetings.controller.service.DummyMeetingService;
+import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Meeting;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,7 +45,7 @@ public class ListMeetingFragment extends Fragment {
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private DummyMeetingService mService;
+    private ApiService mService = DI.getMeetingApiService();
     private List<Meeting> mMeetings;
 
 
@@ -67,7 +70,6 @@ public class ListMeetingFragment extends Fragment {
     }
 
     private void initView() {
-        mService = new DummyMeetingService();
         mMeetings = mService.getMeetings();
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -104,8 +106,8 @@ public class ListMeetingFragment extends Fragment {
         Collections.sort(event.meetings, new Comparator<Meeting>() {
             @Override
             public int compare(Meeting m1, Meeting m2) {
-                Integer date1 = m1.getHour();
-                Integer date2 = m2.getHour();
+                String date1 = m1.getHour();
+                String date2 = m2.getHour();
                 return date1.compareTo(date2);
             }
         });
@@ -123,6 +125,12 @@ public class ListMeetingFragment extends Fragment {
             }
         });
         mRecyclerView.setAdapter(new MeetingsRecyclerViewAdapter(event.meetings));
+    }
+    @Subscribe
+    public void onAddNewMeeting(AddNewMeetingEvent event){
+        mService.addMeeting(event.meeting);
+        Log.i("test", "onAddNewMeeting: "+event.meeting.getPlace()+" "+event.meeting.getHour());
+        mRecyclerView.setAdapter(new MeetingsRecyclerViewAdapter(mMeetings));
     }
 
     private void initList() {

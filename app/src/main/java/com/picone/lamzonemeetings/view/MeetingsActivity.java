@@ -12,10 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.picone.lamzonemeetings.R;
+import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.SortByDateEvent;
 import com.picone.lamzonemeetings.controller.event.SortByPlaceEvent;
-import com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator;
 import com.picone.lamzonemeetings.model.Meeting;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,7 +54,7 @@ public class MeetingsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        mMeetings = DummyApiServiceGenerator.generateMeetings();
+        mMeetings = DI.getMeetingApiService().getMeetings();
 
         switch (item.getItemId()) {
 
@@ -88,7 +88,7 @@ public class MeetingsActivity extends AppCompatActivity {
 
         mFragment = AddNewMeetingFragment.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_place_holder, mFragment);
+        ft.add(R.id.fragment_place_holder, mFragment,"NEW_MEETING_FRAG");
         ft.commit();
     }
 }
