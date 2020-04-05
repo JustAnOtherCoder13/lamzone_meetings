@@ -30,6 +30,7 @@ public abstract class DummyApiServiceGenerator {
 
     //Rooms list
     static List<Room> DUMMY_ROOMS = Arrays.asList(
+            new Room(null),
             new Room("Peach"),
             new Room("Mario"),
             new Room("Luigi"),
@@ -46,6 +47,7 @@ public abstract class DummyApiServiceGenerator {
 
     //Participants List
     static List<Participant> DUMMY_PARTICIPANTS = Arrays.asList(
+            new Participant(null),
             new Participant("Maxime"),
             new Participant("Alex"),
             new Participant("Paul"),
