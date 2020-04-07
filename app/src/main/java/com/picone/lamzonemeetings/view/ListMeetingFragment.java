@@ -32,11 +32,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListMeetingFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ListMeetingFragment extends Fragment {
     @BindView(R.id.container)
     RecyclerView mRecyclerView;
@@ -45,7 +40,7 @@ public class ListMeetingFragment extends Fragment {
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ApiService mService = DI.getMeetingApiService();
+    private ApiService mService;
     private List<Meeting> mMeetings;
 
 
@@ -55,6 +50,7 @@ public class ListMeetingFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        mService = DI.getMeetingApiService();
         super.onCreate(savedInstanceState);
     }
 
@@ -63,7 +59,6 @@ public class ListMeetingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_meeting, container, false);
         ButterKnife.bind(this, view);
-
         initView();
         initList();
         return view;
@@ -73,7 +68,6 @@ public class ListMeetingFragment extends Fragment {
         mMeetings = mService.getMeetings();
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
         mRecyclerView.setAdapter(mAdapter);
         mAddMeetingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +75,12 @@ public class ListMeetingFragment extends Fragment {
                 EventBus.getDefault().post(new AddMeetingEvent());
             }
         });
+    }
+
+    private void initList() {
+        mMeetings = mService.getMeetings();
+        mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -97,8 +97,8 @@ public class ListMeetingFragment extends Fragment {
 
     @Subscribe
     public void onDeleteMeeting(DeleteMeetingEvent event) {
-        initList();
         mService.deleteMeeting(event.meeting);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Subscribe
@@ -111,7 +111,7 @@ public class ListMeetingFragment extends Fragment {
                 return date1.compareTo(date2);
             }
         });
-        mRecyclerView.setAdapter(new MeetingsRecyclerViewAdapter(event.meetings));
+        mAdapter.notifyDataSetChanged();
     }
 
     @Subscribe
@@ -124,17 +124,14 @@ public class ListMeetingFragment extends Fragment {
                 return place1.compareTo(place2);
             }
         });
-        mRecyclerView.setAdapter(new MeetingsRecyclerViewAdapter(event.meetings));
-    }
-    @Subscribe
-    public void onAddNewMeeting(AddNewMeetingEvent event){
-        mService.addMeeting(event.meeting);
-        Log.i("test", "onAddNewMeeting: "+event.meeting.getPlace()+" "+event.meeting.getHour());
-        mRecyclerView.setAdapter(new MeetingsRecyclerViewAdapter(mMeetings));
+        mAdapter.notifyDataSetChanged();
     }
 
-    private void initList() {
-        mMeetings = mService.getMeetings();
-        mRecyclerView.setAdapter(new MeetingsRecyclerViewAdapter(mMeetings));
+    @Subscribe
+    public void onAddNewMeeting(AddNewMeetingEvent event) {
+        mService.addMeeting(event.meeting);
+        mAdapter.notifyDataSetChanged();
     }
+
+
 }

@@ -50,7 +50,7 @@ public class AddNewMeetingFragment extends Fragment {
     @BindView(R.id.add_meeting_button)
     Button mAddMeetingButton;
 
-    private ApiService service = DI.getMeetingApiService();
+    private ApiService mService;
     private String mPlace;
     private String mHour;
     private String mParticipant;
@@ -62,6 +62,7 @@ public class AddNewMeetingFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        mService = DI.getMeetingApiService();
         super.onCreate(savedInstanceState);
     }
 
@@ -108,14 +109,14 @@ public class AddNewMeetingFragment extends Fragment {
     }
 
     private void initPlaceSpinner() {
-        List<Room> rooms = service.getRooms();
+        List<Room> rooms = mService.getRooms();
         ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<Room>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, rooms);
         roomsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mPlaceSpinner.setAdapter(roomsAdapter);
     }
 
     private void initParticipantsSpinner() {
-        List<Participant> participants = service.getParticipants();
+        List<Participant> participants = mService.getParticipants();
         ArrayAdapter<Participant> participantsAdapter = new ArrayAdapter<Participant>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, participants);
         participantsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mParticipantsSpinner.setAdapter(participantsAdapter);

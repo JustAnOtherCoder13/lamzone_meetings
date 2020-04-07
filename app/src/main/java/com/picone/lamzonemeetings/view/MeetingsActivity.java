@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,13 +22,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class MeetingsActivity extends AppCompatActivity {
 
-    @BindView(R.id.fragment_place_holder)
-    FrameLayout mPlaceHolder;
     private Fragment mFragment;
     private List<Meeting> mMeetings;
 
@@ -38,11 +32,15 @@ public class MeetingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
-        ButterKnife.bind(this);
-        mFragment = ListMeetingFragment.newInstance();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_place_holder, mFragment);
-        ft.commit();
+    }
+
+    private void initListMeetingFragment() {
+        if (getSupportFragmentManager().findFragmentByTag("NEW_MEETING_FRAG") == null) {
+            mFragment = ListMeetingFragment.newInstance();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_place_holder, mFragment,"LIST_MEETING_FRAG");
+            ft.commit();
+        }
     }
 
     @Override
@@ -73,21 +71,23 @@ public class MeetingsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        initListMeetingFragment();
         EventBus.getDefault().register(this);
     }
+
 
     @Override
     protected void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-
     }
+
 
     @Subscribe
     public void onAddMeetingEvent(AddMeetingEvent event) {
         mFragment = AddNewMeetingFragment.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_place_holder, mFragment,"NEW_MEETING_FRAG");
+        ft.add(R.id.fragment_place_holder, mFragment, "NEW_MEETING_FRAG");
         ft.commit();
     }
 }
