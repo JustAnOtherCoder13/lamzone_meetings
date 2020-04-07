@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
@@ -41,10 +44,10 @@ public class AddNewMeetingFragment extends Fragment {
     ImageButton mReturnButton;
     @BindView(R.id.hour_spinner)
     TimePicker mTimePicker;
-    @BindView(R.id.place_spinner)
-    Spinner mPlaceSpinner;
+    @BindView(R.id.room_textView)
+    AutoCompleteTextView mRoomTextView;
     @BindView(R.id.subject_editText)
-    EditText mSubjectEditText;
+    TextInputEditText mSubjectEditText;
     @BindView(R.id.participants_spinner)
     Spinner mParticipantsSpinner;
     @BindView(R.id.add_meeting_button)
@@ -78,7 +81,7 @@ public class AddNewMeetingFragment extends Fragment {
 
     private void initViews() {
         initParticipantsSpinner();
-        initPlaceSpinner();
+        //initPlaceSpinner();
         mTimePicker.setIs24HourView(true);
         mReturnButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +94,7 @@ public class AddNewMeetingFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                mPlace = mPlaceSpinner.getSelectedItem().toString();
+                //mPlace = mPlaceSpinner.getSelectedItem().toString();
                 mHour = String.valueOf(mTimePicker.getHour()).concat("h").concat(String.valueOf(mTimePicker.getMinute()));
                 mSubject = mSubjectEditText.getText().toString();
                 mParticipant = mParticipantsSpinner.getSelectedItem().toString();
@@ -108,12 +111,12 @@ public class AddNewMeetingFragment extends Fragment {
         });
     }
 
-    private void initPlaceSpinner() {
+    /*private void initPlaceSpinner() {
         List<Room> rooms = mService.getRooms();
-        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<Room>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, rooms);
+        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<Room>((getContext()),R.layout. , rooms);
         roomsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mPlaceSpinner.setAdapter(roomsAdapter);
-    }
+    }*/
 
     private void initParticipantsSpinner() {
         List<Participant> participants = mService.getParticipants();

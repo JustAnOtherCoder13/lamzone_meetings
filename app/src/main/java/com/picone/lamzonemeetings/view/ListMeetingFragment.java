@@ -69,10 +69,11 @@ public class ListMeetingFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        final Fragment fragment = AddNewMeetingFragment.newInstance();
         mAddMeetingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new AddMeetingEvent());
+                EventBus.getDefault().post(new AddMeetingEvent(fragment));
             }
         });
     }

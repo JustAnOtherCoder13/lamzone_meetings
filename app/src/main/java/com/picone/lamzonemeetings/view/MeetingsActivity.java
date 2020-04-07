@@ -85,7 +85,7 @@ public class MeetingsActivity extends AppCompatActivity {
 
     @Subscribe
     public void onAddMeetingEvent(AddMeetingEvent event) {
-        mFragment = AddNewMeetingFragment.newInstance();
+        mFragment = event.fragment;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_place_holder, mFragment, "NEW_MEETING_FRAG");
         ft.commit();
