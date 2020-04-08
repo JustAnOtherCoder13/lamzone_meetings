@@ -12,7 +12,7 @@ public abstract class DummyApiServiceGenerator {
 
     //Meetings list
     static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
-            new Meeting("15", "Réunion I", "Peach", "Participants :",""),
+            new Meeting("15", "Réunion I", "Peach","Participants :" ,""),
             new Meeting("08", "Réunion G", "Mario", "Participants :",""),
             new Meeting("10", "Réunion C", "Luigi", "Participants :",""),
             new Meeting("11", "Réunion A", "Toad", "Participants :",""),
@@ -47,7 +47,6 @@ public abstract class DummyApiServiceGenerator {
 
     //Participants List
     static List<Participant> DUMMY_PARTICIPANTS = Arrays.asList(
-            new Participant(null),
             new Participant("Maxime"),
             new Participant("Alex"),
             new Participant("Paul"),
