@@ -12,16 +12,16 @@ public abstract class DummyApiServiceGenerator {
 
     //Meetings list
     static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
-            new Meeting("15", "Réunion I", "Peach", "Participants :"),
-            new Meeting("08", "Réunion G", "Mario", "Participants :"),
-            new Meeting("10", "Réunion C", "Luigi", "Participants :"),
-            new Meeting("11", "Réunion A", "Toad", "Participants :"),
-            new Meeting("09","Réunion E", "Wario", "Participants :"),
-            new Meeting("17", "Réunion F", "Kong", "Participants :"),
-            new Meeting("14", "Réunion D", "Browser", "Participants :"),
-            new Meeting("16", "Réunion H", "Yoshi", "Participants :"),
-            new Meeting("17", "Réunion B", "Waluigi", "Participants :"),
-            new Meeting("10", "Réunion J", "Roi Boo", "Participants :")
+            new Meeting("15", "Réunion I", "Peach", "Participants :",""),
+            new Meeting("08", "Réunion G", "Mario", "Participants :",""),
+            new Meeting("10", "Réunion C", "Luigi", "Participants :",""),
+            new Meeting("11", "Réunion A", "Toad", "Participants :",""),
+            new Meeting("09","Réunion E", "Wario", "Participants :",""),
+            new Meeting("17", "Réunion F", "Kong", "Participants :",""),
+            new Meeting("14", "Réunion D", "Browser", "Participants :",""),
+            new Meeting("16", "Réunion H", "Yoshi", "Participants :",""),
+            new Meeting("17", "Réunion B", "Waluigi", "Participants :",""),
+            new Meeting("10", "Réunion J", "Roi Boo", "Participants :","")
     );
 
     public static List<Meeting> generateMeetings() {
