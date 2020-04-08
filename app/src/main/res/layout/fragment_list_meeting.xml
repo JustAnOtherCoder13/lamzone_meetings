@@ -10,13 +10,17 @@
         android:layout_height="match_parent"
         android:id="@+id/container"
         />
-    <ImageButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_meeting_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        android:src="@drawable/ic_add_fab"
-        android:tint="@android:color/holo_red_dark"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        app:fabCustomSize="40dp"
+        android:src="@drawable/ic_add_btn"
+        android:backgroundTint="@android:color/holo_red_dark"
+        app:borderWidth="0dp"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

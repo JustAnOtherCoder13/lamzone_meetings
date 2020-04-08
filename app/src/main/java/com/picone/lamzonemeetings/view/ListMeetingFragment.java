@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddMeetingEvent;
@@ -36,7 +37,7 @@ public class ListMeetingFragment extends Fragment {
     @BindView(R.id.container)
     RecyclerView mRecyclerView;
     @BindView(R.id.add_meeting_btn)
-    public ImageButton mAddMeetingButton;
+    public FloatingActionButton mAddMeetingButton;
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
