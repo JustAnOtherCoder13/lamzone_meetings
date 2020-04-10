@@ -1,12 +1,14 @@
 package com.picone.lamzonemeetings.view;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ArrayAdapter;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,13 +23,16 @@ import com.picone.lamzonemeetings.controller.event.SortByDateEvent;
 import com.picone.lamzonemeetings.controller.event.SortByPlaceEvent;
 import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Meeting;
+import com.picone.lamzonemeetings.model.Room;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +48,8 @@ public class ListMeetingFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ApiService mService;
     private List<Meeting> mMeetings;
+    private List<Room> mRooms;
+    private Room mRoom;
 
 
     public static ListMeetingFragment newInstance() {
@@ -81,6 +88,7 @@ public class ListMeetingFragment extends Fragment {
 
     private void initList() {
         mMeetings = mService.getMeetings();
+        mRooms = mService.getRooms();
         mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -118,15 +126,23 @@ public class ListMeetingFragment extends Fragment {
 
     @Subscribe
     public void onSortByPlace(SortByPlaceEvent event) {
-        Collections.sort(event.meetings, new Comparator<Meeting>() {
-            @Override
-            public int compare(Meeting m1, Meeting m2) {
-                String place1 = m1.getPlace();
-                String place2 = m2.getPlace();
-                return place1.compareTo(place2);
+
+        List<Meeting> filteredMeetings = new ArrayList<>();
+        filteredMeetings.clear();
+        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<Room>((Objects.requireNonNull(getContext())), R.layout.radio_room_item, mRooms);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        mBuilder.setTitle("choose the room");
+        mBuilder.setSingleChoiceItems( roomsAdapter, 1, (dialog, which) -> mRoom = mRooms.get(which));
+        mBuilder.setPositiveButton("ok", (dialog, which) -> {
+            for (Meeting meeting: mMeetings){
+                if (meeting.getPlace().equals(mRoom.getRoomName()))filteredMeetings.add(meeting);
+                //Log.i("test", "onClick: "+mRoom.getRoomName()+" "+meeting.getPlace());
             }
         });
-        mAdapter.notifyDataSetChanged();
+        mBuilder.setNegativeButton("cancel",null);
+        //Log.i("test", "onClick: "+filteredMeetings.size());
+        AlertDialog dialog = mBuilder.create();
+        dialog.show();
     }
 
     @Subscribe
@@ -134,6 +150,4 @@ public class ListMeetingFragment extends Fragment {
         mService.addMeeting(event.meeting);
         mAdapter.notifyDataSetChanged();
     }
-
-
 }
