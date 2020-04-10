@@ -13,8 +13,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddMeetingEvent;
+import com.picone.lamzonemeetings.controller.event.CancelFilterEvent;
 import com.picone.lamzonemeetings.controller.event.SortByDateEvent;
-import com.picone.lamzonemeetings.controller.event.SortByPlaceEvent;
+import com.picone.lamzonemeetings.controller.event.FilterByPlace;
 import com.picone.lamzonemeetings.model.Meeting;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,8 +61,10 @@ public class MeetingsActivity extends AppCompatActivity {
                 EventBus.getDefault().post(new SortByDateEvent(mMeetings));
                 return true;
             case R.id.sort_by_place:
-                EventBus.getDefault().post(new SortByPlaceEvent(mMeetings));
+                EventBus.getDefault().post(new FilterByPlace(mMeetings));
                 return true;
+            case R.id.cancel_filter:
+                EventBus.getDefault().post(new CancelFilterEvent());
             default:
                 return super.onOptionsItemSelected(item);
         }

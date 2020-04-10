@@ -16,6 +16,10 @@
                 android:id="@+id/sort_by_place"
                 android:title="sort by place"
                 app:showAsAction="never" />
+            <item
+                android:id="@+id/cancel_filter"
+                android:title="cancel filter"
+                app:showAsAction="never"/>
 
         </menu>
 
