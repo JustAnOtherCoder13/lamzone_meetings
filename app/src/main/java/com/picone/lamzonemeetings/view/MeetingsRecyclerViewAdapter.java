@@ -28,57 +28,31 @@ import butterknife.ButterKnife;
 public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRecyclerViewAdapter.ViewHolder> {
 
     private List<Meeting> mMeetings;
-    private List<Employee> mParticipants;
-    private List<Employee> mDummyParticipants;
-    private String mParticipantsMail;
-    private ApiService mService;
 
     MeetingsRecyclerViewAdapter(List<Meeting> items) {
         mMeetings = items;
     }
-
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_items, parent, false);
-        //EventBus.getDefault().register(this);
-        mParticipantsMail = mService.getParticipants();
-
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Meeting meeting = mMeetings.get(position);
-       // mDummyParticipants = meeting.getParticipants();
         holder.mMeetingTitle.setText(meeting.getSubject().concat(" ").concat(String.valueOf(meeting.getHour())).concat("h").concat(" ").concat(meeting.getPlace()));
-        holder.mMeetingParticipants.setText(mParticipantsMail);
+        holder.mMeetingParticipants.setText(meeting.getParticipants());
         holder.mDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteMeetingEvent(meeting)));
 
     }
-
-
-
-   /* @Subscribe
-    public  void onAddNewMeetingEvent(AddNewMeetingEvent event){
-        mParticipants = event.participants;
-        for (Employee employee:mParticipants){
-            String participantMail = employee.getMail();
-            String participants = null;
-            if (participants == null) participants = participantMail;
-            else participants = participants.concat(", ").concat(participantMail);
-            mParticipantsMail = participants;
-        }
-    }*/
-
-   // public void unregisterPost(){ }
     @Override
     public int getItemCount() {
         return this.mMeetings.size();
     }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_circle_img)

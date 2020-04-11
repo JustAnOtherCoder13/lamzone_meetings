@@ -61,6 +61,7 @@ public class AddNewMeetingFragment extends Fragment {
     private ApiService mService;
     private List<Employee> mParticipants;
     private List<Employee> mEmployees;
+    private List<Room> mRooms;
     private String mPlace;
     private String mHour;
     private String mMinute;
@@ -68,13 +69,9 @@ public class AddNewMeetingFragment extends Fragment {
     private String mFullDate;
     private String mSubject;
     private Chip mChip;
+    private String mParticipantsMail;
 
-    public static AddNewMeetingFragment newInstance() {
-        Fragment fragment = AddNewMeetingFragment.newInstance();
-        Bundle bundle = new Bundle();
-
-        return new AddNewMeetingFragment();
-    }
+    public static AddNewMeetingFragment newInstance() { return new AddNewMeetingFragment(); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +89,7 @@ public class AddNewMeetingFragment extends Fragment {
     }
 
     private void initViews() {
+        mRooms = mService.getRooms();
         initRoomsDropDownMenu();
         initChipGroupParticipants();
         mReturnFab.setOnClickListener(v -> returnToList());
@@ -102,8 +100,7 @@ public class AddNewMeetingFragment extends Fragment {
 
     private void initRoomsDropDownMenu() {
         mRoomTextView.setEnabled(false);
-        List<Room> rooms = mService.getRooms();
-        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<Room>((Objects.requireNonNull(getContext())), R.layout.room_item, rooms);
+        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<Room>((Objects.requireNonNull(getContext())), R.layout.room_item, mRooms);
         mRoomTextView.setAdapter(roomsAdapter);
     }
 
@@ -130,7 +127,7 @@ public class AddNewMeetingFragment extends Fragment {
         getCheckedParticipants();
 
         if (mPlace != null && mFullHour != null && mSubject != null && !mParticipants.isEmpty() && mFullDate != null) {
-            Meeting meeting = createNewMeeting(mFullHour, mSubject, mPlace, mParticipants, mFullDate);
+            Meeting meeting = createNewMeeting(mFullHour, mSubject, mPlace, mParticipantsMail, mFullDate);
             EventBus.getDefault().post(new AddNewMeetingEvent(meeting,mParticipants));
             returnToList();
         } else {
@@ -150,6 +147,13 @@ public class AddNewMeetingFragment extends Fragment {
             }
         }
         mParticipants=participantsChecked;
+        String participants = null;
+        for (Employee employee:mParticipants){
+            mParticipantsMail = employee.getMail();
+            if (participants == null) participants = mParticipantsMail;
+            else participants = participants.concat(", ").concat(mParticipantsMail);
+            mParticipantsMail = participants;
+        }
     }
 
     private void initDatePicker() {
@@ -181,13 +185,14 @@ public class AddNewMeetingFragment extends Fragment {
 
 
 
-    private Meeting createNewMeeting(String hour, String subject, String place, List<Employee> participants, String date) {
+    private Meeting createNewMeeting(String hour, String subject, String place, String participants, String date) {
         return new Meeting(hour, subject, place, participants, date);
     }
 
     private void returnToList() {
         assert getFragmentManager() != null;
         Fragment fragment = getFragmentManager().findFragmentByTag("NEW_MEETING_FRAG");
+        assert fragment != null;
         Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(fragment).commit();
     }
 }

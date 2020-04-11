@@ -11,13 +11,13 @@ import java.util.Objects;
 public class CustomDatePicker {
     private final Fragment fragment;
 
-    public CustomDatePicker(Fragment fragment) {
+    CustomDatePicker(Fragment fragment) {
         this.fragment = fragment;
     }
     private String mYear;
     private String mMonth;
     private String mDay;
-    public static String FULL_DATE;
+    static String FULL_DATE;
 
     void initDatePicker() {
         final Calendar calendar = Calendar.getInstance();

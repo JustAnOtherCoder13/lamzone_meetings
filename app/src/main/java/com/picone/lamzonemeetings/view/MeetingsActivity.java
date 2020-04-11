@@ -14,7 +14,7 @@ import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.CancelFilterEvent;
-import com.picone.lamzonemeetings.controller.event.SortByDateEvent;
+import com.picone.lamzonemeetings.controller.event.FilterByDateEvent;
 import com.picone.lamzonemeetings.controller.event.FilterByPlace;
 import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Meeting;
@@ -62,7 +62,7 @@ public class MeetingsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.sort_by_date:
-                EventBus.getDefault().post(new SortByDateEvent(mMeetings));
+                EventBus.getDefault().post(new FilterByDateEvent(mMeetings));
                 return true;
             case R.id.sort_by_place:
                 EventBus.getDefault().post(new FilterByPlace(mMeetings));

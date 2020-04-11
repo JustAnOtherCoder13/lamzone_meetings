@@ -4,10 +4,10 @@ import com.picone.lamzonemeetings.model.Meeting;
 
 import java.util.List;
 
-public class SortByDateEvent {
+public class FilterByDateEvent {
     public List<Meeting> meetings;
 
-    public SortByDateEvent(List<Meeting> meetings){
+    public FilterByDateEvent(List<Meeting> meetings){
         this.meetings = meetings;
     }
 }

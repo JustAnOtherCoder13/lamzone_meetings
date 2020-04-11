@@ -12,16 +12,16 @@ public abstract class DummyApiServiceGenerator {
 
     //Meetings list
     static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
-            new Meeting("15", "Réunion I", "Peach", generateParticipants() ,""),
-            new Meeting("08", "Réunion G", "Mario", generateParticipants(),""),
-            new Meeting("10", "Réunion C", "Luigi", generateParticipants(),""),
-            new Meeting("11", "Réunion A", "Toad", generateParticipants(),""),
-            new Meeting("09","Réunion E", "Wario", generateParticipants(),""),
-            new Meeting("17", "Réunion F", "Kong", generateParticipants(),""),
-            new Meeting("14", "Réunion D", "Browser", generateParticipants(),""),
-            new Meeting("16", "Réunion H", "Yoshi", generateParticipants(),""),
-            new Meeting("17", "Réunion B", "Waluigi", generateParticipants(),""),
-            new Meeting("10", "Réunion J", "Roi Boo", generateParticipants(),"")
+            new Meeting("15", "Réunion I", "Peach", "",""),
+            new Meeting("08", "Réunion G", "Mario", "",""),
+            new Meeting("10", "Réunion C", "Luigi", "",""),
+            new Meeting("11", "Réunion A", "Toad", "",""),
+            new Meeting("09","Réunion E", "Wario", "",""),
+            new Meeting("17", "Réunion F", "Kong", "",""),
+            new Meeting("14", "Réunion D", "Browser", "",""),
+            new Meeting("16", "Réunion H", "Yoshi", "",""),
+            new Meeting("17", "Réunion B", "Waluigi", "",""),
+            new Meeting("10", "Réunion J", "Roi Boo", "","")
     );
 
     public static List<Meeting> generateMeetings() {
@@ -63,12 +63,4 @@ public abstract class DummyApiServiceGenerator {
 
     public static List<Employee> generateEmployees(){return new ArrayList<>(dummyEmployees);}
 
-    public static List<Employee> participants = Arrays.asList(
-
-            new Employee("Maxime"),
-            new Employee("Alex"),
-            new Employee("Paul"),
-            new Employee("Viviane")
-    );
-    public static List<Employee> generateParticipants(){return new ArrayList<>(participants);}
 }
