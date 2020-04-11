@@ -1,7 +1,7 @@
 package com.picone.lamzonemeetings.controller.service;
 
 import com.picone.lamzonemeetings.model.Meeting;
-import com.picone.lamzonemeetings.model.Participant;
+import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Room;
 
 import java.util.ArrayList;
@@ -12,16 +12,16 @@ public abstract class DummyApiServiceGenerator {
 
     //Meetings list
     static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
-            new Meeting("15", "Réunion I", "Peach","Participants :" ,""),
-            new Meeting("08", "Réunion G", "Mario", "Participants :",""),
-            new Meeting("10", "Réunion C", "Luigi", "Participants :",""),
-            new Meeting("11", "Réunion A", "Toad", "Participants :",""),
-            new Meeting("09","Réunion E", "Wario", "Participants :",""),
-            new Meeting("17", "Réunion F", "Kong", "Participants :",""),
-            new Meeting("14", "Réunion D", "Browser", "Participants :",""),
-            new Meeting("16", "Réunion H", "Yoshi", "Participants :",""),
-            new Meeting("17", "Réunion B", "Waluigi", "Participants :",""),
-            new Meeting("10", "Réunion J", "Roi Boo", "Participants :","")
+            new Meeting("15", "Réunion I", "Peach", generateParticipants() ,""),
+            new Meeting("08", "Réunion G", "Mario", generateParticipants(),""),
+            new Meeting("10", "Réunion C", "Luigi", generateParticipants(),""),
+            new Meeting("11", "Réunion A", "Toad", generateParticipants(),""),
+            new Meeting("09","Réunion E", "Wario", generateParticipants(),""),
+            new Meeting("17", "Réunion F", "Kong", generateParticipants(),""),
+            new Meeting("14", "Réunion D", "Browser", generateParticipants(),""),
+            new Meeting("16", "Réunion H", "Yoshi", generateParticipants(),""),
+            new Meeting("17", "Réunion B", "Waluigi", generateParticipants(),""),
+            new Meeting("10", "Réunion J", "Roi Boo", generateParticipants(),"")
     );
 
     public static List<Meeting> generateMeetings() {
@@ -46,20 +46,29 @@ public abstract class DummyApiServiceGenerator {
     public static List<Room> generateRooms() {return new ArrayList<>(DUMMY_ROOMS);}
 
     //Participants List
-    static List<Participant> DUMMY_PARTICIPANTS = Arrays.asList(
-            new Participant("Maxime"),
-            new Participant("Alex"),
-            new Participant("Paul"),
-            new Participant("Viviane"),
-            new Participant("Helene"),
-            new Participant("Adrien"),
-            new Participant("Charlotte"),
-            new Participant("Lauren"),
-            new Participant("Romane"),
-            new Participant("Lino"),
-            new Participant("Margaux"),
-            new Participant("Roméo")
+    static List<Employee> dummyEmployees = Arrays.asList(
+            new Employee("Maxime"),
+            new Employee("Alex"),
+            new Employee("Paul"),
+            new Employee("Viviane"),
+            new Employee("Helene"),
+            new Employee("Adrien"),
+            new Employee("Charlotte"),
+            new Employee("Lauren"),
+            new Employee("Romane"),
+            new Employee("Lino"),
+            new Employee("Margaux"),
+            new Employee("Roméo")
     );
 
-    public static List<Participant> generateParticipant(){return new ArrayList<>(DUMMY_PARTICIPANTS);}
+    public static List<Employee> generateEmployees(){return new ArrayList<>(dummyEmployees);}
+
+    private static List<Employee> participants = Arrays.asList(
+
+            new Employee("Maxime"),
+            new Employee("Alex"),
+            new Employee("Paul"),
+            new Employee("Viviane")
+    );
+    private static List<Employee> generateParticipants(){return new ArrayList<>(participants);}
 }

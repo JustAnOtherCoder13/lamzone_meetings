@@ -16,6 +16,7 @@ import com.picone.lamzonemeetings.controller.event.AddMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.CancelFilterEvent;
 import com.picone.lamzonemeetings.controller.event.SortByDateEvent;
 import com.picone.lamzonemeetings.controller.event.FilterByPlace;
+import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Meeting;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,15 +28,19 @@ public class MeetingsActivity extends AppCompatActivity {
 
     private Fragment mFragment;
     private List<Meeting> mMeetings;
+    private ApiService mService;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
+        mService = DI.getMeetingApiService();
+        initListMeetingFragment();
     }
 
     private void initListMeetingFragment() {
+        mMeetings = mService.getMeetings();
         if (getSupportFragmentManager().findFragmentByTag("NEW_MEETING_FRAG") == null) {
             mFragment = ListMeetingFragment.newInstance();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -53,7 +58,6 @@ public class MeetingsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        mMeetings = DI.getMeetingApiService().getMeetings();
 
         switch (item.getItemId()) {
 
@@ -68,13 +72,11 @@ public class MeetingsActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        initListMeetingFragment();
         EventBus.getDefault().register(this);
     }
 

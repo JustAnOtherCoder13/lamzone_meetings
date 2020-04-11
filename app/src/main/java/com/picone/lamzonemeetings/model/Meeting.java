@@ -1,14 +1,16 @@
 package com.picone.lamzonemeetings.model;
 
+import java.util.List;
+
 public class Meeting {
 
     private String hour;
     private String place;
     private String subject;
-    private String participants;
+    private List<Employee> participants;
     private String date;
 
-    public Meeting(String hour, String subject,String place, String participants, String date) {
+    public Meeting(String hour, String subject,String place, List<Employee> participants, String date) {
 
         this.hour = hour;
         this.participants = participants;
@@ -34,8 +36,8 @@ public class Meeting {
 
     public void setSubject(String subject) { this.subject = subject; }
 
-    public String getParticipants() { return participants; }
+    public List<Employee> getParticipants() { return participants; }
 
-    public void setParticipants(String participants) { this.participants = participants;}
+    public void setParticipants(List<Employee> participants) { this.participants = participants;}
 }
 

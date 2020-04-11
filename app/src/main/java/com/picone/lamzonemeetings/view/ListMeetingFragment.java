@@ -74,16 +74,10 @@ public class ListMeetingFragment extends Fragment {
     }
 
     private void initView() {
-        mMeetings = mService.getMeetings();
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        final Fragment fragment = AddNewMeetingFragment.newInstance();
-        mAddMeetingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new AddMeetingEvent(fragment));
-            }
-        });
+        Fragment fragment = AddNewMeetingFragment.newInstance();
+        mAddMeetingButton.setOnClickListener(v -> EventBus.getDefault().post(new AddMeetingEvent(fragment)));
     }
 
     private void initList() {
@@ -99,6 +93,7 @@ public class ListMeetingFragment extends Fragment {
         EventBus.getDefault().register(this);
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
@@ -113,7 +108,9 @@ public class ListMeetingFragment extends Fragment {
 
     @Subscribe
     public void onSortByDate(SortByDateEvent event) {
-        final Calendar calendar = Calendar.getInstance();
+        CustomDatePicker datePicker = new CustomDatePicker(this);
+        datePicker.initDatePicker();
+        /*final Calendar calendar = Calendar.getInstance();
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
         final int month = calendar.get(Calendar.MONTH);
         final int year = calendar.get(Calendar.YEAR);
@@ -137,7 +134,7 @@ public class ListMeetingFragment extends Fragment {
                 mRecyclerView.setAdapter(mAdapter);
             }
         }, year, month, day);
-        picker.show();
+        picker.show();*/
     }
 
     @Subscribe

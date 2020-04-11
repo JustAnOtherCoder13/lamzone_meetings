@@ -1,8 +1,8 @@
 package com.picone.lamzonemeetings.view;
 
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +23,7 @@ import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
 import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Meeting;
-import com.picone.lamzonemeetings.model.Participant;
+import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Room;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,6 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AddNewMeetingFragment extends Fragment {
+    private final CustomDatePicker customDatePicker = new CustomDatePicker(this);
     @BindView(R.id.return_button)
     FloatingActionButton mReturnFab;
     @BindView(R.id.room_textView)
@@ -58,20 +59,20 @@ public class AddNewMeetingFragment extends Fragment {
     Button mHourButton;
 
     private ApiService mService;
-    private List<Participant> mParticipants;
+    private List<Employee> mParticipants;
+    private List<Employee> mEmployees;
     private String mPlace;
     private String mHour;
     private String mMinute;
     private String mFullHour;
-    private String mYear;
-    private String mMonth;
-    private String mDay;
     private String mFullDate;
-    private String mParticipant;
     private String mSubject;
     private Chip mChip;
 
     public static AddNewMeetingFragment newInstance() {
+        Fragment fragment = AddNewMeetingFragment.newInstance();
+        Bundle bundle = new Bundle();
+
         return new AddNewMeetingFragment();
     }
 
@@ -107,10 +108,10 @@ public class AddNewMeetingFragment extends Fragment {
     }
 
     private void initChipGroupParticipants() {
-        mParticipants = mService.getParticipants();
-        for (int i = 0; i < mParticipants.size(); i++) {
+        mEmployees = mService.getEmployees();
+        for (int i = 0; i < mEmployees.size(); i++) {
             mChip = new Chip(Objects.requireNonNull(getContext()));
-            mChip.setText(mParticipants.get(i).getName());
+            mChip.setText(mEmployees.get(i).getName());
             mChip.setCheckable(true);
             mChip.setCheckedIconVisible(true);
             mChip.setCheckedIconResource(R.drawable.ic_check);
@@ -129,8 +130,8 @@ public class AddNewMeetingFragment extends Fragment {
         getCheckedParticipants();
 
         if (mPlace != null && mFullHour != null && mSubject != null && !mParticipants.isEmpty() && mFullDate != null) {
-            Meeting meeting = createNewMeeting(mFullHour, mSubject, mPlace, mParticipant, mFullDate);
-            EventBus.getDefault().post(new AddNewMeetingEvent(meeting));
+            Meeting meeting = createNewMeeting(mFullHour, mSubject, mPlace, mParticipants, mFullDate);
+            EventBus.getDefault().post(new AddNewMeetingEvent(meeting,mParticipants));
             returnToList();
         } else {
             Toast.makeText(getContext(), "you have not choose all parameters", Toast.LENGTH_SHORT).show();
@@ -138,42 +139,26 @@ public class AddNewMeetingFragment extends Fragment {
     }
 
     private void getCheckedParticipants() {
-        List<String> participantsChecked = new ArrayList<>();
+        List<Employee> participantsChecked = new ArrayList<>();
+        Employee participant;
         for (int i = 0; i < mParticipantsChipGroup.getChildCount(); i++) {
             Chip chip = (Chip) mParticipantsChipGroup.getChildAt(i);
             Boolean isParticipantChecked = chip.isChecked();
             if (isParticipantChecked) {
-                mParticipant = mParticipants.get(i).getName();
-                //mParticipants.get(i)
-                //
+                participant = mEmployees.get(i);
+                participantsChecked.add(participant);
             }
-            else mParticipant = null;
-            if (mParticipant != null)
-                //list Participant
-                participantsChecked.add(mParticipant.toLowerCase().concat("@lamzone.com"));
         }
-        if (!participantsChecked.isEmpty()) mParticipant = participantsChecked.toString();
-        else mParticipant = null;
+        mParticipants=participantsChecked;
     }
 
     private void initDatePicker() {
-        final Calendar calendar = Calendar.getInstance();
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
-        final int month = calendar.get(Calendar.MONTH);
-        final int year = calendar.get(Calendar.YEAR);
         // date picker dialog
-        DatePickerDialog picker;
-        picker = new DatePickerDialog(Objects.requireNonNull(getContext()),
-                (view, year1, monthOfYear, dayOfMonth) -> {
-                    mYear = String.valueOf(year1);
-                    mMonth = String.valueOf(monthOfYear + 1);
-                    if (monthOfYear < 10) mMonth = "0".concat(mMonth);
-                    mDay = String.valueOf(dayOfMonth);
-                    if (dayOfMonth < 10) mDay = "0".concat(mDay);
-                    mDateTxt.setText(mDay.concat("/").concat(mMonth).concat("/").concat(mYear));
-                    mFullDate = String.valueOf(mDateTxt.getText());
-                }, year, month, day);
-        picker.show();
+        CustomDatePicker customDatePicker = new CustomDatePicker(this);
+        customDatePicker.initDatePicker();
+        Log.i("test", "initDatePicker: "+ CustomDatePicker.FULL_DATE);
+        mDateTxt.setText(CustomDatePicker.FULL_DATE);
+        mFullDate=String.valueOf(mDateTxt.getText());
     }
 
     private void initTimePicker() {
@@ -196,7 +181,7 @@ public class AddNewMeetingFragment extends Fragment {
 
 
 
-    private Meeting createNewMeeting(String hour, String subject, String place, String participants, String date) {
+    private Meeting createNewMeeting(String hour, String subject, String place, List<Employee> participants, String date) {
         return new Meeting(hour, subject, place, participants, date);
     }
 

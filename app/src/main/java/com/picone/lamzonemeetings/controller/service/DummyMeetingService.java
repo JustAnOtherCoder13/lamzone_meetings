@@ -1,7 +1,7 @@
 package com.picone.lamzonemeetings.controller.service;
 
 import com.picone.lamzonemeetings.model.Meeting;
-import com.picone.lamzonemeetings.model.Participant;
+import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Room;
 
 import java.util.List;
@@ -10,7 +10,7 @@ public class DummyMeetingService implements ApiService {
 
     private List<Meeting> meetings = DummyApiServiceGenerator.generateMeetings();
     private List<Room> rooms = DummyApiServiceGenerator.generateRooms();
-    private List<Participant> participants = DummyApiServiceGenerator.generateParticipant();
+    private List<Employee> employees = DummyApiServiceGenerator.generateEmployees();
 
     @Override
     public List<Meeting> getMeetings() {
@@ -21,7 +21,7 @@ public class DummyMeetingService implements ApiService {
     public List<Room> getRooms() {return rooms;}
 
     @Override
-    public List<Participant> getParticipants() { return participants; }
+    public List<Employee> getEmployees() { return employees; }
 
     @Override
     public void deleteMeeting(Meeting meeting) { meetings.remove(meeting); }

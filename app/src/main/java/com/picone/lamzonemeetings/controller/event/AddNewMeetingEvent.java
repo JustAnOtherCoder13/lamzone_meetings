@@ -1,10 +1,17 @@
 package com.picone.lamzonemeetings.controller.event;
 
+import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
+
+import java.util.List;
 
 public class AddNewMeetingEvent {
 
     public Meeting meeting;
-    public AddNewMeetingEvent(Meeting meeting){ this.meeting = meeting; }
+    public List<Employee> participants;
+
+    public AddNewMeetingEvent(Meeting meeting, List<Employee> participants){
+        this.participants = participants;
+        this.meeting = meeting; }
 }
 
