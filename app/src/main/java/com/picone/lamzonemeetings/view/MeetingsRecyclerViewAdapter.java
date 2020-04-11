@@ -43,12 +43,7 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
         final Meeting meeting = mMeetings.get(position);
         holder.mMeetingTitle.setText(meeting.getSubject().concat(" ").concat(String.valueOf(meeting.getHour())).concat("h").concat(" ").concat(meeting.getPlace()));
         holder.mMeetingParticipants.setText(meeting.getParticipants());
-        holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new DeleteMeetingEvent(meeting));
-            }
-        });
+        holder.mDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteMeetingEvent(meeting)));
 
     }
 

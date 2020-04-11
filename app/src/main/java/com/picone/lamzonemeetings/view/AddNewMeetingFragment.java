@@ -2,19 +2,14 @@ package com.picone.lamzonemeetings.view;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -101,7 +96,7 @@ public class AddNewMeetingFragment extends Fragment {
         mReturnFab.setOnClickListener(v -> returnToList());
         mHourButton.setOnClickListener(v -> initTimePicker());
         mDateButton.setOnClickListener(v -> initDatePicker());
-        mAddMeetingButton.setOnClickListener(v -> initAddMeeting());
+        mAddMeetingButton.setOnClickListener(v -> createMeeting());
     }
 
     private void initRoomsDropDownMenu() {
@@ -123,7 +118,7 @@ public class AddNewMeetingFragment extends Fragment {
         }
     }
 
-    private void initAddMeeting() {
+    private void createMeeting() {
 
         if (mRoomTextView.getText().length()>2) mPlace = mRoomTextView.getText().toString();
         else mPlace = null;
@@ -131,9 +126,9 @@ public class AddNewMeetingFragment extends Fragment {
         if (Objects.requireNonNull(mSubjectEditText.getText()).length()>2) mSubject = mSubjectEditText.getText().toString();
          else mSubject = null;
 
-        populateParticipants();
+        getCheckedParticipants();
 
-        if (mPlace != null && mFullHour != null && mSubject != null && mParticipant != null && mFullDate != null) {
+        if (mPlace != null && mFullHour != null && mSubject != null && !mParticipants.isEmpty() && mFullDate != null) {
             Meeting meeting = createNewMeeting(mFullHour, mSubject, mPlace, mParticipant, mFullDate);
             EventBus.getDefault().post(new AddNewMeetingEvent(meeting));
             returnToList();
@@ -142,17 +137,22 @@ public class AddNewMeetingFragment extends Fragment {
         }
     }
 
-    private void populateParticipants() {
+    private void getCheckedParticipants() {
         List<String> participantsChecked = new ArrayList<>();
         for (int i = 0; i < mParticipantsChipGroup.getChildCount(); i++) {
             Chip chip = (Chip) mParticipantsChipGroup.getChildAt(i);
             Boolean isParticipantChecked = chip.isChecked();
-            if (isParticipantChecked) mParticipant = mParticipants.get(i).getName();
+            if (isParticipantChecked) {
+                mParticipant = mParticipants.get(i).getName();
+                //mParticipants.get(i)
+                //
+            }
             else mParticipant = null;
             if (mParticipant != null)
+                //list Participant
                 participantsChecked.add(mParticipant.toLowerCase().concat("@lamzone.com"));
         }
-        if (participantsChecked.toString().length()>3) mParticipant = participantsChecked.toString();
+        if (!participantsChecked.isEmpty()) mParticipant = participantsChecked.toString();
         else mParticipant = null;
     }
 

@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 public class Participant {
     private String name;
-
+    //mail
     public Participant(String name){this.name = name;}
 
     public String getName() { return name;}

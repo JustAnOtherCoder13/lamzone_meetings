@@ -77,7 +77,6 @@ public class ListMeetingFragment extends Fragment {
         mMeetings = mService.getMeetings();
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
         final Fragment fragment = AddNewMeetingFragment.newInstance();
         mAddMeetingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,11 +148,12 @@ public class ListMeetingFragment extends Fragment {
         mBuilder.setTitle("choose the room");
         mBuilder.setSingleChoiceItems( roomsAdapter, 1, (dialog, which) -> mRoom = mRooms.get(which));
         mBuilder.setPositiveButton("ok", (dialog, which) -> {
-            for (Meeting meeting: event.meetings){
-                if (meeting.getPlace().equals(mRoom.getRoomName())) mFilteredMeetings.add(meeting);
+            for ( Meeting meeting: event.meetings){
+                if (mRoom.getRoomName()!=null && meeting.getPlace().equals(mRoom.getRoomName())) mFilteredMeetings.add(meeting);
             }
             mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
             mRecyclerView.setAdapter(mAdapter);
+           // mAdapter.notifyDataSetChanged();
         });
 
         mBuilder.setNegativeButton("cancel",null);
