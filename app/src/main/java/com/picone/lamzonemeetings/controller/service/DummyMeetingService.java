@@ -11,6 +11,8 @@ public class DummyMeetingService implements ApiService {
     private List<Meeting> meetings = DummyApiServiceGenerator.generateMeetings();
     private List<Room> rooms = DummyApiServiceGenerator.generateRooms();
     private List<Employee> employees = DummyApiServiceGenerator.generateEmployees();
+    private List<Employee> participants = DummyApiServiceGenerator.generateParticipants();
+    private String participantsMail;
 
     @Override
     public List<Meeting> getMeetings() {
@@ -22,6 +24,18 @@ public class DummyMeetingService implements ApiService {
 
     @Override
     public List<Employee> getEmployees() { return employees; }
+
+    @Override
+    public String getParticipants() {
+        String participant = null;
+        for (Employee employee:participants){
+            participantsMail = employee.getMail();
+            if (participant == null) participant = participantsMail;
+            else participant = participant.concat(", ").concat(participantsMail);
+            participantsMail = participant;
+        }
+        return participantsMail;
+    }
 
     @Override
     public void deleteMeeting(Meeting meeting) { meetings.remove(meeting); }
