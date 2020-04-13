@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -65,8 +66,8 @@ public class ListMeetingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_meeting, container, false);
         ButterKnife.bind(this, view);
-        initView();
         initList();
+        initView();
         return view;
     }
 
@@ -105,12 +106,14 @@ public class ListMeetingFragment extends Fragment {
 
     @Subscribe
     public void onFilterByDate(FilterByDateEvent event) {
-        CustomDatePicker datePicker = new CustomDatePicker(this);
-        datePicker.initDatePicker();
+        Utils.DatePickerUtils datePickerUtils = new Utils.DatePickerUtils(getContext());
+        //DatePickerUtils datePicker = new DatePickerUtils(getContext());
+        datePickerUtils.initDatePicker();
 
         mFilteredMeetings.clear();
+
         for (Meeting meeting : event.meetings) {
-            if (meeting.getHour().equals(CustomDatePicker.FULL_DATE)) mFilteredMeetings.add(meeting);
+            if (meeting.getHour().equals(Utils.DatePickerUtils.FULL_DATE)) mFilteredMeetings.add(meeting);
         }
         mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
         mRecyclerView.setAdapter(mAdapter);

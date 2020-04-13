@@ -32,12 +32,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
+import java.util.zip.Inflater;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AddNewMeetingFragment extends Fragment {
-    private final CustomDatePicker customDatePicker = new CustomDatePicker(this);
     @BindView(R.id.return_button)
     FloatingActionButton mReturnFab;
     @BindView(R.id.room_textView)
@@ -61,6 +61,7 @@ public class AddNewMeetingFragment extends Fragment {
     private ApiService mService;
     private List<Employee> mParticipants;
     private List<Employee> mEmployees;
+    private ArrayAdapter<Room> roomsAdapter;
     private List<Room> mRooms;
     private String mPlace;
     private String mHour;
@@ -71,11 +72,14 @@ public class AddNewMeetingFragment extends Fragment {
     private Chip mChip;
     private String mParticipantsMail;
 
-    public static AddNewMeetingFragment newInstance() { return new AddNewMeetingFragment(); }
+    public static AddNewMeetingFragment newInstance() {
+        return new AddNewMeetingFragment(); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mService = DI.getMeetingApiService();
+        mRooms = mService.getRooms();
+        roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), R.layout.room_item, mRooms);
         super.onCreate(savedInstanceState);
     }
 
@@ -88,8 +92,8 @@ public class AddNewMeetingFragment extends Fragment {
         return view;
     }
 
+
     private void initViews() {
-        mRooms = mService.getRooms();
         initRoomsDropDownMenu();
         initChipGroupParticipants();
         mReturnFab.setOnClickListener(v -> returnToList());
@@ -99,8 +103,8 @@ public class AddNewMeetingFragment extends Fragment {
     }
 
     private void initRoomsDropDownMenu() {
+        if (mRooms!=null) {mRooms.clear();}
         mRoomTextView.setEnabled(false);
-        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<Room>((Objects.requireNonNull(getContext())), R.layout.room_item, mRooms);
         mRoomTextView.setAdapter(roomsAdapter);
     }
 
@@ -158,10 +162,10 @@ public class AddNewMeetingFragment extends Fragment {
 
     private void initDatePicker() {
         // date picker dialog
-        CustomDatePicker customDatePicker = new CustomDatePicker(this);
-        customDatePicker.initDatePicker();
-        Log.i("test", "initDatePicker: "+ CustomDatePicker.FULL_DATE);
-        mDateTxt.setText(CustomDatePicker.FULL_DATE);
+        Utils.DatePickerUtils datePickerUtils = new Utils.DatePickerUtils(getContext());
+        datePickerUtils.initDatePicker();
+        Log.i("test", "initDatePicker: "+ Utils.DatePickerUtils.FULL_DATE);
+        mDateTxt.setText(Utils.DatePickerUtils.FULL_DATE);
         mFullDate=String.valueOf(mDateTxt.getText());
     }
 
