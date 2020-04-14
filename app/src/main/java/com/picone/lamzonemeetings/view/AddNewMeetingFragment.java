@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -61,15 +62,12 @@ public class AddNewMeetingFragment extends Fragment {
     private ApiService mService;
     private List<Employee> mParticipants;
     private List<Employee> mEmployees;
-    private ArrayAdapter<Room> roomsAdapter;
-    private List<Room> mRooms;
     private String mPlace;
     private String mHour;
     private String mMinute;
     private String mFullHour;
     private String mFullDate;
     private String mSubject;
-    private Chip mChip;
     private String mParticipantsMail;
 
     public static AddNewMeetingFragment newInstance() {
@@ -78,8 +76,6 @@ public class AddNewMeetingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mService = DI.getMeetingApiService();
-        mRooms = mService.getRooms();
-        roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), R.layout.room_item, mRooms);
         super.onCreate(savedInstanceState);
     }
 
@@ -103,7 +99,8 @@ public class AddNewMeetingFragment extends Fragment {
     }
 
     private void initRoomsDropDownMenu() {
-        if (mRooms!=null) {mRooms.clear();}
+        List<Room> rooms = mService.getRooms();
+        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), R.layout.room_item, rooms);
         mRoomTextView.setEnabled(false);
         mRoomTextView.setAdapter(roomsAdapter);
     }
@@ -111,12 +108,12 @@ public class AddNewMeetingFragment extends Fragment {
     private void initChipGroupParticipants() {
         mEmployees = mService.getEmployees();
         for (int i = 0; i < mEmployees.size(); i++) {
-            mChip = new Chip(Objects.requireNonNull(getContext()));
-            mChip.setText(mEmployees.get(i).getName());
-            mChip.setCheckable(true);
-            mChip.setCheckedIconVisible(true);
-            mChip.setCheckedIconResource(R.drawable.ic_check);
-            mParticipantsChipGroup.addView(mChip);
+            Chip chip = new Chip(Objects.requireNonNull(getContext()));
+            chip.setText(mEmployees.get(i).getName());
+            chip.setCheckable(true);
+            chip.setCheckedIconVisible(true);
+            chip.setCheckedIconResource(R.drawable.ic_check);
+            mParticipantsChipGroup.addView(chip);
         }
     }
 
@@ -162,11 +159,11 @@ public class AddNewMeetingFragment extends Fragment {
 
     private void initDatePicker() {
         // date picker dialog
-        Utils.DatePickerUtils datePickerUtils = new Utils.DatePickerUtils(getContext());
+       /* Utils.DatePickerUtils datePickerUtils = new Utils.DatePickerUtils(getContext());
         datePickerUtils.initDatePicker();
         Log.i("test", "initDatePicker: "+ Utils.DatePickerUtils.FULL_DATE);
         mDateTxt.setText(Utils.DatePickerUtils.FULL_DATE);
-        mFullDate=String.valueOf(mDateTxt.getText());
+        mFullDate=String.valueOf(mDateTxt.getText());*/
     }
 
     private void initTimePicker() {
@@ -194,9 +191,6 @@ public class AddNewMeetingFragment extends Fragment {
     }
 
     private void returnToList() {
-        assert getFragmentManager() != null;
-        Fragment fragment = getFragmentManager().findFragmentByTag("NEW_MEETING_FRAG");
-        assert fragment != null;
-        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }

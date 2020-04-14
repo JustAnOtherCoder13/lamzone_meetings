@@ -1,29 +1,36 @@
 package com.picone.lamzonemeetings.view;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
-import com.picone.lamzonemeetings.controller.event.AddMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.CancelFilterEvent;
 import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.FilterByDateEvent;
-import com.picone.lamzonemeetings.controller.event.FilterByPlace;
+import com.picone.lamzonemeetings.controller.event.FilterByPlaceEvent;
 import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
+import com.picone.lamzonemeetings.utils.DatePickerUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,14 +43,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ListMeetingFragment extends Fragment {
+public class ListMeetingFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
     @BindView(R.id.container)
     RecyclerView mRecyclerView;
     @BindView(R.id.add_meeting_btn)
     public FloatingActionButton mAddMeetingButton;
 
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private ApiService mService;
     private List<Meeting> mMeetings;
     private List<Meeting> mFilteredMeetings = new ArrayList<>();
@@ -57,6 +63,7 @@ public class ListMeetingFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         mService = DI.getMeetingApiService();
         super.onCreate(savedInstanceState);
     }
@@ -72,10 +79,15 @@ public class ListMeetingFragment extends Fragment {
     }
 
     private void initView() {
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        Fragment fragment = AddNewMeetingFragment.newInstance();
-        mAddMeetingButton.setOnClickListener(v -> EventBus.getDefault().post(new AddMeetingEvent(fragment)));
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mAddMeetingButton.setOnClickListener(v -> {
+            Fragment fragment = AddNewMeetingFragment.newInstance();
+            assert getFragmentManager() != null;
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(R.id.fragment_place_holder, fragment);
+            ft.commit();
+        });
     }
 
     private void initList() {
@@ -106,21 +118,22 @@ public class ListMeetingFragment extends Fragment {
 
     @Subscribe
     public void onFilterByDate(FilterByDateEvent event) {
-        Utils.DatePickerUtils datePickerUtils = new Utils.DatePickerUtils(getContext());
-        //DatePickerUtils datePicker = new DatePickerUtils(getContext());
-        datePickerUtils.initDatePicker();
+        /*Utils.DatePickerUtils datePickerUtils = new Utils.DatePickerUtils(getContext());
+        datePickerUtils.initDatePicker();*/
+        DatePickerUtils.initDatePicker(getContext());
+        Log.i("test", "onFilterByDate: "+DatePickerUtils.PICKED_DATE+"full date"+DatePickerUtils.FULL_DATE);
 
-        mFilteredMeetings.clear();
-
+       /* mFilteredMeetings.clear();
+        Log.i("test", "onFilterByDate: "+event.meetings.size());
         for (Meeting meeting : event.meetings) {
-            if (meeting.getHour().equals(Utils.DatePickerUtils.FULL_DATE)) mFilteredMeetings.add(meeting);
+            if (meeting.getHour().equals()) mFilteredMeetings.add(meeting);
         }
         mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);*/
     }
 
     @Subscribe
-    public void onFilterByPlace(FilterByPlace event) {
+    public void onFilterByPlace(FilterByPlaceEvent event) {
         mFilteredMeetings.clear();
         ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<Room>((Objects.requireNonNull(getContext())), R.layout.radio_room_item, mRooms);
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -149,5 +162,34 @@ public class ListMeetingFragment extends Fragment {
     public void onCancelFilterEvent(CancelFilterEvent event){
         mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
         mRecyclerView.setAdapter(mAdapter);
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+        inflater.inflate(R.menu.lamzone_meeting_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.sort_by_date:
+                DatePickerUtils.initDatePicker(getContext());
+                //EventBus.getDefault().post(new FilterByDateEvent(mMeetings));
+                return true;
+            case R.id.sort_by_place:
+                EventBus.getDefault().post(new FilterByPlaceEvent(mMeetings));
+                return true;
+            case R.id.cancel_filter:
+                EventBus.getDefault().post(new CancelFilterEvent());
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
     }
 }
