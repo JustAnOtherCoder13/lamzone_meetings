@@ -2,8 +2,8 @@ package com.picone.lamzonemeetings.view;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -13,9 +13,6 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,8 +21,8 @@ import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
 import com.picone.lamzonemeetings.controller.service.ApiService;
-import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Employee;
+import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
 import com.picone.lamzonemeetings.utils.DatePickerUtils;
 
@@ -33,9 +30,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.zip.Inflater;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,16 +61,14 @@ public class AddNewMeetingFragment extends DatePickerShow {
     private ApiService mService;
     private List<Employee> mParticipants;
     private List<Employee> mEmployees;
-    private String mPlace;
     private String mHour;
     private String mMinute;
     private String mFullHour;
-    private String mFullDate;
-    private String mSubject;
     private String mParticipantsMail;
 
-    public static AddNewMeetingFragment newInstance() {
-        return new AddNewMeetingFragment(); }
+    static AddNewMeetingFragment newInstance() {
+        return new AddNewMeetingFragment();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +85,11 @@ public class AddNewMeetingFragment extends DatePickerShow {
         return view;
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        DatePickerUtils.workWithDatePickerData(dayOfMonth, month, year);
+        mDateTxt.setText(DatePickerUtils.FULL_DATE);
+    }
 
     private void initViews() {
         initRoomsDropDownMenu();
@@ -121,17 +121,20 @@ public class AddNewMeetingFragment extends DatePickerShow {
 
     private void createMeeting() {
 
-        if (mRoomTextView.getText().length()>2) mPlace = mRoomTextView.getText().toString();
-        else mPlace = null;
+        String place;
+        if (mRoomTextView.getText().length() > 2) place = mRoomTextView.getText().toString();
+        else place = null;
 
-        if (Objects.requireNonNull(mSubjectEditText.getText()).length()>2) mSubject = mSubjectEditText.getText().toString();
-         else mSubject = null;
+        String subject;
+        if (Objects.requireNonNull(mSubjectEditText.getText()).length() > 2)
+            subject = mSubjectEditText.getText().toString();
+        else subject = null;
 
         getCheckedParticipants();
 
-        if (mPlace != null && mFullHour != null && mSubject != null && !mParticipants.isEmpty() && mFullDate != null) {
-            Meeting meeting = createNewMeeting(mFullHour, mSubject, mPlace, mParticipantsMail, mFullDate);
-            EventBus.getDefault().post(new AddNewMeetingEvent(meeting,mParticipants));
+        if (place != null && mFullHour != null && subject != null && !mParticipants.isEmpty() && mDateTxt.getText() != null) {
+            Meeting meeting = createNewMeeting(mFullHour, subject, place, mParticipantsMail, DatePickerUtils.PICKED_DATE);
+            EventBus.getDefault().post(new AddNewMeetingEvent(meeting));
             returnToList();
         } else {
             Toast.makeText(getContext(), "you have not choose all parameters", Toast.LENGTH_SHORT).show();
@@ -143,15 +146,15 @@ public class AddNewMeetingFragment extends DatePickerShow {
         Employee participant;
         for (int i = 0; i < mParticipantsChipGroup.getChildCount(); i++) {
             Chip chip = (Chip) mParticipantsChipGroup.getChildAt(i);
-            Boolean isParticipantChecked = chip.isChecked();
+            boolean isParticipantChecked = chip.isChecked();
             if (isParticipantChecked) {
                 participant = mEmployees.get(i);
                 participantsChecked.add(participant);
             }
         }
-        mParticipants=participantsChecked;
+        mParticipants = participantsChecked;
         String participants = null;
-        for (Employee employee:mParticipants){
+        for (Employee employee : mParticipants) {
             mParticipantsMail = employee.getMail();
             if (participants == null) participants = mParticipantsMail;
             else participants = participants.concat(", ").concat(mParticipantsMail);
@@ -177,9 +180,7 @@ public class AddNewMeetingFragment extends DatePickerShow {
         picker.show();
     }
 
-
-
-    private Meeting createNewMeeting(String hour, String subject, String place, String participants, String date) {
+    private Meeting createNewMeeting(String hour, String subject, String place, String participants, Date date) {
         return new Meeting(hour, subject, place, participants, date);
     }
 
@@ -187,9 +188,4 @@ public class AddNewMeetingFragment extends DatePickerShow {
         Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        DatePickerUtils.workWithDatePickerData(getContext(),dayOfMonth,month,year);
-        mDateTxt.setText(DatePickerUtils.FULL_DATE);
-    }
 }

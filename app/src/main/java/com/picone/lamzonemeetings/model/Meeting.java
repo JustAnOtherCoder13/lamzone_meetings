@@ -1,5 +1,6 @@
 package com.picone.lamzonemeetings.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class Meeting {
@@ -8,9 +9,9 @@ public class Meeting {
     private String place;
     private String subject;
     private String participants;
-    private String date;
+    private Date date;
 
-    public Meeting(String hour, String subject,String place, String participants, String date) {
+    public Meeting(String hour, String subject,String place, String participants, Date date) {
 
         this.hour = hour;
         this.participants = participants;
@@ -20,9 +21,9 @@ public class Meeting {
 
     }
 
-    public String getDate() {return date;}
+    public Date getDate() {return date;}
 
-    public void setDate(String date) { this.date = date;}
+    public void setDate(Date date) { this.date = date;}
 
     public String getHour() { return hour;}
 

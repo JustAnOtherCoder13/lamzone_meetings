@@ -23,7 +23,6 @@ public class DummyMeetingService implements ApiService {
     @Override
     public List<Employee> getEmployees() { return employees; }
 
-
     @Override
     public void deleteMeeting(Meeting meeting) { meetings.remove(meeting); }
 
