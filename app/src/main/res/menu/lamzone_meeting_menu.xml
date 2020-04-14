@@ -9,12 +9,12 @@
 
         <menu>
             <item
-                android:id="@+id/sort_by_date"
-                android:title="sort by date"
+                android:id="@+id/filter_by_date"
+                android:title="filter by date"
                 app:showAsAction="never" />
             <item
-                android:id="@+id/sort_by_place"
-                android:title="sort by place"
+                android:id="@+id/filter_by_place"
+                android:title="filter by place"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/cancel_filter"

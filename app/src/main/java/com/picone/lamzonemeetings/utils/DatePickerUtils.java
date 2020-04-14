@@ -15,18 +15,14 @@ import java.util.Objects;
 public  class DatePickerUtils {
     public static String FULL_DATE;
     public static Date PICKED_DATE;
-    public static DatePickerDialog picker;
 
-    public static void initDatePicker(Context context) {
-        final Calendar calendar = Calendar.getInstance();
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
-        final int month = calendar.get(Calendar.MONTH);
-        final int year = calendar.get(Calendar.YEAR);
+
+    public static void initDatePicker(Context context,int dayOfMonth,int monthOfYear,int year) {
+
         // date picker dialog
 
-        picker = new DatePickerDialog(Objects.requireNonNull(context),
-                (view, year1, monthOfYear, dayOfMonth) -> {
-                    String mYear = (String.valueOf(year1));
+
+                    String mYear = (String.valueOf(year));
                     String mMonth = (String.valueOf(monthOfYear + 1));
                     if (monthOfYear < 10)
                         mMonth = ("0".concat(mMonth));
@@ -39,9 +35,6 @@ public  class DatePickerUtils {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    Log.i("test", "initDatePicker: " + FULL_DATE);
-                }, year, month, day);
-        picker.show();
-
+                    Log.i("test", "initDatePicker: " + FULL_DATE+" "+PICKED_DATE);
     }
 }

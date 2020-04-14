@@ -23,10 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
-import com.picone.lamzonemeetings.controller.event.CancelFilterEvent;
 import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
-import com.picone.lamzonemeetings.controller.event.FilterByDateEvent;
-import com.picone.lamzonemeetings.controller.event.FilterByPlaceEvent;
 import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
@@ -36,6 +33,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,6 +53,10 @@ public class ListMeetingFragment extends Fragment implements DatePickerDialog.On
     private List<Meeting> mFilteredMeetings = new ArrayList<>();
     private List<Room> mRooms;
     private Room mRoom;
+    private final Calendar calendar = Calendar.getInstance();
+    private final int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+    private final int month = calendar.get(Calendar.MONTH);
+    private final int year = calendar.get(Calendar.YEAR);
 
 
     public static ListMeetingFragment newInstance() {
@@ -110,37 +112,28 @@ public class ListMeetingFragment extends Fragment implements DatePickerDialog.On
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe
-    public void onDeleteMeeting(DeleteMeetingEvent event) {
-        mService.deleteMeeting(event.meeting);
-        mAdapter.notifyDataSetChanged();
-    }
 
-    @Subscribe
-    public void onFilterByDate(FilterByDateEvent event) {
-        /*Utils.DatePickerUtils datePickerUtils = new Utils.DatePickerUtils(getContext());
-        datePickerUtils.initDatePicker();*/
-        DatePickerUtils.initDatePicker(getContext());
-        Log.i("test", "onFilterByDate: "+DatePickerUtils.PICKED_DATE+"full date"+DatePickerUtils.FULL_DATE);
 
-       /* mFilteredMeetings.clear();
-        Log.i("test", "onFilterByDate: "+event.meetings.size());
-        for (Meeting meeting : event.meetings) {
-            if (meeting.getHour().equals()) mFilteredMeetings.add(meeting);
+
+    private void filterByDate() {
+
+        mFilteredMeetings.clear();
+        for (Meeting meeting : mMeetings) {
+            if (meeting.getHour().equals(DatePickerUtils.FULL_DATE)) mFilteredMeetings.add(meeting);
         }
         mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
-        mRecyclerView.setAdapter(mAdapter);*/
+        mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Subscribe
-    public void onFilterByPlace(FilterByPlaceEvent event) {
+
+    private void filterByPlace() {
         mFilteredMeetings.clear();
         ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<Room>((Objects.requireNonNull(getContext())), R.layout.radio_room_item, mRooms);
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         mBuilder.setTitle("choose the room");
         mBuilder.setSingleChoiceItems( roomsAdapter, 1, (dialog, which) -> mRoom = mRooms.get(which));
         mBuilder.setPositiveButton("ok", (dialog, which) -> {
-            for ( Meeting meeting: event.meetings){
+            for ( Meeting meeting: mMeetings){
                 if (mRoom.getRoomName()!=null && meeting.getPlace().equals(mRoom.getRoomName())) mFilteredMeetings.add(meeting);
             }
             mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
@@ -152,19 +145,25 @@ public class ListMeetingFragment extends Fragment implements DatePickerDialog.On
         AlertDialog dialog = mBuilder.create();
         dialog.show();
     }
+    private void cancelFilter(){
+        mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+    @Subscribe
+    public void onDeleteMeeting(DeleteMeetingEvent event) {
+        mService.deleteMeeting(event.meeting);
+        mAdapter.notifyDataSetChanged();
+    }
 
     @Subscribe
     public void onAddNewMeeting(AddNewMeetingEvent event) {
         mService.addMeeting(event.meeting);
         mAdapter.notifyDataSetChanged();
     }
-    @Subscribe
-    public void onCancelFilterEvent(CancelFilterEvent event){
-        mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
-        mRecyclerView.setAdapter(mAdapter);
-    }
+
+
     @Override
-    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.lamzone_meeting_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -174,15 +173,18 @@ public class ListMeetingFragment extends Fragment implements DatePickerDialog.On
 
         switch (item.getItemId()) {
 
-            case R.id.sort_by_date:
-                DatePickerUtils.initDatePicker(getContext());
-                //EventBus.getDefault().post(new FilterByDateEvent(mMeetings));
+            case R.id.filter_by_date:
+                DatePickerDialog picker = new DatePickerDialog(Objects.requireNonNull(getContext()),this,year,month,dayOfMonth);
+                picker.show();
                 return true;
-            case R.id.sort_by_place:
-                EventBus.getDefault().post(new FilterByPlaceEvent(mMeetings));
+
+            case R.id.filter_by_place:
+                filterByPlace();
                 return true;
+
             case R.id.cancel_filter:
-                EventBus.getDefault().post(new CancelFilterEvent());
+                cancelFilter();
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -190,6 +192,7 @@ public class ListMeetingFragment extends Fragment implements DatePickerDialog.On
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
+        DatePickerUtils.initDatePicker(getContext(),dayOfMonth,month,year);
+        filterByDate();
     }
 }

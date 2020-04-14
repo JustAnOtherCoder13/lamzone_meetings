@@ -1,25 +1,15 @@
 package com.picone.lamzonemeetings.view;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
-import com.picone.lamzonemeetings.controller.event.CancelFilterEvent;
-import com.picone.lamzonemeetings.controller.event.FilterByDateEvent;
-import com.picone.lamzonemeetings.controller.event.FilterByPlaceEvent;
 import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Meeting;
-import com.picone.lamzonemeetings.utils.DatePickerUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
