@@ -17,7 +17,7 @@ public  class DatePickerUtils {
     public static Date PICKED_DATE;
 
 
-    public static void initDatePicker(Context context,int dayOfMonth,int monthOfYear,int year) {
+    public static void workWithDatePickerData(Context context, int dayOfMonth, int monthOfYear, int year) {
 
         // date picker dialog
 

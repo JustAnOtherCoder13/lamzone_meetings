@@ -41,7 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ListMeetingFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+public class ListMeetingFragment extends DatePickerShow {
     @BindView(R.id.container)
     RecyclerView mRecyclerView;
     @BindView(R.id.add_meeting_btn)
@@ -59,9 +59,14 @@ public class ListMeetingFragment extends Fragment implements DatePickerDialog.On
     private final int year = calendar.get(Calendar.YEAR);
 
 
+
+
+
     public static ListMeetingFragment newInstance() {
         return new ListMeetingFragment();
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,7 @@ public class ListMeetingFragment extends Fragment implements DatePickerDialog.On
         initView();
         return view;
     }
+
 
     private void initView() {
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -174,8 +180,7 @@ public class ListMeetingFragment extends Fragment implements DatePickerDialog.On
         switch (item.getItemId()) {
 
             case R.id.filter_by_date:
-                DatePickerDialog picker = new DatePickerDialog(Objects.requireNonNull(getContext()),this,year,month,dayOfMonth);
-                picker.show();
+                initDatePicker(getContext());
                 return true;
 
             case R.id.filter_by_place:
@@ -190,9 +195,11 @@ public class ListMeetingFragment extends Fragment implements DatePickerDialog.On
         }
     }
 
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        DatePickerUtils.initDatePicker(getContext(),dayOfMonth,month,year);
+        Log.i("test", "onDateSet: "+"ok");
+        DatePickerUtils.workWithDatePickerData(getContext(),dayOfMonth,month,year);
         filterByDate();
     }
 }

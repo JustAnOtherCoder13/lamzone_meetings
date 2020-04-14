@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Room;
+import com.picone.lamzonemeetings.utils.DatePickerUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -38,7 +40,7 @@ import java.util.zip.Inflater;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddNewMeetingFragment extends Fragment {
+public class AddNewMeetingFragment extends DatePickerShow {
     @BindView(R.id.return_button)
     FloatingActionButton mReturnFab;
     @BindView(R.id.room_textView)
@@ -94,7 +96,7 @@ public class AddNewMeetingFragment extends Fragment {
         initChipGroupParticipants();
         mReturnFab.setOnClickListener(v -> returnToList());
         mHourButton.setOnClickListener(v -> initTimePicker());
-        mDateButton.setOnClickListener(v -> initDatePicker());
+        mDateButton.setOnClickListener(v -> initDatePicker(getContext()));
         mAddMeetingButton.setOnClickListener(v -> createMeeting());
     }
 
@@ -157,15 +159,6 @@ public class AddNewMeetingFragment extends Fragment {
         }
     }
 
-    private void initDatePicker() {
-        // date picker dialog
-       /* Utils.DatePickerUtils datePickerUtils = new Utils.DatePickerUtils(getContext());
-        datePickerUtils.initDatePicker();
-        Log.i("test", "initDatePicker: "+ Utils.DatePickerUtils.FULL_DATE);
-        mDateTxt.setText(Utils.DatePickerUtils.FULL_DATE);
-        mFullDate=String.valueOf(mDateTxt.getText());*/
-    }
-
     private void initTimePicker() {
         final Calendar calendar = Calendar.getInstance();
         final int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -192,5 +185,11 @@ public class AddNewMeetingFragment extends Fragment {
 
     private void returnToList() {
         Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        DatePickerUtils.workWithDatePickerData(getContext(),dayOfMonth,month,year);
+        mDateTxt.setText(DatePickerUtils.FULL_DATE);
     }
 }
