@@ -66,10 +66,5 @@ public abstract class DummyApiServiceGenerator {
 
     public static List<Employee> generateEmployees(){return new ArrayList<>(DUMMY_EMPLOYEES);}
 
-    //Participants List
-    //static List<Employee> DUMMY_PARTICIPANTS = Arrays.asList();
-
-    //public static List<Employee> generateParticipants(){return new ArrayList<>(DUMMY_PARTICIPANTS);}
-
 }
 

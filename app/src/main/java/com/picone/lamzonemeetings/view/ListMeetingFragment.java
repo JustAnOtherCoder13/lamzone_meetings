@@ -38,7 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ListMeetingFragment extends DatePickerShow {
+public class ListMeetingFragment extends InitDatePicker {
     @BindView(R.id.container)
     RecyclerView mRecyclerView;
     @BindView(R.id.add_meeting_btn)
@@ -101,7 +101,7 @@ public class ListMeetingFragment extends DatePickerShow {
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        DatePickerUtils.formatPickedDate(dayOfMonth,month,year);
+        DatePickerUtils.formatPickedDate(dayOfMonth, month, year);
         filterByDate();
     }
 
@@ -112,7 +112,7 @@ public class ListMeetingFragment extends DatePickerShow {
             Fragment fragment = AddNewMeetingFragment.newInstance();
             assert getFragmentManager() != null;
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_place_holder, fragment);
+            ft.add(R.id.fragment_place_holder, fragment,"NEW_MEETING_FRAG");
             ft.commit();
         });
     }
@@ -141,7 +141,8 @@ public class ListMeetingFragment extends DatePickerShow {
 
         mFilteredMeetings.clear();
         for (Meeting meeting : mMeetings) {
-            if (meeting.getDate().equals(DatePickerUtils.PICKED_DATE)) mFilteredMeetings.add(meeting);
+            if (meeting.getDate().equals(DatePickerUtils.PICKED_DATE))
+                mFilteredMeetings.add(meeting);
         }
         mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
         mRecyclerView.setAdapter(mAdapter);
@@ -152,22 +153,23 @@ public class ListMeetingFragment extends DatePickerShow {
         ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), R.layout.radio_room_item, mRooms);
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         mBuilder.setTitle("choose the room");
-        mBuilder.setSingleChoiceItems( roomsAdapter, 1, (dialog, which) -> mRoom = mRooms.get(which));
+        mBuilder.setSingleChoiceItems(roomsAdapter, 1, (dialog, which) -> mRoom = mRooms.get(which));
         mBuilder.setPositiveButton("ok", (dialog, which) -> {
-            for ( Meeting meeting: mMeetings){
-                if (mRoom.getRoomName()!=null && meeting.getPlace().equals(mRoom.getRoomName())) mFilteredMeetings.add(meeting);
+            for (Meeting meeting : mMeetings) {
+                if (mRoom.getRoomName() != null && meeting.getPlace().equals(mRoom.getRoomName()))
+                    mFilteredMeetings.add(meeting);
             }
             mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
             mRecyclerView.setAdapter(mAdapter);
-           // mAdapter.notifyDataSetChanged();
+            // mAdapter.notifyDataSetChanged();
         });
 
-        mBuilder.setNegativeButton("cancel",null);
+        mBuilder.setNegativeButton("cancel", null);
         AlertDialog dialog = mBuilder.create();
         dialog.show();
     }
 
-    private void cancelFilter(){
+    private void cancelFilter() {
         mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
         mRecyclerView.setAdapter(mAdapter);
     }

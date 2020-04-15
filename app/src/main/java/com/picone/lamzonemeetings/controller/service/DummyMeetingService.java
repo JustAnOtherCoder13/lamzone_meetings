@@ -13,7 +13,6 @@ public class DummyMeetingService implements ApiService {
     private List<Meeting> meetings = DummyApiServiceGenerator.generateMeetings();
     private List<Room> rooms = DummyApiServiceGenerator.generateRooms();
     private List<Employee> employees = DummyApiServiceGenerator.generateEmployees();
-   // private List<Employee> participants = DummyApiServiceGenerator.generateParticipants();
 
     @Override
     public List<Meeting> getMeetings() {

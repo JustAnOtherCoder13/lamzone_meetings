@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
 
-abstract class DatePickerShow extends Fragment implements DatePickerDialog.OnDateSetListener{
+abstract class InitDatePicker extends Fragment implements DatePickerDialog.OnDateSetListener{
 
     void initDatePicker(Context context){
 

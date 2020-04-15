@@ -36,7 +36,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddNewMeetingFragment extends DatePickerShow {
+public class AddNewMeetingFragment extends InitDatePicker {
     @BindView(R.id.return_button)
     FloatingActionButton mReturnFab;
     @BindView(R.id.room_textView)
@@ -71,6 +71,7 @@ public class AddNewMeetingFragment extends DatePickerShow {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mService = DI.getMeetingApiService();
+        mEmployees = mService.getEmployees();
         super.onCreate(savedInstanceState);
     }
 
@@ -106,10 +107,9 @@ public class AddNewMeetingFragment extends DatePickerShow {
     }
 
     private void initChipGroupParticipants() {
-        mEmployees = mService.getEmployees();
-        for (int i = 0; i < mEmployees.size(); i++) {
+        for (Employee employee:mEmployees) {
             Chip chip = new Chip(Objects.requireNonNull(getContext()));
-            chip.setText(mEmployees.get(i).getName());
+            chip.setText(employee.getName());
             chip.setCheckable(true);
             chip.setCheckedIconVisible(true);
             chip.setCheckedIconResource(R.drawable.ic_check);
@@ -144,16 +144,12 @@ public class AddNewMeetingFragment extends DatePickerShow {
         Employee participant;
         for (int i = 0; i < mParticipantsChipGroup.getChildCount(); i++) {
             Chip chip = (Chip) mParticipantsChipGroup.getChildAt(i);
-            boolean isParticipantChecked = chip.isChecked();
-            if (isParticipantChecked) {
+            if (chip.isChecked()) {
                 participant = mEmployees.get(i);
                 participantsChecked.add(participant);
             }
         }
         mParticipants = participantsChecked;
-        for (Employee employee : mParticipants) {
-
-        }
     }
 
     private void initTimePicker() {

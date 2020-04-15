@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
-import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,11 +21,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.picone.lamzonemeetings.utils.ParticipantsMailUtils.getParticipantsMail;
+
 public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRecyclerViewAdapter.ViewHolder> {
 
     private List<Meeting> mMeetings;
 
-    MeetingsRecyclerViewAdapter(List<Meeting> items) { mMeetings = items; }
+    MeetingsRecyclerViewAdapter(List<Meeting> items) { mMeetings = items;}
 
     @NonNull
     @Override
@@ -48,17 +49,6 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     public int getItemCount() {
         return this.mMeetings.size();
     }
-
-    private String getParticipantsMail(Meeting meeting){
-        List<Employee> participants = meeting.getParticipants();
-        String participantsMail = null;
-        for (Employee participant:participants) {
-            if (participantsMail == null) participantsMail = participant.getMail();
-            else participantsMail = participantsMail.concat(", ").concat(participant.getMail());
-        }
-        return participantsMail;
-    }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_circle_img)

@@ -18,12 +18,12 @@ public class MeetingsActivity extends AppCompatActivity {
     }
 
     private void initListMeetingFragment() {
-        //if (getSupportFragmentManager().findFragmentByTag("NEW_MEETING_FRAG") == null) {
+        if (getSupportFragmentManager().findFragmentByTag("NEW_MEETING_FRAG") == null) {
         Fragment fragment = ListMeetingFragment.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_place_holder, fragment);
         ft.commit();
-        //}
+        }
     }
 }
 
