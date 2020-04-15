@@ -1,7 +1,7 @@
 package com.picone.lamzonemeetings.controller.service;
 
-import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Employee;
+import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
 
 import java.util.List;
@@ -14,6 +14,7 @@ public interface ApiService {
     List<Meeting> getMeetings();
     List<Room> getRooms();
     List<Employee> getEmployees();
+    void getParticipants();
     /**
      * Deletes a meeting
      * @param meeting

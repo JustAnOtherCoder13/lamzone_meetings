@@ -101,7 +101,7 @@ public class ListMeetingFragment extends DatePickerShow {
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        DatePickerUtils.workWithDatePickerData(dayOfMonth,month,year);
+        DatePickerUtils.formatPickedDate(dayOfMonth,month,year);
         filterByDate();
     }
 
@@ -120,6 +120,7 @@ public class ListMeetingFragment extends DatePickerShow {
     private void initList() {
         mMeetings = mService.getMeetings();
         mRooms = mService.getRooms();
+        mService.getParticipants();
         mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
         mRecyclerView.setAdapter(mAdapter);
     }

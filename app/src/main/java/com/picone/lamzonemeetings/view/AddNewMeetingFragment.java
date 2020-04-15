@@ -3,7 +3,6 @@ package com.picone.lamzonemeetings.view;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -64,7 +63,6 @@ public class AddNewMeetingFragment extends DatePickerShow {
     private String mHour;
     private String mMinute;
     private String mFullHour;
-    private String mParticipantsMail;
 
     static AddNewMeetingFragment newInstance() {
         return new AddNewMeetingFragment();
@@ -87,7 +85,7 @@ public class AddNewMeetingFragment extends DatePickerShow {
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        DatePickerUtils.workWithDatePickerData(dayOfMonth, month, year);
+        DatePickerUtils.formatPickedDate(dayOfMonth, month, year);
         mDateTxt.setText(DatePickerUtils.FULL_DATE);
     }
 
@@ -133,7 +131,7 @@ public class AddNewMeetingFragment extends DatePickerShow {
         getCheckedParticipants();
 
         if (place != null && mFullHour != null && subject != null && !mParticipants.isEmpty() && mDateTxt.getText() != null) {
-            Meeting meeting = createNewMeeting(mFullHour, subject, place, mParticipantsMail, DatePickerUtils.PICKED_DATE);
+            Meeting meeting = createNewMeeting(mFullHour, subject, place, mParticipants, DatePickerUtils.PICKED_DATE);
             EventBus.getDefault().post(new AddNewMeetingEvent(meeting));
             returnToList();
         } else {
@@ -153,12 +151,8 @@ public class AddNewMeetingFragment extends DatePickerShow {
             }
         }
         mParticipants = participantsChecked;
-        String participants = null;
         for (Employee employee : mParticipants) {
-            mParticipantsMail = employee.getMail();
-            if (participants == null) participants = mParticipantsMail;
-            else participants = participants.concat(", ").concat(mParticipantsMail);
-            mParticipantsMail = participants;
+
         }
     }
 
@@ -180,7 +174,7 @@ public class AddNewMeetingFragment extends DatePickerShow {
         picker.show();
     }
 
-    private Meeting createNewMeeting(String hour, String subject, String place, String participants, Date date) {
+    private Meeting createNewMeeting(String hour, String subject, String place, List<Employee> participants, Date date) {
         return new Meeting(hour, subject, place, participants, date);
     }
 

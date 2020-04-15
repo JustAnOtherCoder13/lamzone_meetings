@@ -11,14 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.picone.lamzonemeetings.R;
-import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
-import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -29,30 +26,39 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
 
     private List<Meeting> mMeetings;
 
-    MeetingsRecyclerViewAdapter(List<Meeting> items) {
-        mMeetings = items;
-    }
+    MeetingsRecyclerViewAdapter(List<Meeting> items) { mMeetings = items; }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
+        View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_items, parent, false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Meeting meeting = mMeetings.get(position);
         holder.mMeetingTitle.setText(meeting.getSubject().concat(" ").concat(String.valueOf(meeting.getHour())).concat("h").concat(" ").concat(meeting.getPlace()));
-        holder.mMeetingParticipants.setText(meeting.getParticipants());
+        holder.mMeetingParticipants.setText(getParticipantsMail(meeting));
         holder.mDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteMeetingEvent(meeting)));
-
     }
+
     @Override
     public int getItemCount() {
         return this.mMeetings.size();
     }
+
+    private String getParticipantsMail(Meeting meeting){
+        List<Employee> participants = meeting.getParticipants();
+        String participantsMail = null;
+        for (Employee participant:participants) {
+            if (participantsMail == null) participantsMail = participant.getMail();
+            else participantsMail = participantsMail.concat(", ").concat(participant.getMail());
+        }
+        return participantsMail;
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_circle_img)
@@ -64,9 +70,9 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
         @BindView(R.id.item_delete_img_button)
         public ImageButton mDeleteButton;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
+        ViewHolder(@NonNull View view) {
+            super(view);
+            ButterKnife.bind(this, view);
         }
     }
 }
