@@ -37,6 +37,8 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedDate;
+
 
 public class ListMeetingFragment extends InitDatePicker {
     @BindView(R.id.container)
@@ -58,7 +60,6 @@ public class ListMeetingFragment extends InitDatePicker {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        mService = DI.getMeetingApiService();
         super.onCreate(savedInstanceState);
     }
 
@@ -67,13 +68,14 @@ public class ListMeetingFragment extends InitDatePicker {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_meeting, container, false);
         ButterKnife.bind(this, view);
+        mService = DI.getNewInstanceApiService();
         initList();
         initView();
         return view;
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.lamzone_meeting_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -88,7 +90,7 @@ public class ListMeetingFragment extends InitDatePicker {
                 return true;
 
             case R.id.filter_by_place:
-                filterByPlace();
+                initPlaceAlertDialog();
                 return true;
 
             case R.id.cancel_filter:
@@ -101,28 +103,8 @@ public class ListMeetingFragment extends InitDatePicker {
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        DatePickerUtils.formatPickedDate(dayOfMonth, month, year);
+        formatPickedDate(dayOfMonth, month, year);
         filterByDate();
-    }
-
-    private void initView() {
-        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mAddMeetingButton.setOnClickListener(v -> {
-            Fragment fragment = AddNewMeetingFragment.newInstance();
-            assert getFragmentManager() != null;
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_place_holder, fragment,"NEW_MEETING_FRAG");
-            ft.commit();
-        });
-    }
-
-    private void initList() {
-        mMeetings = mService.getMeetings();
-        mRooms = mService.getRooms();
-        mService.getParticipants();
-        mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -137,8 +119,49 @@ public class ListMeetingFragment extends InitDatePicker {
         EventBus.getDefault().unregister(this);
     }
 
-    private void filterByDate() {
+    private void initView() {
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mAddMeetingButton.setOnClickListener(v -> {
+            Fragment fragment = AddNewMeetingFragment.newInstance();
+            assert getFragmentManager() != null;
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(R.id.fragment_place_holder, fragment, "NEW_MEETING_FRAG");
+            ft.commit();
+        });
+    }
+//TODO find a way to show all participants on long click
+    private void initList() {
+        mMeetings = mService.getMeetings();
+        mRooms = mService.getRooms();
+        mService.getParticipants();
+        mService.getHour();
+        mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
+        mRecyclerView.setAdapter(mAdapter);
+    }
 
+    private void initPlaceAlertDialog() {
+        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), R.layout.radio_room_item, mRooms);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        builder.setTitle("choose the room");
+        builder.setSingleChoiceItems(roomsAdapter, 1, (dialog, which) -> mRoom = mRooms.get(which));
+        builder.setPositiveButton("ok", (dialog, which) -> filterByPlace());
+        builder.setNegativeButton("cancel", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void filterByPlace() {
+        mFilteredMeetings.clear();
+        for (Meeting meeting : mMeetings) {
+            if (mRoom.getRoomName() != null && meeting.getPlace().equals(mRoom.getRoomName()))
+                mFilteredMeetings.add(meeting);
+        }
+        mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void filterByDate() {
         mFilteredMeetings.clear();
         for (Meeting meeting : mMeetings) {
             if (meeting.getDate().equals(DatePickerUtils.PICKED_DATE))
@@ -146,27 +169,6 @@ public class ListMeetingFragment extends InitDatePicker {
         }
         mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
         mRecyclerView.setAdapter(mAdapter);
-    }
-
-    private void filterByPlace() {
-        mFilteredMeetings.clear();
-        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), R.layout.radio_room_item, mRooms);
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-        mBuilder.setTitle("choose the room");
-        mBuilder.setSingleChoiceItems(roomsAdapter, 1, (dialog, which) -> mRoom = mRooms.get(which));
-        mBuilder.setPositiveButton("ok", (dialog, which) -> {
-            for (Meeting meeting : mMeetings) {
-                if (mRoom.getRoomName() != null && meeting.getPlace().equals(mRoom.getRoomName()))
-                    mFilteredMeetings.add(meeting);
-            }
-            mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
-            mRecyclerView.setAdapter(mAdapter);
-            // mAdapter.notifyDataSetChanged();
-        });
-
-        mBuilder.setNegativeButton("cancel", null);
-        AlertDialog dialog = mBuilder.create();
-        dialog.show();
     }
 
     private void cancelFilter() {

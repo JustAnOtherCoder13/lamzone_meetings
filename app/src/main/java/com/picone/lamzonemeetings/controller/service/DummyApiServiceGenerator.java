@@ -12,19 +12,18 @@ import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGener
 import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.TODAY;
 
 public abstract class DummyApiServiceGenerator {
-
     //Meetings list
     static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
-            new Meeting("15", "Réunion I", "Peach", new ArrayList<>(), TODAY),
-            new Meeting("08", "Réunion G", "Mario", new ArrayList<>(), TODAY),
-            new Meeting("10", "Réunion C", "Luigi", new ArrayList<>(), TODAY),
-            new Meeting("11", "Réunion A", "Toad", new ArrayList<>(), TODAY),
-            new Meeting("09","Réunion E", "Wario", new ArrayList<>(), TODAY),
-            new Meeting("17", "Réunion F", "Kong", new ArrayList<>(), OTHER_DAY),
-            new Meeting("14", "Réunion D", "Browser", new ArrayList<>(), OTHER_DAY),
-            new Meeting("16", "Réunion H", "Yoshi", new ArrayList<>(), OTHER_DAY),
-            new Meeting("17", "Réunion B", "Waluigi", new ArrayList<>(), OTHER_DAY),
-            new Meeting("10", "Réunion J", "Roi Boo", new ArrayList<>(), OTHER_DAY)
+            new Meeting("", "Réunion I", "Peach", new ArrayList<>(), TODAY),
+            new Meeting("", "Réunion G", "Mario", new ArrayList<>(), TODAY),
+            new Meeting("", "Réunion C", "Luigi", new ArrayList<>(), TODAY),
+            new Meeting("", "Réunion A", "Toad", new ArrayList<>(), TODAY),
+            new Meeting("","Réunion E", "Wario", new ArrayList<>(), TODAY),
+            new Meeting("", "Réunion F", "Kong", new ArrayList<>(), OTHER_DAY),
+            new Meeting("", "Réunion D", "Browser", new ArrayList<>(), OTHER_DAY),
+            new Meeting("", "Réunion H", "Yoshi", new ArrayList<>(), OTHER_DAY),
+            new Meeting("", "Réunion B", "Waluigi", new ArrayList<>(), OTHER_DAY),
+            new Meeting("", "Réunion J", "Roi Boo", new ArrayList<>(), OTHER_DAY)
     );
 
     public static List<Meeting> generateMeetings() {

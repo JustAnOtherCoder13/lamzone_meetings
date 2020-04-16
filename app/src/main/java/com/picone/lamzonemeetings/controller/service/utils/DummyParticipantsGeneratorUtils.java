@@ -16,6 +16,7 @@ public class DummyParticipantsGeneratorUtils {
             int employeeIndex = new Random().nextInt(12);
             Employee participant = employees.get(employeeIndex);
             if (!dummyParticipants.contains(participant)) dummyParticipants.add(participant);
+            else i--;
         }
         return dummyParticipants;
     }

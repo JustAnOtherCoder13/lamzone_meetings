@@ -15,6 +15,7 @@ public interface ApiService {
     List<Room> getRooms();
     List<Employee> getEmployees();
     void getParticipants();
+    void getHour();
     /**
      * Deletes a meeting
      * @param meeting

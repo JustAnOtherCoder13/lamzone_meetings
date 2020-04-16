@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/fragment_list">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/container"
-        />
+        android:layout_marginBottom="40dp" />
+<!--TODO change circle size and make the cross white-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_meeting_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
-        app:fabCustomSize="40dp"
-        android:src="@drawable/ic_add_btn"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@android:color/holo_red_dark"
-        app:borderWidth="0dp"
         android:elevation="10dp"
+        android:src="@drawable/ic_add_btn"
+        app:borderWidth="0dp"
+        app:fabCustomSize="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

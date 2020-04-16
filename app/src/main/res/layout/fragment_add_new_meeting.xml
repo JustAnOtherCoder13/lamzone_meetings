@@ -98,6 +98,7 @@
                     android:hint="DD/MM/YY"
                     app:layout_constraintBottom_toTopOf="@id/date_btn"
                     app:layout_constraintLeft_toLeftOf="@id/date_btn"
+                    app:layout_constraintRight_toRightOf="@id/date_btn"
                     app:layout_constraintTop_toBottomOf="@id/room_drop_down_menu" />
 
                 <TextView
@@ -108,6 +109,7 @@
                     android:layout_marginBottom="10dp"
                     android:hint="HH/MM"
                     app:layout_constraintBottom_toTopOf="@id/hour_btn"
+                    app:layout_constraintLeft_toLeftOf="@id/hour_btn"
                     app:layout_constraintRight_toRightOf="@id/hour_btn"
                     app:layout_constraintTop_toBottomOf="@id/room_drop_down_menu" />
 
@@ -147,7 +149,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:background="@color/white"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="10dp"
             app:cardElevation="10dp"
             app:layout_constraintBottom_toTopOf="@id/add_meeting_button"
             app:layout_constraintLeft_toLeftOf="parent"

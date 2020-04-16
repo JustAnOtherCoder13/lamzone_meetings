@@ -40,7 +40,7 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Meeting meeting = mMeetings.get(position);
-        holder.mMeetingTitle.setText(meeting.getSubject().concat(" ").concat(String.valueOf(meeting.getHour())).concat("h").concat(" ").concat(meeting.getPlace()));
+        holder.mMeetingTitle.setText(meeting.getSubject().concat(" - ").concat(String.valueOf(meeting.getHour())).concat(" - ").concat(meeting.getPlace()));
         holder.mMeetingParticipants.setText(getParticipantsMail(meeting));
         holder.mDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteMeetingEvent(meeting)));
     }
@@ -49,7 +49,7 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     public int getItemCount() {
         return this.mMeetings.size();
     }
-
+//TODO change circle color on a parameter, find the logical's parameter
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_circle_img)
         public ImageView mCircleImg;

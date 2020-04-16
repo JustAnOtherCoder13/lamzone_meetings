@@ -3,6 +3,7 @@ package com.picone.lamzonemeetings.view;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -11,6 +12,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -23,7 +27,6 @@ import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
-import com.picone.lamzonemeetings.utils.DatePickerUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,6 +38,12 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.picone.lamzonemeetings.utils.DatePickerUtils.FULL_DATE;
+import static com.picone.lamzonemeetings.utils.DatePickerUtils.FULL_HOUR;
+import static com.picone.lamzonemeetings.utils.DatePickerUtils.PICKED_DATE;
+import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedDate;
+import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedHour;
 
 public class AddNewMeetingFragment extends InitDatePicker {
     @BindView(R.id.return_button)
@@ -60,9 +69,6 @@ public class AddNewMeetingFragment extends InitDatePicker {
     private ApiService mService;
     private List<Employee> mParticipants;
     private List<Employee> mEmployees;
-    private String mHour;
-    private String mMinute;
-    private String mFullHour;
 
     static AddNewMeetingFragment newInstance() {
         return new AddNewMeetingFragment();
@@ -85,9 +91,21 @@ public class AddNewMeetingFragment extends InitDatePicker {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.setGroupVisible(R.id.filter_group, false);
+    }
+
+    @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        DatePickerUtils.formatPickedDate(dayOfMonth, month, year);
-        mDateTxt.setText(DatePickerUtils.FULL_DATE);
+        formatPickedDate(dayOfMonth, month, year);
+        mDateTxt.setText(FULL_DATE);
     }
 
     private void initViews() {
@@ -130,8 +148,8 @@ public class AddNewMeetingFragment extends InitDatePicker {
 
         getCheckedParticipants();
 
-        if (place != null && mFullHour != null && subject != null && !mParticipants.isEmpty() && mDateTxt.getText() != null) {
-            Meeting meeting = createNewMeeting(mFullHour, subject, place, mParticipants, DatePickerUtils.PICKED_DATE);
+        if (place != null && FULL_HOUR != null && subject != null && !mParticipants.isEmpty() && FULL_DATE != null) {
+            Meeting meeting = createNewMeeting(FULL_HOUR, subject, place, mParticipants,PICKED_DATE);
             EventBus.getDefault().post(new AddNewMeetingEvent(meeting));
             returnToList();
         } else {
@@ -154,19 +172,13 @@ public class AddNewMeetingFragment extends InitDatePicker {
 
     private void initTimePicker() {
         final Calendar calendar = Calendar.getInstance();
-        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        final int minutes = calendar.get(Calendar.MINUTE);
         // time picker dialog
         TimePickerDialog picker;
         picker = new TimePickerDialog(getContext(),
                 (tp, sHour, sMinute) -> {
-                    mHour = String.valueOf(sHour);
-                    if (sHour < 10) mHour = "0".concat(mHour);
-                    mMinute = String.valueOf(sMinute);
-                    if (sMinute < 10) mMinute = "0".concat(mMinute);
-                    mHourTxt.setText(mHour.concat(":").concat(mMinute));
-                    mFullHour = String.valueOf(mHourTxt.getText());
-                }, hour, minutes, true);
+                    formatPickedHour(sHour,sMinute);
+                    mHourTxt.setText(FULL_HOUR);
+                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
         picker.show();
     }
 
