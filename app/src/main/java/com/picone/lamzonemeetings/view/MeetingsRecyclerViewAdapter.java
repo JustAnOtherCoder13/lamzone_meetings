@@ -38,7 +38,7 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
                 .inflate(R.layout.recycler_view_items, parent, false);
         return new ViewHolder(view);
     }
-
+//TODO circles colors don't change on rotate
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Meeting meeting = mMeetings.get(position);

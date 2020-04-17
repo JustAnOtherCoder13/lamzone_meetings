@@ -27,12 +27,16 @@ import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
 import com.picone.lamzonemeetings.utils.DatePickerUtils;
+import com.picone.lamzonemeetings.utils.RecyclerViewOnLongClickUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -41,6 +45,7 @@ import butterknife.ButterKnife;
 import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.TODAY;
 import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateRandomDate;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedDate;
+import static com.picone.lamzonemeetings.utils.ParticipantsMailUtils.getParticipantsMail;
 
 
 public class ListMeetingFragment extends InitDatePicker {
@@ -133,14 +138,12 @@ public class ListMeetingFragment extends InitDatePicker {
             ft.commit();
         });
     }
-//TODO find a way to show all participants on long click
     private void initList() {
+        configureOnClickRecyclerView();
         mMeetings = mService.getMeetings();
         mRooms = mService.getRooms();
         mService.getParticipants();
         mService.getHour();
-        Log.i("test", "initList: "+generateRandomDate()+TODAY);
-        //mService.getDate();
         mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -148,10 +151,10 @@ public class ListMeetingFragment extends InitDatePicker {
     private void initPlaceAlertDialog() {
         ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), R.layout.radio_room_item, mRooms);
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-        builder.setTitle("choose the room");
+        builder.setTitle("Choose the room");
         builder.setSingleChoiceItems(roomsAdapter, 1, (dialog, which) -> mRoom = mRooms.get(which));
-        builder.setPositiveButton("ok", (dialog, which) -> filterByPlace());
-        builder.setNegativeButton("cancel", null);
+        builder.setPositiveButton("Ok", (dialog, which) -> filterByPlace());
+        builder.setNegativeButton("Cancel", null);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -172,6 +175,7 @@ public class ListMeetingFragment extends InitDatePicker {
             if (meeting.getDate().equals(DatePickerUtils.PICKED_DATE))
                 mFilteredMeetings.add(meeting);
         }
+        //TODO date and participants change when filter
         mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -179,6 +183,24 @@ public class ListMeetingFragment extends InitDatePicker {
     private void cancelFilter() {
         mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    public void configureOnClickRecyclerView() {
+        RecyclerViewOnLongClickUtils.addTo(mRecyclerView, R.layout.fragment_list_meeting)
+                .setOnItemLongClickListener((recyclerView, position, v) -> {
+                    initDetailAlertDialog(position);
+                   return true;
+                });
+    }
+    private void initDetailAlertDialog(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        builder.setTitle("Date/Participants");
+        String date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format( mMeetings.get(position).getDate());
+        String participants = getParticipantsMail(mMeetings.get(position));
+        builder.setMessage(date.concat("\n\n").concat(participants));
+        builder.setNegativeButton("Back", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Subscribe
