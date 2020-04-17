@@ -1,6 +1,7 @@
 package com.picone.lamzonemeetings.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +38,8 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.TODAY;
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateRandomDate;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedDate;
 
 
@@ -136,6 +139,8 @@ public class ListMeetingFragment extends InitDatePicker {
         mRooms = mService.getRooms();
         mService.getParticipants();
         mService.getHour();
+        Log.i("test", "initList: "+generateRandomDate()+TODAY);
+        //mService.getDate();
         mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
         mRecyclerView.setAdapter(mAdapter);
     }

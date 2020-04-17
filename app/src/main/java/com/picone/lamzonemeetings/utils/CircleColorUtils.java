@@ -1,10 +1,5 @@
 package com.picone.lamzonemeetings.utils;
 
-import android.content.Context;
-import android.widget.ImageView;
-
-import androidx.core.content.ContextCompat;
-
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.model.Meeting;
 
@@ -15,7 +10,6 @@ import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGener
 public class CircleColorUtils {
 
     public static int setCircleColor(Meeting meeting) {
-
         Date date = meeting.getDate();
         if (date.compareTo(TODAY) == 0) {
             return R.color.today_meeting;

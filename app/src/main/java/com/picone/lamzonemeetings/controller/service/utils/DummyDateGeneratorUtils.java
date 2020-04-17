@@ -17,15 +17,22 @@ public class DummyDateGeneratorUtils {
     private final static int YEAR = CALENDAR.get(Calendar.YEAR);
     private static Date HOUR;
     private static Date MINUTE;
-    private static int DAY_OF_MONTH2 = CALENDAR.get(Calendar.DAY_OF_MONTH) - 1;
     public static Date TODAY;
-    public static Date OTHER_DAY;
+    private static Date DUMMY_DATE;
+    private static Random RANDOM = new Random();
 
-    private static int getOtherDay() {
-        if (DAY_OF_MONTH2 == 0) {
-            DAY_OF_MONTH2 = CALENDAR.get(DAY_OF_MONTH) + 1;
+    public static Date generateRandomDate(){
+        int bound=0;
+        if (MONTH == 2){ bound=29;}
+        else if (MONTH%2 == 0 || MONTH == 9 || MONTH == 11 && MONTH!=8 && MONTH!=10 && MONTH!=12){ bound = 30;}
+        else {bound=31;}
+        int randomDay = new Random().nextInt(bound)+1;
+        try {
+            DUMMY_DATE = new SimpleDateFormat("dd/MM/yyyy",Locale.FRANCE).parse(randomDay+"/"+MONTH+"/"+YEAR);
+        }catch (ParseException e){
+            e.printStackTrace();
         }
-        return DAY_OF_MONTH2;
+        return DUMMY_DATE;
     }
 
     static {
@@ -35,19 +42,10 @@ public class DummyDateGeneratorUtils {
             e.printStackTrace();
         }
     }
-
-    static {
-        try {
-            OTHER_DAY = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(getOtherDay() + "/" + MONTH + "/" + YEAR);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static String getRandomHour() {
-        Random random = new Random();
-        int randomHour = random.nextInt(9)+9;
-        int randomMinute = random.nextInt(60);
+    
+    private static String generateRandomHour() {
+        int randomHour = RANDOM.nextInt(9)+9;
+        int randomMinute = RANDOM.nextInt(60);
         try {
             HOUR = new SimpleDateFormat("HH", Locale.FRANCE).parse(String.valueOf(randomHour));
         } catch (ParseException e) {
@@ -64,6 +62,6 @@ public class DummyDateGeneratorUtils {
     }
     public static void generateDummyHour(List<Meeting> meetings){
         for (Meeting meeting:meetings) {
-            meeting.setHour(getRandomHour());
+            meeting.setHour(generateRandomHour());
         }
 }}

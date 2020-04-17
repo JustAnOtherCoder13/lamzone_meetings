@@ -8,22 +8,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.OTHER_DAY;
 import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.TODAY;
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateRandomDate;
 
 public abstract class DummyApiServiceGenerator {
     //Meetings list
     static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
-            new Meeting("", "Réunion I", "Peach", new ArrayList<>(), TODAY),
-            new Meeting("", "Réunion G", "Mario", new ArrayList<>(), TODAY),
-            new Meeting("", "Réunion C", "Luigi", new ArrayList<>(), TODAY),
-            new Meeting("", "Réunion A", "Toad", new ArrayList<>(), TODAY),
-            new Meeting("","Réunion E", "Wario", new ArrayList<>(), TODAY),
-            new Meeting("", "Réunion F", "Kong", new ArrayList<>(), OTHER_DAY),
-            new Meeting("", "Réunion D", "Browser", new ArrayList<>(), OTHER_DAY),
-            new Meeting("", "Réunion H", "Yoshi", new ArrayList<>(), OTHER_DAY),
-            new Meeting("", "Réunion B", "Waluigi", new ArrayList<>(), OTHER_DAY),
-            new Meeting("", "Réunion J", "Roi Boo", new ArrayList<>(), OTHER_DAY)
+            new Meeting("", "Réunion I", "Peach", new ArrayList<>(), generateRandomDate()),
+            new Meeting("", "Réunion G", "Mario", new ArrayList<>(), generateRandomDate()),
+            new Meeting("", "Réunion C", "Luigi", new ArrayList<>(), generateRandomDate()),
+            new Meeting("", "Réunion A", "Toad", new ArrayList<>(), generateRandomDate()),
+            new Meeting("","Réunion E", "Wario", new ArrayList<>(), generateRandomDate()),
+            new Meeting("", "Réunion F", "Kong", new ArrayList<>(), generateRandomDate()),
+            new Meeting("", "Réunion D", "Browser", new ArrayList<>(), generateRandomDate()),
+            new Meeting("", "Réunion H", "Yoshi", new ArrayList<>(), generateRandomDate()),
+            new Meeting("", "Réunion B", "Waluigi", new ArrayList<>(), generateRandomDate()),
+            new Meeting("", "Réunion J", "Roi Boo", new ArrayList<>(), generateRandomDate())
     );
 
     public static List<Meeting> generateMeetings() {

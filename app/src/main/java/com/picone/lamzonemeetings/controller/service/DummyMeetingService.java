@@ -16,21 +16,22 @@ public class DummyMeetingService implements ApiService {
     private List<Employee> employees = DummyApiServiceGenerator.generateEmployees();
 
     @Override
-    public List<Meeting> getMeetings() {
-        return meetings;
-    }
+    public List<Meeting> getMeetings() { return meetings; }
 
     @Override
-    public List<Room> getRooms() {return rooms;}
+    public List<Room> getRooms() { return rooms; }
 
     @Override
-    public List<Employee> getEmployees() { return employees;}
+    public List<Employee> getEmployees() { return employees; }
 
     @Override
-    public void getParticipants() { generateDummyParticipants(meetings,employees);}
+    public void getParticipants() { generateDummyParticipants(meetings,employees); }
 
     @Override
-    public void getHour() {generateDummyHour(meetings);}
+    public void getHour() { generateDummyHour(meetings); }
+
+    //@Override
+    //public void getDate() { generateDummyDate(meetings); }
 
     @Override
     public void deleteMeeting(Meeting meeting) { meetings.remove(meeting); }
