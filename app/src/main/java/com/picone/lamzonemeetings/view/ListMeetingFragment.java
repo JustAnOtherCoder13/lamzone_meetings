@@ -68,7 +68,7 @@ public class ListMeetingFragment extends InitDatePicker {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_meeting, container, false);
         ButterKnife.bind(this, view);
-        mService = DI.getNewInstanceApiService();
+        mService = DI.getMeetingApiService();
         initList();
         initView();
         return view;

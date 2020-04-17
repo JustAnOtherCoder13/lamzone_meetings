@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.picone.lamzonemeetings.R;
@@ -21,6 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.picone.lamzonemeetings.utils.CircleColorUtils.setCircleColor;
 import static com.picone.lamzonemeetings.utils.ParticipantsMailUtils.getParticipantsMail;
 
 public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRecyclerViewAdapter.ViewHolder> {
@@ -40,6 +42,7 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Meeting meeting = mMeetings.get(position);
+        holder.mCircleImg.setColorFilter(ContextCompat.getColor(holder.mCircleImg.getContext(),setCircleColor(meeting)));
         holder.mMeetingTitle.setText(meeting.getSubject().concat(" - ").concat(String.valueOf(meeting.getHour())).concat(" - ").concat(meeting.getPlace()));
         holder.mMeetingParticipants.setText(getParticipantsMail(meeting));
         holder.mDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteMeetingEvent(meeting)));
@@ -49,7 +52,7 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     public int getItemCount() {
         return this.mMeetings.size();
     }
-//TODO change circle color on a parameter, find the logical's parameter
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_circle_img)
         public ImageView mCircleImg;

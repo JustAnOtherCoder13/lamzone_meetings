@@ -16,6 +16,7 @@ public class DummyDateGeneratorUtils {
     private final static int MONTH = CALENDAR.get(Calendar.MONTH);
     private final static int YEAR = CALENDAR.get(Calendar.YEAR);
     private static Date HOUR;
+    private static Date MINUTE;
     private static int DAY_OF_MONTH2 = CALENDAR.get(Calendar.DAY_OF_MONTH) - 1;
     public static Date TODAY;
     public static Date OTHER_DAY;
@@ -48,12 +49,18 @@ public class DummyDateGeneratorUtils {
         int randomHour = random.nextInt(9)+9;
         int randomMinute = random.nextInt(60);
         try {
-            HOUR = new SimpleDateFormat("HH:mm", Locale.FRANCE).parse(String.valueOf(randomHour).concat(":").concat(String.valueOf(randomMinute)));
+            HOUR = new SimpleDateFormat("HH", Locale.FRANCE).parse(String.valueOf(randomHour));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.FRANCE);
-        return formatter.format(HOUR);
+        try {
+            MINUTE = new SimpleDateFormat("mm",Locale.FRANCE).parse(String.valueOf(randomMinute));
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+        SimpleDateFormat formatterHour = new SimpleDateFormat("HH", Locale.FRANCE);
+        SimpleDateFormat formatterMinute = new SimpleDateFormat("mm",Locale.FRANCE);
+        return formatterHour.format(HOUR).concat("h").concat(formatterMinute.format(MINUTE));
     }
     public static void generateDummyHour(List<Meeting> meetings){
         for (Meeting meeting:meetings) {

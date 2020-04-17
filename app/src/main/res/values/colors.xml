@@ -8,4 +8,7 @@
     <color name="grey">#FFA2A2A2</color>
     <color name="red">#E53935</color>
     <color name="navy">#191C3A</color>
+    <color name="passed_meeting">#F48FB1</color>
+    <color name="today_meeting">#A5D6A7</color>
+    <color name="future_meeting">#81D4FA</color>
 </resources>
