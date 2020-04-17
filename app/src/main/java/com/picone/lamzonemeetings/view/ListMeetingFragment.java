@@ -1,7 +1,6 @@
 package com.picone.lamzonemeetings.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +33,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -42,8 +40,6 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.TODAY;
-import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateRandomDate;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedDate;
 import static com.picone.lamzonemeetings.utils.ParticipantsMailUtils.getParticipantsMail;
 
@@ -185,7 +181,7 @@ public class ListMeetingFragment extends InitDatePicker {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    public void configureOnClickRecyclerView() {
+    private void configureOnClickRecyclerView() {
         RecyclerViewOnLongClickUtils.addTo(mRecyclerView, R.layout.fragment_list_meeting)
                 .setOnItemLongClickListener((recyclerView, position, v) -> {
                     initDetailAlertDialog(position);

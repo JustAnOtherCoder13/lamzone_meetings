@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.TODAY;
 import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateRandomDate;
 
 public abstract class DummyApiServiceGenerator {
