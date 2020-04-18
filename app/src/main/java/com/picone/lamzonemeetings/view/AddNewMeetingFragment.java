@@ -123,7 +123,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
         mRoomTextView.setEnabled(false);
         mRoomTextView.setAdapter(roomsAdapter);
     }
-
+//TODO add sector or town cause the real number of employee is over 300
     private void initChipGroupParticipants() {
         for (Employee employee:mEmployees) {
             Chip chip = new Chip(Objects.requireNonNull(getContext()));

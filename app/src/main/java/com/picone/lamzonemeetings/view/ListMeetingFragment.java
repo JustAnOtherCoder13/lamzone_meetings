@@ -145,6 +145,7 @@ public class ListMeetingFragment extends InitDatePicker {
     }
 
     private void initPlaceAlertDialog() {
+        //TODO a condition if no room are selected to avoid bug
         ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), R.layout.radio_room_item, mRooms);
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         builder.setTitle("Choose the room");
