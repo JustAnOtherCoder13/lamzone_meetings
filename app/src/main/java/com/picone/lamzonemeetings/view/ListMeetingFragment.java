@@ -1,6 +1,9 @@
 package com.picone.lamzonemeetings.view;
 
+import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -56,6 +60,7 @@ public class ListMeetingFragment extends InitDatePicker {
     private List<Meeting> mFilteredMeetings = new ArrayList<>();
     private List<Room> mRooms;
     private Room mRoom;
+    public static boolean mOrientation;
 
     static ListMeetingFragment newInstance() {
         return new ListMeetingFragment();
@@ -75,6 +80,7 @@ public class ListMeetingFragment extends InitDatePicker {
         mService = DI.getMeetingApiService();
         initList();
         initView();
+        knowOrientation();
         return view;
     }
 
@@ -134,22 +140,23 @@ public class ListMeetingFragment extends InitDatePicker {
             ft.commit();
         });
     }
+
     private void initList() {
         configureOnClickRecyclerView();
         mMeetings = mService.getMeetings();
         mRooms = mService.getRooms();
         mService.getParticipants();
         mService.getHour();
+        //Log.i("test", "initList: "+mOrientation);
         mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     private void initPlaceAlertDialog() {
-        //TODO a condition if no room are selected to avoid bug
         ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), R.layout.radio_room_item, mRooms);
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         builder.setTitle("Choose the room");
-        builder.setSingleChoiceItems(roomsAdapter, 1, (dialog, which) -> mRoom = mRooms.get(which));
+        builder.setSingleChoiceItems(roomsAdapter, -1, ((dialog, which) -> mRoom = mRooms.get(which)));
         builder.setPositiveButton("Ok", (dialog, which) -> filterByPlace());
         builder.setNegativeButton("Cancel", null);
         AlertDialog dialog = builder.create();
@@ -158,12 +165,15 @@ public class ListMeetingFragment extends InitDatePicker {
 
     private void filterByPlace() {
         mFilteredMeetings.clear();
-        for (Meeting meeting : mMeetings) {
-            if (mRoom.getRoomName() != null && meeting.getPlace().equals(mRoom.getRoomName()))
-                mFilteredMeetings.add(meeting);
-        }
-        mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
-        mRecyclerView.setAdapter(mAdapter);
+        if (mRoom != null) {
+            for (Meeting meeting : mMeetings) {
+                if (mRoom.getRoomName() != null && meeting.getPlace().equals(mRoom.getRoomName()))
+                    mFilteredMeetings.add(meeting);
+            }
+            mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
+            mRecyclerView.setAdapter(mAdapter);
+        } else
+            Toast.makeText(getContext(), "you have not choose a Room", Toast.LENGTH_SHORT).show();
     }
 
     private void filterByDate() {
@@ -186,13 +196,14 @@ public class ListMeetingFragment extends InitDatePicker {
         RecyclerViewOnLongClickUtils.addTo(mRecyclerView, R.layout.fragment_list_meeting)
                 .setOnItemLongClickListener((recyclerView, position, v) -> {
                     initDetailAlertDialog(position);
-                   return true;
+                    return true;
                 });
     }
+
     private void initDetailAlertDialog(int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         builder.setTitle("Date/Participants");
-        String date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format( mMeetings.get(position).getDate());
+        String date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(mMeetings.get(position).getDate());
         String participants = getParticipantsMail(mMeetings.get(position));
         builder.setMessage(date.concat("\n\n").concat(participants));
         builder.setNegativeButton("Back", null);
@@ -200,6 +211,12 @@ public class ListMeetingFragment extends InitDatePicker {
         dialog.show();
     }
 
+    public boolean knowOrientation (){
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) mOrientation= true;
+        else mOrientation= false;
+        return mOrientation;
+    }
     @Subscribe
     public void onDeleteMeeting(DeleteMeetingEvent event) {
         mService.deleteMeeting(event.meeting);

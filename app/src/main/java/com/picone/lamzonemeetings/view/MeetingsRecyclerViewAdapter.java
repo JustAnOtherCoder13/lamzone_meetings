@@ -1,5 +1,6 @@
 package com.picone.lamzonemeetings.view;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,24 +30,28 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
 
     private List<Meeting> mMeetings;
 
-    MeetingsRecyclerViewAdapter(List<Meeting> items) { mMeetings = items;}
+
+    MeetingsRecyclerViewAdapter(List<Meeting> items) { mMeetings = items; }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_items, parent, false);
+        //Log.i("test", "onCreateViewHolder: "+ListMeetingFragment.mOrientation);
         return new ViewHolder(view);
     }
 //TODO circles colors don't change on rotate/ add padding bottom 30dp on last child
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Meeting meeting = mMeetings.get(position);
+        Log.i("test", "onCreateViewHolder: "+ListMeetingFragment.mOrientation);
+        Meeting meeting = mMeetings.get(position);
         holder.mCircleImg.setColorFilter(ContextCompat.getColor(holder.mCircleImg.getContext(),setCircleColor(meeting)));
         holder.mMeetingTitle.setText(meeting.getSubject().concat(" - ").concat(String.valueOf(meeting.getHour())).concat(" - ").concat(meeting.getPlace()));
         holder.mMeetingParticipants.setText(getParticipantsMail(meeting));
         holder.mDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteMeetingEvent(meeting)));
     }
+
 
     @Override
     public int getItemCount() {
