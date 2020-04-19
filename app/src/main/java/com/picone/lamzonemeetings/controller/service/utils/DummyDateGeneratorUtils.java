@@ -21,7 +21,7 @@ public class DummyDateGeneratorUtils {
     private static Date DUMMY_DATE;
     private static Random RANDOM = new Random();
 
-    public static Date generateRandomDate(){
+    private static Date generateRandomDate(){
         int bound=0;
         if (MONTH == 2){ bound=29;}
         else if (MONTH%2 == 0 || MONTH == 9 || MONTH == 11 && MONTH!=8 && MONTH!=10 && MONTH!=12){ bound = 30;}
@@ -40,6 +40,11 @@ public class DummyDateGeneratorUtils {
             TODAY = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(DAY_OF_MONTH + "/" + MONTH + "/" + YEAR);
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+    }
+    public static void generateDummyDate(List<Meeting> meetings){
+        for(Meeting meeting:meetings){
+            meeting.setDate(generateRandomDate());
         }
     }
     

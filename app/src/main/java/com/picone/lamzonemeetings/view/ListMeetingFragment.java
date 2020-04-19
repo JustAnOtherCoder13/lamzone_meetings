@@ -60,7 +60,6 @@ public class ListMeetingFragment extends InitDatePicker {
     private List<Meeting> mFilteredMeetings = new ArrayList<>();
     private List<Room> mRooms;
     private Room mRoom;
-    public static boolean mOrientation;
 
     static ListMeetingFragment newInstance() {
         return new ListMeetingFragment();
@@ -80,7 +79,6 @@ public class ListMeetingFragment extends InitDatePicker {
         mService = DI.getMeetingApiService();
         initList();
         initView();
-        knowOrientation();
         return view;
     }
 
@@ -147,7 +145,7 @@ public class ListMeetingFragment extends InitDatePicker {
         mRooms = mService.getRooms();
         mService.getParticipants();
         mService.getHour();
-        //Log.i("test", "initList: "+mOrientation);
+        mService.getDate();
         mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -182,7 +180,6 @@ public class ListMeetingFragment extends InitDatePicker {
             if (meeting.getDate().equals(DatePickerUtils.PICKED_DATE))
                 mFilteredMeetings.add(meeting);
         }
-        //TODO date and participants change when filter
         mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -211,12 +208,7 @@ public class ListMeetingFragment extends InitDatePicker {
         dialog.show();
     }
 
-    public boolean knowOrientation (){
-        int orientation = this.getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) mOrientation= true;
-        else mOrientation= false;
-        return mOrientation;
-    }
+
     @Subscribe
     public void onDeleteMeeting(DeleteMeetingEvent event) {
         mService.deleteMeeting(event.meeting);

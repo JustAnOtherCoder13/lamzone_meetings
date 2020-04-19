@@ -9,8 +9,10 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="40dp" />
-<!--TODO change circle size and make the cross white-->
+        android:clipToPadding="false"
+        android:paddingBottom="50dp"
+        />
+<!--TODO make the cross white-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_meeting_btn"
         android:layout_width="wrap_content"

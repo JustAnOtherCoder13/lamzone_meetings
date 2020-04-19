@@ -6,6 +6,7 @@ import com.picone.lamzonemeetings.model.Room;
 
 import java.util.List;
 
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateDummyDate;
 import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateDummyHour;
 import static com.picone.lamzonemeetings.controller.service.utils.DummyParticipantsGeneratorUtils.generateDummyParticipants;
 
@@ -30,8 +31,8 @@ public class DummyMeetingService implements ApiService {
     @Override
     public void getHour() { generateDummyHour(meetings); }
 
-    //@Override
-    //public void getDate() { generateDummyDate(meetings); }
+    @Override
+    public void getDate() { generateDummyDate(meetings); }
 
     @Override
     public void deleteMeeting(Meeting meeting) { meetings.remove(meeting); }

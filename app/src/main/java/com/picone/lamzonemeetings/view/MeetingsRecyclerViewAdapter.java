@@ -38,14 +38,11 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_items, parent, false);
-        //Log.i("test", "onCreateViewHolder: "+ListMeetingFragment.mOrientation);
         return new ViewHolder(view);
     }
-//TODO circles colors don't change on rotate/ add padding bottom 30dp on last child
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.i("test", "onCreateViewHolder: "+ListMeetingFragment.mOrientation);
-        Meeting meeting = mMeetings.get(position);
+        final Meeting meeting = mMeetings.get(position);
         holder.mCircleImg.setColorFilter(ContextCompat.getColor(holder.mCircleImg.getContext(),setCircleColor(meeting)));
         holder.mMeetingTitle.setText(meeting.getSubject().concat(" - ").concat(String.valueOf(meeting.getHour())).concat(" - ").concat(meeting.getPlace()));
         holder.mMeetingParticipants.setText(getParticipantsMail(meeting));
