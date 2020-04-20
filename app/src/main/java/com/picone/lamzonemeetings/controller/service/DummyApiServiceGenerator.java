@@ -1,5 +1,6 @@
 package com.picone.lamzonemeetings.controller.service;
 
+import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public abstract class DummyApiServiceGenerator {
     //Meetings list
-    static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
+    public static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
             new Meeting("", "Réunion I", "Peach", new ArrayList<>(), new Date()),
             new Meeting("", "Réunion G", "Mario", new ArrayList<>(), new Date()),
             new Meeting("", "Réunion C", "Luigi", new ArrayList<>(), new Date()),
@@ -32,7 +33,7 @@ public abstract class DummyApiServiceGenerator {
     }
 
     //Rooms list
-    static List<Room> DUMMY_ROOMS = Arrays.asList(
+    public static List<Room> DUMMY_ROOMS = Arrays.asList(
             new Room("Peach"),
             new Room("Mario"),
             new Room("Luigi"),
@@ -48,7 +49,7 @@ public abstract class DummyApiServiceGenerator {
     public static List<Room> generateRooms() {return new ArrayList<>(DUMMY_ROOMS);}
 
     //Employees List
-    static List<Employee> DUMMY_EMPLOYEES = Arrays.asList(
+    public static List<Employee> DUMMY_EMPLOYEES = Arrays.asList(
             new Employee("Maxime"),
             new Employee("Alex"),
             new Employee("Paul"),
@@ -65,7 +66,7 @@ public abstract class DummyApiServiceGenerator {
 
     public static List<Employee> generateEmployees(){return new ArrayList<>(DUMMY_EMPLOYEES);}
 
-    static List<Town> DUMMY_TOWN = Arrays.asList(
+    public static List<Town> DUMMY_TOWN = Arrays.asList(
            new Town("Marseille"),
             new Town("Paris"),
             new Town("London"),
@@ -74,5 +75,17 @@ public abstract class DummyApiServiceGenerator {
     );
 
     public static List<Town> generateTown(){return new ArrayList<>(DUMMY_TOWN);}
+
+    public static Meeting DUMMY_MEETING_TO_ADD = new Meeting("","subject","Mario",new ArrayList<>(),new Date());
+
+    public static List<Employee> DUMMY_PARTICIPANTS = Arrays.asList(
+            new Employee("Roméo"),
+            new Employee("Charlotte"),
+            new Employee("Lino")
+    );
+
+    public static List<Employee> generateParticipants(){return new ArrayList<>(DUMMY_PARTICIPANTS);}
+
+
 }
 

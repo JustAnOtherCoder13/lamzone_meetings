@@ -17,6 +17,7 @@ public class DummyMeetingService implements ApiService {
     private List<Room> rooms = DummyApiServiceGenerator.generateRooms();
     private List<Employee> employees = DummyApiServiceGenerator.generateEmployees();
     private List<Town> towns = DummyApiServiceGenerator.generateTown();
+    private List<Employee> participants = DummyApiServiceGenerator.generateParticipants();
 
     @Override
     public List<Meeting> getMeetings() { return meetings; }
