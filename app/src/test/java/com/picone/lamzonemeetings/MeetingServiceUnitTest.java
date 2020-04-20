@@ -20,7 +20,6 @@ import static com.picone.lamzonemeetings.controller.service.DummyApiServiceGener
 import static com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator.DUMMY_MEETING_TO_ADD;
 import static com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator.DUMMY_ROOMS;
 import static com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator.DUMMY_TOWN;
-import static com.picone.lamzonemeetings.controller.service.utils.DummyParticipantsGeneratorUtils.generateDummyParticipants;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -56,21 +55,10 @@ public class MeetingServiceUnitTest {
 
     @Test
     public void getTownWithSuccess(){
-        List<Town> towns = service.getTown();
+        List<Town> towns = service.getTowns();
         List<Town> expectedTowns = DUMMY_TOWN;
         assertThat(towns, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedTowns.toArray()));
     }
-
-    @Test
-    public void getParticipantsWithSuccess(){
-
-    }
-
-    @Test
-    public void getHourWithSuccess(){}
-
-    @Test
-    public void getDateWithSuccess(){}
 
     @Test
     public void deleteMeetingWithSuccess(){

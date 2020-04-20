@@ -1,6 +1,5 @@
 package com.picone.lamzonemeetings.controller.service;
 
-import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
 
 
 public abstract class DummyApiServiceGenerator {
@@ -28,7 +26,7 @@ public abstract class DummyApiServiceGenerator {
             new Meeting("", "Réunion J", "Roi Boo", new ArrayList<>(), new Date())
     );
 
-    public static List<Meeting> generateMeetings() {
+    static List<Meeting> generateMeetings() {
         return new ArrayList<>(DUMMY_MEETINGS);
     }
 
@@ -46,7 +44,7 @@ public abstract class DummyApiServiceGenerator {
             new Room("Roi Boo")
     );
 
-    public static List<Room> generateRooms() {return new ArrayList<>(DUMMY_ROOMS);}
+    static List<Room> generateRooms() {return new ArrayList<>(DUMMY_ROOMS);}
 
     //Employees List
     public static List<Employee> DUMMY_EMPLOYEES = Arrays.asList(
@@ -64,7 +62,7 @@ public abstract class DummyApiServiceGenerator {
             new Employee("Roméo")
     );
 
-    public static List<Employee> generateEmployees(){return new ArrayList<>(DUMMY_EMPLOYEES);}
+    static List<Employee> generateEmployees(){return new ArrayList<>(DUMMY_EMPLOYEES);}
 
     public static List<Town> DUMMY_TOWN = Arrays.asList(
            new Town("Marseille"),
@@ -74,18 +72,9 @@ public abstract class DummyApiServiceGenerator {
             new Town("Madrid")
     );
 
-    public static List<Town> generateTown(){return new ArrayList<>(DUMMY_TOWN);}
+    static List<Town> generateTown(){return new ArrayList<>(DUMMY_TOWN);}
 
     public static Meeting DUMMY_MEETING_TO_ADD = new Meeting("","subject","Mario",new ArrayList<>(),new Date());
-
-    public static List<Employee> DUMMY_PARTICIPANTS = Arrays.asList(
-            new Employee("Roméo"),
-            new Employee("Charlotte"),
-            new Employee("Lino")
-    );
-
-    public static List<Employee> generateParticipants(){return new ArrayList<>(DUMMY_PARTICIPANTS);}
-
 
 }
 

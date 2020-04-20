@@ -22,9 +22,9 @@ public class DummyParticipantsGeneratorUtils {
     }
 
     public static void generateDummyParticipants(List<Meeting> meetings, List<Employee> employees){
-        for (int i =1; i<meetings.size();i++) {
+        for (Meeting meeting : meetings) {
             List<Employee> participants = generateDummyParticipantsList(employees);
-            meetings.get(i).setParticipants(participants);
+            meeting.setParticipants(participants);
         }
     }
 }

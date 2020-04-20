@@ -8,8 +8,6 @@ public class Town {
 
     public Town(String townName) { this.townName = townName; }
 
-    public String getTownName() { return townName; }
-
     @NonNull
     @Override
     public String toString() {

@@ -27,6 +27,7 @@ import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
 import com.picone.lamzonemeetings.controller.service.ApiService;
+import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
 import com.picone.lamzonemeetings.utils.DatePickerUtils;
@@ -44,6 +45,9 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateDummyDate;
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateDummyHour;
+import static com.picone.lamzonemeetings.controller.service.utils.DummyParticipantsGeneratorUtils.generateDummyParticipants;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedDate;
 import static com.picone.lamzonemeetings.utils.ParticipantsMailUtils.getParticipantsMail;
 
@@ -143,9 +147,10 @@ public class ListMeetingFragment extends InitDatePicker {
         configureOnClickRecyclerView();
         mMeetings = mService.getMeetings();
         mRooms = mService.getRooms();
-        mService.getParticipants();
-        mService.getHour();
-        mService.getDate();
+        List<Employee> employees = mService.getEmployees();
+        generateDummyParticipants(mMeetings,employees);
+        generateDummyHour(mMeetings);
+        generateDummyDate(mMeetings);
         mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
         mRecyclerView.setAdapter(mAdapter);
     }

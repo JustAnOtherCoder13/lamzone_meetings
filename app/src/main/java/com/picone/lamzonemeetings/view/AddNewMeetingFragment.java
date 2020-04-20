@@ -2,12 +2,10 @@ package com.picone.lamzonemeetings.view;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -22,7 +20,6 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
@@ -86,7 +83,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
     public void onCreate(Bundle savedInstanceState) {
         ApiService service = DI.getMeetingApiService();
         mEmployees = service.getEmployees();
-        mTowns = service.getTown();
+        mTowns = service.getTowns();
         mRooms = service.getRooms();
         super.onCreate(savedInstanceState);
     }
