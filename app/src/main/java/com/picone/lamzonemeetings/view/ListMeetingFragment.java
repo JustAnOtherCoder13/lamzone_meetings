@@ -36,6 +36,7 @@ import com.picone.lamzonemeetings.utils.RecyclerViewOnLongClickUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -151,8 +152,7 @@ public class ListMeetingFragment extends InitDatePicker {
         generateDummyParticipants(mMeetings,employees);
         generateDummyHour(mMeetings);
         generateDummyDate(mMeetings);
-        mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
-        mRecyclerView.setAdapter(mAdapter);
+        setAdapter(mMeetings);
     }
 
     private void initPlaceAlertDialog() {
@@ -170,11 +170,10 @@ public class ListMeetingFragment extends InitDatePicker {
         mFilteredMeetings.clear();
         if (mRoom != null) {
             for (Meeting meeting : mMeetings) {
-                if (mRoom.getRoomName() != null && meeting.getPlace().equals(mRoom.getRoomName()))
+                if (meeting.getPlace().equals(mRoom.getRoomName()))
                     mFilteredMeetings.add(meeting);
             }
-            mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
-            mRecyclerView.setAdapter(mAdapter);
+            setAdapter(mFilteredMeetings);
         } else
             Toast.makeText(getContext(), "you have not choose a Room", Toast.LENGTH_SHORT).show();
     }
@@ -185,12 +184,13 @@ public class ListMeetingFragment extends InitDatePicker {
             if (meeting.getDate().equals(DatePickerUtils.PICKED_DATE))
                 mFilteredMeetings.add(meeting);
         }
-        mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
-        mRecyclerView.setAdapter(mAdapter);
+       setAdapter(mFilteredMeetings);
     }
 
-    private void cancelFilter() {
-        mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
+    private void cancelFilter() { setAdapter(mMeetings); }
+
+    private void setAdapter(List<Meeting> meetings){
+        mAdapter = new MeetingsRecyclerViewAdapter(meetings);
         mRecyclerView.setAdapter(mAdapter);
     }
 

@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.Random;
 
 public class DummyDateGeneratorUtils {
-    private final static Calendar CALENDAR = Calendar.getInstance();
+    public final static Calendar CALENDAR = Calendar.getInstance();
     private final static int DAY_OF_MONTH = CALENDAR.get(Calendar.DAY_OF_MONTH);
     private final static int MONTH = CALENDAR.get(Calendar.MONTH);
     private final static int YEAR = CALENDAR.get(Calendar.YEAR);

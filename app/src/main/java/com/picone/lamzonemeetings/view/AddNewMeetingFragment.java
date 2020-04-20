@@ -40,6 +40,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.CALENDAR;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.FULL_DATE;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.FULL_HOUR;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.PICKED_DATE;
@@ -73,7 +74,6 @@ public class AddNewMeetingFragment extends InitDatePicker {
     private List<Employee> mEmployees;
     private List<Town> mTowns;
     private List<Room> mRooms;
-
 
     static AddNewMeetingFragment newInstance() {
         return new AddNewMeetingFragment();
@@ -116,10 +116,8 @@ public class AddNewMeetingFragment extends InitDatePicker {
     }
 
     private void initViews() {
-        ArrayAdapter<Town> townsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), android.R.layout.simple_list_item_1, mTowns);
-        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), android.R.layout.simple_list_item_1, mRooms);
-        initDropDownMenu(roomsAdapter,mRoomTextView);
-        initDropDownMenu(townsAdapter,mTownTextView);
+        initDropDownMenu(mRooms,mRoomTextView);
+        initDropDownMenu(mTowns,mTownTextView);
         mTownTextView.setOnItemClickListener((parent, view, position, id) -> initChipGroupParticipants());
         mReturnFab.setOnClickListener(v -> returnToList());
         mHourButton.setOnClickListener(v -> initTimePicker());
@@ -127,9 +125,10 @@ public class AddNewMeetingFragment extends InitDatePicker {
         mAddMeetingButton.setOnClickListener(v -> createMeeting());
     }
 
-      private void initDropDownMenu(ArrayAdapter arrayAdapter,AutoCompleteTextView view){
-        view.setEnabled(false);
-        view.setAdapter(arrayAdapter);
+      private <T> void initDropDownMenu( List<T> list,AutoCompleteTextView view){
+          ArrayAdapter<T> objectArrayAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), android.R.layout.simple_list_item_1, list);
+          view.setEnabled(false);
+          view.setAdapter(objectArrayAdapter);
       }
 
     private void initChipGroupParticipants() {
@@ -145,13 +144,12 @@ public class AddNewMeetingFragment extends InitDatePicker {
 
     private void createMeeting() {
 
+        String subject;
         String place;
         if (mRoomTextView.getText().length() > 2) place = mRoomTextView.getText().toString();
         else place = null;
 
-        String subject;
-        if (Objects.requireNonNull(mSubjectEditText.getText()).length() > 2)
-            subject = mSubjectEditText.getText().toString();
+        if (Objects.requireNonNull(mSubjectEditText.getText()).length() > 2) subject = mSubjectEditText.getText().toString();
         else subject = null;
 
         getCheckedParticipants();
@@ -179,14 +177,13 @@ public class AddNewMeetingFragment extends InitDatePicker {
     }
 
     private void initTimePicker() {
-        final Calendar calendar = Calendar.getInstance();
         // time picker dialog
         TimePickerDialog picker;
         picker = new TimePickerDialog(getContext(),
                 (tp, sHour, sMinute) -> {
                     formatPickedHour(sHour,sMinute);
                     mHourTxt.setText(FULL_HOUR);
-                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+                }, CALENDAR.get(Calendar.HOUR_OF_DAY), CALENDAR.get(Calendar.MINUTE), true);
         picker.show();
     }
 

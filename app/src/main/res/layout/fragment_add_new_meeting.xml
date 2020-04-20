@@ -188,10 +188,9 @@
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/add_meeting_button"
+            style="@style/AddNewMeetingFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/ten_dp"
-            android:backgroundTint="@color/colorPrimary"
             android:text="@string/add_meeting"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -11,5 +11,9 @@
     <string name="subject">subject</string>
     <string name="delete_button">Delete button</string>
     <string name="colored_circle">Colored circle</string>
+    <string name="filter_list">filter list</string>
+    <string name="filter_by_date">filter by date</string>
+    <string name="filter_by_place">filter by place</string>
+    <string name="cancel_filter">cancel filter</string>
 
 </resources>
