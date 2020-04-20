@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Lamzone Meetings</string>
+    <string name="add_meeting">Add meeting</string>
+    <string name="select_your_town">select your town</string>
+    <string name="select_your_room">select your room</string>
+    <string name="choose_the_participants">Choose the participants</string>
+    <string name="set_hour">set hour</string>
+    <string name="set_date">set date</string>
+    <string name="dd_mm_yy">DD/MM/YY</string>
+    <string name="hh_mm">HH/MM</string>
+    <string name="subject">subject</string>
+    <string name="delete_button">Delete button</string>
+    <string name="colored_circle">Colored circle</string>
 
 </resources>

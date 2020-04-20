@@ -9,8 +9,6 @@ public class Room {
 
     public String getRoomName() { return roomName;}
 
-    public void setRoomName(String roomName) { this.roomName = roomName;}
-
     @NonNull
     @Override
     public String toString() {

@@ -23,9 +23,9 @@ public class DummyDateGeneratorUtils {
 
     private static Date generateRandomDate(){
         int bound=0;
-        if (MONTH == 2){ bound=29;}
-        else if (MONTH%2 == 0 || MONTH == 9 || MONTH == 11 && MONTH!=8 && MONTH!=10 && MONTH!=12){ bound = 30;}
-        else {bound=31;}
+        if (MONTH == 2){ bound=28;}
+        else if (MONTH%2 == 0 || MONTH == 9 || MONTH == 11 && MONTH!=8 && MONTH!=10 && MONTH!=12){ bound = 29;}
+        else {bound=30;}
         int randomDay = new Random().nextInt(bound)+1;
         try {
             DUMMY_DATE = new SimpleDateFormat("dd/MM/yyyy",Locale.FRANCE).parse(randomDay+"/"+MONTH+"/"+YEAR);

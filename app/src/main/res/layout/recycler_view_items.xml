@@ -8,23 +8,21 @@
 
     <ImageView
         android:id="@+id/item_circle_img"
+        android:contentDescription="@string/colored_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="@dimen/ten_dp"
         android:src="@drawable/ic_item_circle_40dp"
-        android:tint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
         />
 
     <TextView
         android:id="@+id/item_meeting_title_txt"
-        style="@style/RecyclerViewItems"
+        style="@style/RecyclerViewTextViewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/item_meeting_participants_txt"
         app:layout_constraintLeft_toRightOf="@id/item_circle_img"
         app:layout_constraintRight_toLeftOf="@id/item_delete_img_button"
@@ -32,11 +30,9 @@
 
     <TextView
         android:id="@+id/item_meeting_participants_txt"
-        style="@style/RecyclerViewItems"
+        style="@style/RecyclerViewTextViewParticipants"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/item_circle_img"
         app:layout_constraintRight_toLeftOf="@id/item_delete_img_button"
@@ -44,12 +40,13 @@
 
     <ImageButton
         android:id="@+id/item_delete_img_button"
+        android:contentDescription="@string/delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
         android:src="@drawable/ic_item_delete"
         android:tint="@color/navy"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/ten_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -151,7 +151,7 @@ public class ListMeetingFragment extends InitDatePicker {
     }
 
     private void initPlaceAlertDialog() {
-        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), R.layout.radio_room_item, mRooms);
+        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), android.R.layout.simple_list_item_single_choice, mRooms);
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         builder.setTitle("Choose the room");
         builder.setSingleChoiceItems(roomsAdapter, -1, ((dialog, which) -> mRoom = mRooms.get(which)));

@@ -7,23 +7,16 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/container"
+        style="@style/RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="50dp"
         />
 <!--TODO make the cross white-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_meeting_btn"
+        style="@style/AddFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@android:color/holo_red_dark"
-        android:elevation="10dp"
-        android:src="@drawable/ic_add_btn"
-        app:borderWidth="0dp"
-        app:fabCustomSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

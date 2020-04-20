@@ -3,6 +3,7 @@ package com.picone.lamzonemeetings.controller.service;
 import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
+import com.picone.lamzonemeetings.model.Town;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,5 +65,14 @@ public abstract class DummyApiServiceGenerator {
 
     public static List<Employee> generateEmployees(){return new ArrayList<>(DUMMY_EMPLOYEES);}
 
+    static List<Town> DUMMY_TOWN = Arrays.asList(
+           new Town("Marseille"),
+            new Town("Paris"),
+            new Town("London"),
+            new Town("Rome"),
+            new Town("Madrid")
+    );
+
+    public static List<Town> generateTown(){return new ArrayList<>(DUMMY_TOWN);}
 }
 

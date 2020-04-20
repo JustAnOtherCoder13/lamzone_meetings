@@ -2,10 +2,12 @@ package com.picone.lamzonemeetings.view;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
@@ -27,6 +30,7 @@ import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
+import com.picone.lamzonemeetings.model.Town;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,6 +56,8 @@ public class AddNewMeetingFragment extends InitDatePicker {
     AutoCompleteTextView mRoomTextView;
     @BindView(R.id.subject_editText)
     TextInputEditText mSubjectEditText;
+    @BindView(R.id.town_textView)
+    AutoCompleteTextView mTownTextView;
     @BindView(R.id.hour_txt)
     TextView mHourTxt;
     @BindView(R.id.date_txt)
@@ -66,9 +72,11 @@ public class AddNewMeetingFragment extends InitDatePicker {
     @BindView(R.id.hour_btn)
     Button mHourButton;
 
-    private ApiService mService;
     private List<Employee> mParticipants;
     private List<Employee> mEmployees;
+    private List<Town> mTowns;
+    private List<Room> mRooms;
+
 
     static AddNewMeetingFragment newInstance() {
         return new AddNewMeetingFragment();
@@ -76,8 +84,10 @@ public class AddNewMeetingFragment extends InitDatePicker {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        mService = DI.getMeetingApiService();
-        mEmployees = mService.getEmployees();
+        ApiService service = DI.getMeetingApiService();
+        mEmployees = service.getEmployees();
+        mTowns = service.getTown();
+        mRooms = service.getRooms();
         super.onCreate(savedInstanceState);
     }
 
@@ -109,21 +119,22 @@ public class AddNewMeetingFragment extends InitDatePicker {
     }
 
     private void initViews() {
-        initRoomsDropDownMenu();
-        initChipGroupParticipants();
+        ArrayAdapter<Town> townsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), android.R.layout.simple_list_item_1, mTowns);
+        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), android.R.layout.simple_list_item_1, mRooms);
+        initDropDownMenu(roomsAdapter,mRoomTextView);
+        initDropDownMenu(townsAdapter,mTownTextView);
+        mTownTextView.setOnItemClickListener((parent, view, position, id) -> initChipGroupParticipants());
         mReturnFab.setOnClickListener(v -> returnToList());
         mHourButton.setOnClickListener(v -> initTimePicker());
         mDateButton.setOnClickListener(v -> initDatePicker(getContext()));
         mAddMeetingButton.setOnClickListener(v -> createMeeting());
     }
 
-    private void initRoomsDropDownMenu() {
-        List<Room> rooms = mService.getRooms();
-        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), R.layout.room_item, rooms);
-        mRoomTextView.setEnabled(false);
-        mRoomTextView.setAdapter(roomsAdapter);
-    }
-//TODO add sector or town cause the real number of employee is over 300
+      private void initDropDownMenu(ArrayAdapter arrayAdapter,AutoCompleteTextView view){
+        view.setEnabled(false);
+        view.setAdapter(arrayAdapter);
+      }
+
     private void initChipGroupParticipants() {
         for (Employee employee:mEmployees) {
             Chip chip = new Chip(Objects.requireNonNull(getContext()));

@@ -9,34 +9,101 @@
         <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
     <!-- TODO customize action bar -->
-    <style name="MyActionBar"
-        parent="@style/Widget.AppCompat.ActionBar">
-        <item name="android:titleTextStyle">@style/TitleTextStyle</item>
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:backgroundStacked">@color/colorPrimary</item>
-        <item name="android:backgroundSplit">@color/colorPrimary</item>
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar">
 
-        <!-- Support library compatibility -->
         <item name="titleTextStyle">@style/TitleTextStyle</item>
         <item name="background">@color/colorPrimary</item>
         <item name="backgroundStacked">@color/colorPrimary</item>
         <item name="backgroundSplit">@color/colorPrimary</item>
-        <item name="android:actionBarSize">60dp</item>
+        <item name="height">50dp</item>
+        <item name="elevation">40dp</item>
     </style>
 
-    <style name="TitleTextStyle"
-        parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+    <style name="TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:textSize">15sp</item>
     </style>
-    <!-- RecyclerView TextView style. -->
-    <style name="RecyclerViewItems">
+    <!-- recycler_view_items style. -->
+    <style name="RecyclerViewTextViewTitle">
+        <item name="android:fontFamily">"sans-serif-black"</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:layout_marginStart">70dp</item>
         <item name="android:layout_marginEnd">70dp</item>
-        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textAlignment">gravity</item>
     </style>
 
+    <style name="RecyclerViewTextViewParticipants">
+        <item name="android:fontFamily">"sans-serif-medium"</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_marginStart">70dp</item>
+        <item name="android:layout_marginEnd">70dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textAlignment">gravity</item>
+    </style>
+
+    <!--fragment_add_new_meeting style-->
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
+    <style name="ChipGroup">
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+    </style>
+
+    <style name="DropDownMenu" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="CardViewStyle">
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="cardCornerRadius">10dp</item>
+        <item name="background">@color/white</item>
+    </style>
+
+    <style name="ReturnFab">
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:src">@drawable/ic_back_btn</item>
+        <item name="tint">@color/black</item>
+        <item name="borderWidth">0dp</item>
+        <item name="fabCustomSize">40dp</item>
+    </style>
+
+    <!-- fragment_list_meeting style -->
+    <style name="AddFab">
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:backgroundTint">@android:color/holo_red_dark</item>
+        <item name="android:src">@drawable/ic_add_btn</item>
+        <item name="borderWidth">0dp</item>
+        <item name="fabCustomSize">50dp</item>
+    </style>
+
+    <style name="RecyclerView">
+        <item name="android:clipToPadding">false</item>
+        <item name="android:paddingBottom">50dp</item>
+    </style>
 
 </resources>
