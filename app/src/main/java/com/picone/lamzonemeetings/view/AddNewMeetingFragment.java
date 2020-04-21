@@ -63,7 +63,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
     @BindView(R.id.participants_chip_group)
     ChipGroup mParticipantsChipGroup;
 
-    @BindView(R.id.add_meeting_button)
+    @BindView(R.id.add_new_meeting_btn)
     Button mAddMeetingButton;
     @BindView(R.id.date_btn)
     Button mDateButton;
@@ -126,14 +126,14 @@ public class AddNewMeetingFragment extends InitDatePicker {
     }
 
       private <T> void initDropDownMenu( List<T> list,AutoCompleteTextView view){
-          ArrayAdapter<T> objectArrayAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), android.R.layout.simple_list_item_1, list);
+          ArrayAdapter<T> objectArrayAdapter = new ArrayAdapter<>((requireContext()), android.R.layout.simple_list_item_1, list);
           view.setEnabled(false);
           view.setAdapter(objectArrayAdapter);
       }
 
     private void initChipGroupParticipants() {
         for (Employee employee:mEmployees) {
-            Chip chip = new Chip(Objects.requireNonNull(getContext()));
+            Chip chip = new Chip(requireContext());
             chip.setText(employee.getName());
             chip.setCheckable(true);
             chip.setCheckedIconVisible(true);
@@ -192,7 +192,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
     }
 
     private void returnToList() {
-        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
+        requireActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
 }

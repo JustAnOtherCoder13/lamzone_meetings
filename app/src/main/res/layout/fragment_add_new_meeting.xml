@@ -58,6 +58,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/room_drop_down_menu"
+                    app:endIconContentDescription="roomDropDown"
                     style="@style/DropDownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -129,7 +130,7 @@
             style="@style/CardViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/add_meeting_button"
+            app:layout_constraintBottom_toTopOf="@id/add_new_meeting_btn"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/top_card_view">
@@ -158,6 +159,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/town_drop_down_menu"
                     style="@style/DropDownMenu"
+                    app:endIconContentDescription="townDropDown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/select_your_town"
@@ -187,7 +189,7 @@
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/add_meeting_button"
+            android:id="@+id/add_new_meeting_btn"
             style="@style/AddNewMeetingFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -14,16 +14,16 @@ import java.util.List;
 public abstract class DummyApiServiceGenerator {
     //Meetings list
     public static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
-            new Meeting("", "Réunion I", "Peach", new ArrayList<>(), new Date()),
-            new Meeting("", "Réunion G", "Mario", new ArrayList<>(), new Date()),
-            new Meeting("", "Réunion C", "Luigi", new ArrayList<>(), new Date()),
-            new Meeting("", "Réunion A", "Toad", new ArrayList<>(), new Date()),
-            new Meeting("","Réunion E", "Wario", new ArrayList<>(), new Date()),
-            new Meeting("", "Réunion F", "Kong", new ArrayList<>(), new Date()),
-            new Meeting("", "Réunion D", "Browser", new ArrayList<>(), new Date()),
-            new Meeting("", "Réunion H", "Yoshi", new ArrayList<>(), new Date()),
-            new Meeting("", "Réunion B", "Waluigi", new ArrayList<>(), new Date()),
-            new Meeting("", "Réunion J", "Roi Boo", new ArrayList<>(), new Date())
+            new Meeting("11h", "Meeting I", "Peach", new ArrayList<>(), new Date()),
+            new Meeting("", "Meeting G", "Mario", new ArrayList<>(), new Date()),
+            new Meeting("", "Meeting C", "Peach", new ArrayList<>(), new Date()),
+            new Meeting("", "Meeting A", "Toad", new ArrayList<>(), new Date()),
+            new Meeting("","Meeting E", "Wario", new ArrayList<>(), new Date()),
+            new Meeting("", "Meeting F", "Kong", new ArrayList<>(), new Date()),
+            new Meeting("", "Meeting D", "Browser", new ArrayList<>(), new Date()),
+            new Meeting("", "Meeting H", "Yoshi", new ArrayList<>(), new Date()),
+            new Meeting("", "Meeting B", "Waluigi", new ArrayList<>(), new Date()),
+            new Meeting("", "Meeting J", "Roi Boo", new ArrayList<>(), new Date())
     );
 
     static List<Meeting> generateMeetings() {

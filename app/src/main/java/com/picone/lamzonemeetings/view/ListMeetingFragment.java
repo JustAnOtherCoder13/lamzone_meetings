@@ -156,8 +156,8 @@ public class ListMeetingFragment extends InitDatePicker {
     }
 
     private void initPlaceAlertDialog() {
-        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((Objects.requireNonNull(getContext())), android.R.layout.simple_list_item_single_choice, mRooms);
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((requireContext()), android.R.layout.simple_list_item_single_choice, mRooms);
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Choose the room");
         builder.setSingleChoiceItems(roomsAdapter, -1, ((dialog, which) -> mRoom = mRooms.get(which)));
         builder.setPositiveButton("Ok", (dialog, which) -> filterByPlace());
@@ -203,7 +203,7 @@ public class ListMeetingFragment extends InitDatePicker {
     }
 
     private void initDetailAlertDialog(int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Date/Participants");
         String date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(mMeetings.get(position).getDate());
         String participants = getParticipantsMail(mMeetings.get(position));

@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class DummyParticipantsGeneratorUtils {
 
+
     private static List<Employee> generateDummyParticipantsList(List<Employee> employees){
         List<Employee> dummyParticipants = new ArrayList<>();
         int numberOfParticipants = new Random().nextInt(2)+2;
@@ -22,9 +23,23 @@ public class DummyParticipantsGeneratorUtils {
     }
 
     public static void generateDummyParticipants(List<Meeting> meetings, List<Employee> employees){
-        for (Meeting meeting : meetings) {
-            List<Employee> participants = generateDummyParticipantsList(employees);
-            meeting.setParticipants(participants);
-        }
+
+        for (int i=0; i<meetings.size();i++) {
+            if(i!=0){
+
+                meetings.get(i).setParticipants(generateDummyParticipantsList(employees));
+            }
+            else{
+                //for ui test
+                List<Employee> participants = new ArrayList<>();
+
+                participants.add(employees.get(0));
+                participants.add(employees.get(1));
+                participants.add(employees.get(2));
+                meetings.get(i).setParticipants(participants);
+
+        }}
+
+
     }
 }
