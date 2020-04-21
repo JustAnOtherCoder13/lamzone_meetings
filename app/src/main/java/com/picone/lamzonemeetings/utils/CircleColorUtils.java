@@ -16,6 +16,5 @@ public class CircleColorUtils {
         } else if (date.compareTo(TODAY) < 0) {
             return R.color.passed_meeting;
         } else return R.color.future_meeting;
-
     }
 }

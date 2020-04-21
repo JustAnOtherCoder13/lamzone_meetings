@@ -19,8 +19,7 @@ public class DatePickerUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-        FULL_DATE = formatter.format(PICKED_DATE);
+        FULL_DATE = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(PICKED_DATE);
     }
 
     public static void formatPickedHour(int hour, int minute) {
@@ -34,8 +33,6 @@ public class DatePickerUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        SimpleDateFormat formatterHour = new SimpleDateFormat("HH", Locale.FRANCE);
-        SimpleDateFormat formatterMinute = new SimpleDateFormat("mm",Locale.FRANCE);
-        FULL_HOUR = formatterHour.format(PICKED_HOUR).concat("h").concat(formatterMinute.format(PICKED_MINUTE));
+        FULL_HOUR = new SimpleDateFormat("HH", Locale.FRANCE).format(PICKED_HOUR).concat("h").concat(new SimpleDateFormat("mm", Locale.FRANCE).format(PICKED_MINUTE));
     }
 }

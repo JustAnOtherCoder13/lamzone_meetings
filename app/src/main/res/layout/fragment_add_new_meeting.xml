@@ -58,11 +58,11 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/room_drop_down_menu"
-                    app:endIconContentDescription="roomDropDown"
                     style="@style/DropDownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/select_your_room"
+                    app:endIconContentDescription="roomDropDown"
                     app:layout_constraintBottom_toTopOf="@id/date_txt"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -159,10 +159,10 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/town_drop_down_menu"
                     style="@style/DropDownMenu"
-                    app:endIconContentDescription="townDropDown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/select_your_town"
+                    app:endIconContentDescription="townDropDown"
                     app:layout_constraintBottom_toTopOf="@id/participants_chip_group"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"

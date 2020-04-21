@@ -75,6 +75,5 @@ public abstract class DummyApiServiceGenerator {
     static List<Town> generateTown(){return new ArrayList<>(DUMMY_TOWN);}
 
     public static Meeting DUMMY_MEETING_TO_ADD = new Meeting("","subject","Mario",new ArrayList<>(),new Date());
-
 }
 

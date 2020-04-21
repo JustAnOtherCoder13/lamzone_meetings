@@ -116,8 +116,8 @@ public class AddNewMeetingFragment extends InitDatePicker {
     }
 
     private void initViews() {
-        initDropDownMenu(mRooms,mRoomTextView);
-        initDropDownMenu(mTowns,mTownTextView);
+        initDropDownMenu(mRooms, mRoomTextView);
+        initDropDownMenu(mTowns, mTownTextView);
         mTownTextView.setOnItemClickListener((parent, view, position, id) -> initChipGroupParticipants());
         mReturnFab.setOnClickListener(v -> returnToList());
         mHourButton.setOnClickListener(v -> initTimePicker());
@@ -125,14 +125,14 @@ public class AddNewMeetingFragment extends InitDatePicker {
         mAddMeetingButton.setOnClickListener(v -> createMeeting());
     }
 
-      private <T> void initDropDownMenu( List<T> list,AutoCompleteTextView view){
-          ArrayAdapter<T> objectArrayAdapter = new ArrayAdapter<>((requireContext()), android.R.layout.simple_list_item_1, list);
-          view.setEnabled(false);
-          view.setAdapter(objectArrayAdapter);
-      }
+    private <T> void initDropDownMenu(List<T> list, AutoCompleteTextView view) {
+        ArrayAdapter<T> objectArrayAdapter = new ArrayAdapter<>((requireContext()), android.R.layout.simple_list_item_1, list);
+        view.setEnabled(false);
+        view.setAdapter(objectArrayAdapter);
+    }
 
     private void initChipGroupParticipants() {
-        for (Employee employee:mEmployees) {
+        for (Employee employee : mEmployees) {
             Chip chip = new Chip(requireContext());
             chip.setText(employee.getName());
             chip.setCheckable(true);
@@ -149,13 +149,14 @@ public class AddNewMeetingFragment extends InitDatePicker {
         if (mRoomTextView.getText().length() > 2) place = mRoomTextView.getText().toString();
         else place = null;
 
-        if (Objects.requireNonNull(mSubjectEditText.getText()).length() > 2) subject = mSubjectEditText.getText().toString();
+        if (Objects.requireNonNull(mSubjectEditText.getText()).length() > 2)
+            subject = mSubjectEditText.getText().toString();
         else subject = null;
 
         getCheckedParticipants();
 
         if (place != null && FULL_HOUR != null && subject != null && !mParticipants.isEmpty() && FULL_DATE != null) {
-            Meeting meeting = createNewMeeting(FULL_HOUR, subject, place, mParticipants,PICKED_DATE);
+            Meeting meeting = createNewMeeting(FULL_HOUR, subject, place, mParticipants, PICKED_DATE);
             EventBus.getDefault().post(new AddNewMeetingEvent(meeting));
             returnToList();
         } else {
@@ -181,7 +182,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
         TimePickerDialog picker;
         picker = new TimePickerDialog(getContext(),
                 (tp, sHour, sMinute) -> {
-                    formatPickedHour(sHour,sMinute);
+                    formatPickedHour(sHour, sMinute);
                     mHourTxt.setText(FULL_HOUR);
                 }, CALENDAR.get(Calendar.HOUR_OF_DAY), CALENDAR.get(Calendar.MINUTE), true);
         picker.show();
@@ -194,5 +195,4 @@ public class AddNewMeetingFragment extends InitDatePicker {
     private void returnToList() {
         requireActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
-
 }

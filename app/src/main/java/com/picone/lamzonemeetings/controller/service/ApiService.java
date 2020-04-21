@@ -16,8 +16,6 @@ public interface ApiService {
     List<Room> getRooms();
     List<Employee> getEmployees();
     List<Town> getTowns();
-
-
     /**
      * Deletes a meeting
      * @param meeting
@@ -28,7 +26,4 @@ public interface ApiService {
      * @param meeting
      */
     void addMeeting (Meeting meeting);
-
-
-
 }

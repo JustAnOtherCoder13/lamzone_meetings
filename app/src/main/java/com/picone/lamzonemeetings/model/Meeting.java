@@ -31,11 +31,7 @@ public class Meeting {
 
     public String getPlace() { return place; }
 
-    public void setPlace(String place) { this.place = place;}
-
     public String getSubject() { return subject;}
-
-    public void setSubject(String subject) { this.subject = subject; }
 
     public List<Employee> getParticipants() { return participants; }
 

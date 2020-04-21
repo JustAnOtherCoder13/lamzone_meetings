@@ -10,9 +10,9 @@ import java.util.Random;
 public class DummyParticipantsGeneratorUtils {
 
 
-    private static List<Employee> generateDummyParticipantsList(List<Employee> employees){
+    private static List<Employee> generateDummyParticipantsList(List<Employee> employees) {
         List<Employee> dummyParticipants = new ArrayList<>();
-        int numberOfParticipants = new Random().nextInt(2)+2;
+        int numberOfParticipants = new Random().nextInt(2) + 2;
         for (int i = 0; i < numberOfParticipants; i++) {
             int employeeIndex = new Random().nextInt(12);
             Employee participant = employees.get(employeeIndex);
@@ -22,24 +22,17 @@ public class DummyParticipantsGeneratorUtils {
         return dummyParticipants;
     }
 
-    public static void generateDummyParticipants(List<Meeting> meetings, List<Employee> employees){
+    public static void generateDummyParticipants(List<Meeting> meetings, List<Employee> employees) {
 
-        for (int i=0; i<meetings.size();i++) {
-            if(i!=0){
-
-                meetings.get(i).setParticipants(generateDummyParticipantsList(employees));
-            }
-            else{
+        for (int i = 0; i < meetings.size(); i++) {
+            if (i != 0) { meetings.get(i).setParticipants(generateDummyParticipantsList(employees)); }
+            else {
                 //for ui test
                 List<Employee> participants = new ArrayList<>();
-
-                participants.add(employees.get(0));
-                participants.add(employees.get(1));
-                participants.add(employees.get(2));
+                for (int i2 =0 ; i2<3 ; i2++)
+                participants.add(employees.get(i2));
                 meetings.get(i).setParticipants(participants);
-
-        }}
-
-
+            }
+        }
     }
 }

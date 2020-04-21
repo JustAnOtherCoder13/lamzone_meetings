@@ -1,9 +1,6 @@
 package com.picone.lamzonemeetings.view;
 
-import android.app.Activity;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,12 +33,10 @@ import com.picone.lamzonemeetings.utils.RecyclerViewOnLongClickUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -149,7 +144,7 @@ public class ListMeetingFragment extends InitDatePicker {
         mMeetings = mService.getMeetings();
         mRooms = mService.getRooms();
         List<Employee> employees = mService.getEmployees();
-        generateDummyParticipants(mMeetings,employees);
+        generateDummyParticipants(mMeetings, employees);
         generateDummyHour(mMeetings);
         generateDummyDate(mMeetings);
         setAdapter(mMeetings);
@@ -184,12 +179,12 @@ public class ListMeetingFragment extends InitDatePicker {
             if (meeting.getDate().equals(DatePickerUtils.PICKED_DATE))
                 mFilteredMeetings.add(meeting);
         }
-       setAdapter(mFilteredMeetings);
+        setAdapter(mFilteredMeetings);
     }
 
     private void cancelFilter() { setAdapter(mMeetings); }
 
-    private void setAdapter(List<Meeting> meetings){
+    private void setAdapter(List<Meeting> meetings) {
         mAdapter = new MeetingsRecyclerViewAdapter(meetings);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -212,7 +207,6 @@ public class ListMeetingFragment extends InitDatePicker {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
 
     @Subscribe
     public void onDeleteMeeting(DeleteMeetingEvent event) {
