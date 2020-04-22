@@ -97,7 +97,7 @@ public class ListMeetingFragment extends InitDatePicker {
                 return true;
 
             case R.id.filter_by_place:
-                initAlertDialog("Choose your room",false,0);
+                initAlertDialog("Choose your room",0);
                 return true;
 
             case R.id.cancel_filter:
@@ -149,10 +149,10 @@ public class ListMeetingFragment extends InitDatePicker {
         setAdapter(mMeetings);
     }
 
-    private void initAlertDialog(String title, boolean bool,int position) {
+    private void initAlertDialog(String title,int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(title);
-        if (bool) {
+        if (title.contains("Date/Participants")) {
             String date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(mMeetings.get(position).getDate());
             String participants = getParticipantsMail(mMeetings.get(position));
             builder.setMessage(date.concat("\n\n").concat(participants));
@@ -199,7 +199,7 @@ public class ListMeetingFragment extends InitDatePicker {
     private void configureOnClickRecyclerView() {
         RecyclerViewOnLongClickUtils.addTo(binding.container, R.layout.fragment_list_meeting)
                 .setOnItemLongClickListener((recyclerView, position, v) -> {
-                    initAlertDialog("Date/Participants",true,position);
+                    initAlertDialog("Date/Participants",position);
                     return true;
                 });
     }

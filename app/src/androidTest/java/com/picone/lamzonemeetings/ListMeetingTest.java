@@ -47,12 +47,13 @@ public class ListMeetingTest {
 
     @Test
     public void meetingListShouldContainsTenMeeting() {
-        recyclerView
-                .check(withItemCount(MEETINGS_COUNT));
+        //ensure recyclerView show all dummy meetings
+        recyclerView.check(withItemCount(MEETINGS_COUNT));
     }
 
     @Test
     public void listMeetingDeleteActionShouldRemoveItem() {
+        //perform click on delete icon on first meeting and check if item is delete
         recyclerView
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteViewAction()))
                 .check(withItemCount(MEETINGS_COUNT - 1));
@@ -60,56 +61,73 @@ public class ListMeetingTest {
 
     @Test
     public void meetingTitleShouldBeFilledWithSubjectHourPlace() {
-        onView(withRecyclerView.atPositionOnView(0, R.id.item_meeting_title_txt))
-                .check(matches(withText("Meeting I - 11h - Peach")));
+        // ensure first meeting's title is well filled
+        firstMeetingTitleTxt.check(matches(withText("Meeting I - 11h - Peach")));
     }
 
     @Test
     public void meetingParticipantsShouldBeFilledWithMails() {
+        // ensure first meeting's participants are mails
         onView(withRecyclerView.atPositionOnView(0, R.id.item_meeting_participants_txt))
                 .check(matches(withText("maxime@lamzone.com, alex@lamzone.com, paul@lamzone.com")));
     }
 
     @Test
     public void filterMeetingsByPlaceShouldShowFilteredMeetings() {
+        // filter by place "peach"
         onView(withId(R.id.filter_icon)).perform(click());
         onView(withText("filter by place")).perform(click());
         onView(withText("Peach")).perform(click());
         onView(withText("Ok")).perform(click());
+        //ensure we have 2 meeting on room "peach"
         recyclerView.check(withItemCount(2));
+        //only first meeting is hard coding, so ensure it is in filtered meetings
         firstMeetingTitleTxt.check(matches(withText("Meeting I - 11h - Peach")));
     }
 
     @Test
     public void filterMeetingsByDateShouldShowFilteredMeeting() {
+        // filter by date on today
         onView(withId(R.id.filter_icon)).perform(click());
         onView(withText("filter by date")).perform(click());
         onView(withText("OK")).perform(click());
+        //only first meeting must have date on today, so ensure filter meeting size is one
         recyclerView.check(withItemCount(1));
+        // and check if it is the first meeting
         firstMeetingTitleTxt.check(matches(withText("Meeting I - 11h - Peach")));
     }
 
     @Test
     public void addNewMeetingShouldCreateMeeting() {
+        //add meeting
         onView(withId(R.id.add_meeting_btn)).perform(click());
+        //filled subject
         onView(withId(R.id.subject_text_field))
                 .perform(click());
         onView(withId(R.id.subject_editText))
                 .perform(replaceText("Meeting test"));
+        //select room
         onView(withContentDescription("roomDropDown")).perform(click());
         onView(withText("Peach")).inRoot(RootMatchers.isPlatformPopup()).perform(click());
+        //select date to today
         onView(withId(R.id.date_btn)).perform(click());
         onView(withText("OK")).perform(click());
+        //select hour to right now
         onView(withId(R.id.hour_btn)).perform(click());
         onView(withText("OK")).perform(click());
+        //select a town to show chip group
         onView(withContentDescription("townDropDown")).perform(click());
         onView(withText("Marseille")).inRoot(RootMatchers.isPlatformPopup()).perform(click());
+        //select 3 participants
         onView(withText("Alex")).perform(click());
         onView(withText("Lino")).perform(click());
         onView(withText("Paul")).perform(click());
+        //click on add meeting
         onView(withId(R.id.add_new_meeting_btn)).perform(click());
+        //ensure title is well filled
         onView(withRecyclerView.atPositionOnView(10, R.id.item_meeting_title_txt))
                 .check(matches(withText("Meeting test - ".concat(getRightNow()).concat(" - Peach"))));
+        //ensure participants are good ones and mails types
         onView(withRecyclerView.atPositionOnView(10, R.id.item_meeting_participants_txt))
                 .check(matches(withText("alex@lamzone.com, paul@lamzone.com, lino@lamzone.com")));
     }
