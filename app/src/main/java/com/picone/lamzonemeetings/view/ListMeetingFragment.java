@@ -18,12 +18,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
 import com.picone.lamzonemeetings.controller.service.ApiService;
+import com.picone.lamzonemeetings.databinding.FragmentListMeetingBinding;
 import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
@@ -38,9 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateDummyDate;
 import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateDummyHour;
 import static com.picone.lamzonemeetings.controller.service.utils.DummyParticipantsGeneratorUtils.generateDummyParticipants;
@@ -49,10 +46,9 @@ import static com.picone.lamzonemeetings.utils.ParticipantsMailUtils.getParticip
 
 
 public class ListMeetingFragment extends InitDatePicker {
-    @BindView(R.id.container)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.add_meeting_btn)
-    public FloatingActionButton mAddMeetingButton;
+
+
+    private FragmentListMeetingBinding binding;
 
     private RecyclerView.Adapter mAdapter;
     private ApiService mService;
@@ -72,10 +68,10 @@ public class ListMeetingFragment extends InitDatePicker {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_meeting, container, false);
-        ButterKnife.bind(this, view);
+        binding = FragmentListMeetingBinding.inflate(inflater,container,false);
+        View view = binding.getRoot();
         mService = DI.getMeetingApiService();
         initList();
         initView();
@@ -129,8 +125,8 @@ public class ListMeetingFragment extends InitDatePicker {
 
     private void initView() {
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mAddMeetingButton.setOnClickListener(v -> {
+        binding.container.setLayoutManager(linearLayoutManager);
+        binding.addMeetingBtn.setOnClickListener(v -> {
             Fragment fragment = AddNewMeetingFragment.newInstance();
             assert getFragmentManager() != null;
             FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -186,11 +182,11 @@ public class ListMeetingFragment extends InitDatePicker {
 
     private void setAdapter(List<Meeting> meetings) {
         mAdapter = new MeetingsRecyclerViewAdapter(meetings);
-        mRecyclerView.setAdapter(mAdapter);
+        binding.container.setAdapter(mAdapter);
     }
 
     private void configureOnClickRecyclerView() {
-        RecyclerViewOnLongClickUtils.addTo(mRecyclerView, R.layout.fragment_list_meeting)
+        RecyclerViewOnLongClickUtils.addTo(binding.container, R.layout.fragment_list_meeting)
                 .setOnItemLongClickListener((recyclerView, position, v) -> {
                     initDetailAlertDialog(position);
                     return true;

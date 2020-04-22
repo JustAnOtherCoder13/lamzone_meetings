@@ -8,22 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
 import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
 import com.picone.lamzonemeetings.controller.service.ApiService;
+import com.picone.lamzonemeetings.databinding.FragmentAddNewMeetingBinding;
 import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
@@ -37,9 +33,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.CALENDAR;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.FULL_DATE;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.FULL_HOUR;
@@ -48,28 +41,8 @@ import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedDate;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedHour;
 
 public class AddNewMeetingFragment extends InitDatePicker {
-    @BindView(R.id.return_button)
-    FloatingActionButton mReturnFab;
-    @BindView(R.id.room_textView)
-    AutoCompleteTextView mRoomTextView;
-    @BindView(R.id.subject_editText)
-    TextInputEditText mSubjectEditText;
-    @BindView(R.id.town_textView)
-    AutoCompleteTextView mTownTextView;
-    @BindView(R.id.hour_txt)
-    TextView mHourTxt;
-    @BindView(R.id.date_txt)
-    TextView mDateTxt;
-    @BindView(R.id.participants_chip_group)
-    ChipGroup mParticipantsChipGroup;
 
-    @BindView(R.id.add_new_meeting_btn)
-    Button mAddMeetingButton;
-    @BindView(R.id.date_btn)
-    Button mDateButton;
-    @BindView(R.id.hour_btn)
-    Button mHourButton;
-
+    private FragmentAddNewMeetingBinding binding;
     private List<Employee> mParticipants;
     private List<Employee> mEmployees;
     private List<Town> mTowns;
@@ -89,10 +62,10 @@ public class AddNewMeetingFragment extends InitDatePicker {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_new_meeting, container, false);
-        ButterKnife.bind(this, view);
+        binding = FragmentAddNewMeetingBinding.inflate(inflater,container,false);
+        View view = binding.getRoot();
         initViews();
         return view;
     }
@@ -112,17 +85,17 @@ public class AddNewMeetingFragment extends InitDatePicker {
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         formatPickedDate(dayOfMonth, month, year);
-        mDateTxt.setText(FULL_DATE);
+        binding.dateTxt.setText(FULL_DATE);
     }
 
     private void initViews() {
-        initDropDownMenu(mRooms, mRoomTextView);
-        initDropDownMenu(mTowns, mTownTextView);
-        mTownTextView.setOnItemClickListener((parent, view, position, id) -> initChipGroupParticipants());
-        mReturnFab.setOnClickListener(v -> returnToList());
-        mHourButton.setOnClickListener(v -> initTimePicker());
-        mDateButton.setOnClickListener(v -> initDatePicker(getContext()));
-        mAddMeetingButton.setOnClickListener(v -> createMeeting());
+        initDropDownMenu(mRooms, binding.roomTextView);
+        initDropDownMenu(mTowns, binding.townTextView);
+        binding.townTextView.setOnItemClickListener((parent, view, position, id) -> initChipGroupParticipants());
+        binding.returnButton.setOnClickListener(v -> returnToList());
+        binding.hourBtn.setOnClickListener(v -> initTimePicker());
+        binding.dateBtn.setOnClickListener(v -> initDatePicker(getContext()));
+        binding.addNewMeetingBtn.setOnClickListener(v -> createMeeting());
     }
 
     private <T> void initDropDownMenu(List<T> list, AutoCompleteTextView view) {
@@ -138,7 +111,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
             chip.setCheckable(true);
             chip.setCheckedIconVisible(true);
             chip.setCheckedIconResource(R.drawable.ic_check);
-            mParticipantsChipGroup.addView(chip);
+            binding.participantsChipGroup.addView(chip);
         }
     }
 
@@ -146,11 +119,10 @@ public class AddNewMeetingFragment extends InitDatePicker {
 
         String subject;
         String place;
-        if (mRoomTextView.getText().length() > 2) place = mRoomTextView.getText().toString();
+        if (binding.roomTextView.getText().length() > 2) place = binding.roomTextView.getText().toString();
         else place = null;
 
-        if (Objects.requireNonNull(mSubjectEditText.getText()).length() > 2)
-            subject = mSubjectEditText.getText().toString();
+        if (Objects.requireNonNull(binding.subjectEditText.getText()).length() > 2) subject = binding.subjectEditText.getText().toString();
         else subject = null;
 
         getCheckedParticipants();
@@ -167,8 +139,8 @@ public class AddNewMeetingFragment extends InitDatePicker {
     private void getCheckedParticipants() {
         List<Employee> participantsChecked = new ArrayList<>();
         Employee participant;
-        for (int i = 0; i < mParticipantsChipGroup.getChildCount(); i++) {
-            Chip chip = (Chip) mParticipantsChipGroup.getChildAt(i);
+        for (int i = 0; i < binding.participantsChipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) binding.participantsChipGroup.getChildAt(i);
             if (chip.isChecked()) {
                 participant = mEmployees.get(i);
                 participantsChecked.add(participant);
@@ -183,7 +155,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
         picker = new TimePickerDialog(getContext(),
                 (tp, sHour, sMinute) -> {
                     formatPickedHour(sHour, sMinute);
-                    mHourTxt.setText(FULL_HOUR);
+                    binding.hourTxt.setText(FULL_HOUR);
                 }, CALENDAR.get(Calendar.HOUR_OF_DAY), CALENDAR.get(Calendar.MINUTE), true);
         picker.show();
     }

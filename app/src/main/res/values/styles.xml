@@ -93,7 +93,7 @@
 
     <style name="AddNewMeetingFab">
         <item name="android:textColor">@color/colorOnPrimary</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
         <item name="android:backgroundTint">@color/colorPrimary</item>
     </style>
 
