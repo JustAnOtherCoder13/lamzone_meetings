@@ -18,7 +18,7 @@ public abstract class DummyApiServiceGenerator {
             new Meeting("", "Meeting G", "Mario", new ArrayList<>(), new Date()),
             new Meeting("", "Meeting C", "Peach", new ArrayList<>(), new Date()),
             new Meeting("", "Meeting A", "Toad", new ArrayList<>(), new Date()),
-            new Meeting("","Meeting E", "Wario", new ArrayList<>(), new Date()),
+            new Meeting("", "Meeting E", "Wario", new ArrayList<>(), new Date()),
             new Meeting("", "Meeting F", "Kong", new ArrayList<>(), new Date()),
             new Meeting("", "Meeting D", "Browser", new ArrayList<>(), new Date()),
             new Meeting("", "Meeting H", "Yoshi", new ArrayList<>(), new Date()),
@@ -44,7 +44,9 @@ public abstract class DummyApiServiceGenerator {
             new Room("Roi Boo")
     );
 
-    static List<Room> generateRooms() {return new ArrayList<>(DUMMY_ROOMS);}
+    static List<Room> generateRooms() {
+        return new ArrayList<>(DUMMY_ROOMS);
+    }
 
     //Employees List
     public static List<Employee> DUMMY_EMPLOYEES = Arrays.asList(
@@ -62,18 +64,22 @@ public abstract class DummyApiServiceGenerator {
             new Employee("Roméo")
     );
 
-    static List<Employee> generateEmployees(){return new ArrayList<>(DUMMY_EMPLOYEES);}
+    static List<Employee> generateEmployees() {
+        return new ArrayList<>(DUMMY_EMPLOYEES);
+    }
 
     public static List<Town> DUMMY_TOWN = Arrays.asList(
-           new Town("Marseille"),
+            new Town("Marseille"),
             new Town("Paris"),
             new Town("London"),
             new Town("Rome"),
             new Town("Madrid")
     );
 
-    static List<Town> generateTown(){return new ArrayList<>(DUMMY_TOWN);}
+    static List<Town> generateTown() {
+        return new ArrayList<>(DUMMY_TOWN);
+    }
 
-    public static Meeting DUMMY_MEETING_TO_ADD = new Meeting("","subject","Mario",new ArrayList<>(),new Date());
+    public static Meeting DUMMY_MEETING_TO_ADD = new Meeting("", "subject", "Mario", new ArrayList<>(), new Date());
 }
 

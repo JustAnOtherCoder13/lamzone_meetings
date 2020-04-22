@@ -14,10 +14,12 @@ public class DummyParticipantsGeneratorUtils {
         List<Employee> dummyParticipants = new ArrayList<>();
         int numberOfParticipants = new Random().nextInt(2) + 2;
         for (int i = 0; i < numberOfParticipants; i++) {
-            int employeeIndex = new Random().nextInt(12);
-            Employee participant = employees.get(employeeIndex);
-            if (!dummyParticipants.contains(participant)) dummyParticipants.add(participant);
-            else i--;
+            Employee participant;
+            do {
+                int employeeIndex = new Random().nextInt(12);
+                participant = employees.get(employeeIndex);
+                dummyParticipants.add(participant);
+            } while (!dummyParticipants.contains(participant));
         }
         return dummyParticipants;
     }
@@ -25,12 +27,13 @@ public class DummyParticipantsGeneratorUtils {
     public static void generateDummyParticipants(List<Meeting> meetings, List<Employee> employees) {
 
         for (int i = 0; i < meetings.size(); i++) {
-            if (i != 0) { meetings.get(i).setParticipants(generateDummyParticipantsList(employees)); }
-            else {
+            if (i != 0) {
+                meetings.get(i).setParticipants(generateDummyParticipantsList(employees));
+            } else {
                 //for ui test
                 List<Employee> participants = new ArrayList<>();
-                for (int i2 =0 ; i2<3 ; i2++)
-                participants.add(employees.get(i2));
+                for (int i2 = 0; i2 < 3; i2++){
+                    participants.add(employees.get(i2));}
                 meetings.get(i).setParticipants(participants);
             }
         }

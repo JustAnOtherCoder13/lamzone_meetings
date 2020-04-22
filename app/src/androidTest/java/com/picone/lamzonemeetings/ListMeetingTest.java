@@ -24,7 +24,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.picone.lamzonemeetings.Utils.RecyclerViewItemCountAssertion.withItemCount;
-import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.getHour;
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.getRightNow;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -109,7 +109,7 @@ public class ListMeetingTest {
         onView(withText("Paul")).perform(click());
         onView(withId(R.id.add_new_meeting_btn)).perform(click());
         onView(withRecyclerView.atPositionOnView(10, R.id.item_meeting_title_txt))
-                .check(matches(withText("Meeting test - ".concat(getHour()).concat(" - Peach"))));
+                .check(matches(withText("Meeting test - ".concat(getRightNow()).concat(" - Peach"))));
         onView(withRecyclerView.atPositionOnView(10, R.id.item_meeting_participants_txt))
                 .check(matches(withText("alex@lamzone.com, paul@lamzone.com, lino@lamzone.com")));
     }

@@ -28,12 +28,12 @@ import com.picone.lamzonemeetings.model.Town;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.CALENDAR;
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.RIGHT_NOW_HOUR;
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.RIGHT_NOW_MINUTE;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.FULL_DATE;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.FULL_HOUR;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.PICKED_DATE;
@@ -64,7 +64,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentAddNewMeetingBinding.inflate(inflater,container,false);
+        binding = FragmentAddNewMeetingBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         initViews();
         return view;
@@ -119,10 +119,12 @@ public class AddNewMeetingFragment extends InitDatePicker {
 
         String subject;
         String place;
-        if (binding.roomTextView.getText().length() > 2) place = binding.roomTextView.getText().toString();
+        if (binding.roomTextView.getText().length() > 2)
+            place = binding.roomTextView.getText().toString();
         else place = null;
 
-        if (Objects.requireNonNull(binding.subjectEditText.getText()).length() > 2) subject = binding.subjectEditText.getText().toString();
+        if (Objects.requireNonNull(binding.subjectEditText.getText()).length() > 2)
+            subject = binding.subjectEditText.getText().toString();
         else subject = null;
 
         getCheckedParticipants();
@@ -156,7 +158,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
                 (tp, sHour, sMinute) -> {
                     formatPickedHour(sHour, sMinute);
                     binding.hourTxt.setText(FULL_HOUR);
-                }, CALENDAR.get(Calendar.HOUR_OF_DAY), CALENDAR.get(Calendar.MINUTE), true);
+                }, RIGHT_NOW_HOUR, RIGHT_NOW_MINUTE, true);
         picker.show();
     }
 
