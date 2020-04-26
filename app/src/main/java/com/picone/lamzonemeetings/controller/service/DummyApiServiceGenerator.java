@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class DummyApiServiceGenerator {
     //Meetings list
     public static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
-            new Meeting("11h", "Meeting I", "Peach", new ArrayList<>(), new Date()),
+            new Meeting("11h00", "Meeting I", "Peach", new ArrayList<>(), new Date()),
             new Meeting("", "Meeting G", "Mario", new ArrayList<>(), new Date()),
             new Meeting("", "Meeting C", "Peach", new ArrayList<>(), new Date()),
             new Meeting("", "Meeting A", "Toad", new ArrayList<>(), new Date()),

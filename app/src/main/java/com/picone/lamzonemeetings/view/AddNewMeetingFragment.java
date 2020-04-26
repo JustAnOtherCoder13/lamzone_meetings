@@ -2,6 +2,7 @@ package com.picone.lamzonemeetings.view;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -47,6 +48,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
     private List<Employee> mEmployees;
     private List<Town> mTowns;
     private List<Room> mRooms;
+    private ApiService mService;
 
     static AddNewMeetingFragment newInstance() {
         return new AddNewMeetingFragment();
@@ -54,10 +56,10 @@ public class AddNewMeetingFragment extends InitDatePicker {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ApiService service = DI.getMeetingApiService();
-        mEmployees = service.getEmployees();
-        mTowns = service.getTowns();
-        mRooms = service.getRooms();
+        mService = DI.getMeetingApiService();
+        mEmployees = mService.getEmployees();
+        mTowns = mService.getTowns();
+        mRooms = mService.getRooms();
         super.onCreate(savedInstanceState);
     }
 
@@ -116,26 +118,39 @@ public class AddNewMeetingFragment extends InitDatePicker {
     }
 
     private void createMeeting() {
-
-        String subject;
-        String place;
-        if (binding.roomTextView.getText().length() > 2)
-            place = binding.roomTextView.getText().toString();
-        else place = null;
-
-        if (Objects.requireNonNull(binding.subjectEditText.getText()).length() > 2)
-            subject = binding.subjectEditText.getText().toString();
-        else subject = null;
-
         getCheckedParticipants();
 
-        if (place != null && FULL_HOUR != null && subject != null && !mParticipants.isEmpty() && FULL_DATE != null) {
-            Meeting meeting = createNewMeeting(FULL_HOUR, subject, place, mParticipants, PICKED_DATE);
+        if (doTextAreFilled() && doesRoomIsFreeOnThisDate()) {
+            Meeting meeting = createNewMeeting(FULL_HOUR,  binding.subjectEditText.getText().toString(), binding.roomTextView.getText().toString() , mParticipants, PICKED_DATE);
             EventBus.getDefault().post(new AddNewMeetingEvent(meeting));
             returnToList();
-        } else {
-            Toast.makeText(getContext(), "you have not choose all parameters", Toast.LENGTH_SHORT).show();
         }
+    }
+    private boolean doTextAreFilled (){
+        boolean myBol = false;
+        if (!binding.roomTextView.getText().toString().equals("")
+                && !Objects.requireNonNull(binding.subjectEditText.getText()).toString().equals("")
+                && FULL_HOUR != null
+                && FULL_DATE != null
+                && !mParticipants.isEmpty()){ myBol = true; }
+        else {
+            Toast.makeText(getContext(), "You have not choose all parameters", Toast.LENGTH_SHORT).show();
+        }
+        return myBol;
+    }
+    private boolean doesRoomIsFreeOnThisDate(){
+        boolean myBol = true;
+        for (Meeting meeting : mService.getMeetings()){
+
+            if(meeting.getDate().compareTo(PICKED_DATE) == 0
+                    && binding.roomTextView.getText().toString().equals(meeting.getPlace())
+                    && meeting.getHour().equals(FULL_HOUR)){
+
+                Toast.makeText(getContext(), "This room is not free for this date, you must choose other room or other hour.", Toast.LENGTH_LONG).show();
+                myBol = false;
+            }
+        }
+        return myBol;
     }
 
     private void getCheckedParticipants() {

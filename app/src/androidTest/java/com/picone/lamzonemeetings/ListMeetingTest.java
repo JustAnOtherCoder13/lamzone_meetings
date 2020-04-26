@@ -62,7 +62,7 @@ public class ListMeetingTest {
     @Test
     public void meetingTitleShouldBeFilledWithSubjectHourPlace() {
         // ensure first meeting's title is well filled
-        firstMeetingTitleTxt.check(matches(withText("Meeting I - 11h - Peach")));
+        firstMeetingTitleTxt.check(matches(withText("Meeting I - 11h00 - Peach")));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ListMeetingTest {
         //ensure we have 2 meeting on room "peach"
         recyclerView.check(withItemCount(2));
         //only first meeting is hard coding, so ensure it is in filtered meetings
-        firstMeetingTitleTxt.check(matches(withText("Meeting I - 11h - Peach")));
+        firstMeetingTitleTxt.check(matches(withText("Meeting I - 11h00 - Peach")));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class ListMeetingTest {
         //only first meeting must have date on today, so ensure filter meeting size is one
         recyclerView.check(withItemCount(1));
         // and check if it is the first meeting
-        firstMeetingTitleTxt.check(matches(withText("Meeting I - 11h - Peach")));
+        firstMeetingTitleTxt.check(matches(withText("Meeting I - 11h00 - Peach")));
     }
 
     @Test
