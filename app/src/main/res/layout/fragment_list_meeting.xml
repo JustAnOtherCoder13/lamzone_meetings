@@ -9,9 +9,10 @@
         style="@style/RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <!--TODO make the cross white-->
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_meeting_btn"
+        app:tint="@null"
         style="@style/AddFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -5,18 +5,15 @@ import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.Calendar;
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.MY_DAY_OF_MONTH;
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.MY_MONTH;
+import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.MY_YEAR;
 
 abstract class InitDatePicker extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     void initDatePicker(Context context) {
 
-        final Calendar calendar = Calendar.getInstance();
-        final int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        final int month = calendar.get(Calendar.MONTH);
-        final int year = calendar.get(Calendar.YEAR);
-
-        DatePickerDialog picker = new DatePickerDialog(context, this, year, month, dayOfMonth);
+        DatePickerDialog picker = new DatePickerDialog(context, this, MY_YEAR, MY_MONTH, MY_DAY_OF_MONTH);
         picker.show();
     }
 }

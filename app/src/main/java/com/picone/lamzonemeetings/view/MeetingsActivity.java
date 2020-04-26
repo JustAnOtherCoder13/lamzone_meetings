@@ -18,7 +18,7 @@ public class MeetingsActivity extends AppCompatActivity {
     }
 
     private void initListMeetingFragment() {
-        if (getSupportFragmentManager().findFragmentByTag("NEW_MEETING_FRAG") == null) {
+        if (getSupportFragmentManager().findFragmentByTag(String.valueOf(R.string.frag_new_meeting_tag)) == null) {
             Fragment fragment = ListMeetingFragment.newInstance();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_place_holder, fragment);

@@ -54,6 +54,5 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
             super(binding.getRoot());
             this.binding = binding;
         }
-
     }
 }

@@ -33,13 +33,10 @@ import com.picone.lamzonemeetings.utils.RecyclerViewOnLongClickUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Callable;
 
 import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateDummyDate;
 import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateDummyHour;
@@ -97,7 +94,7 @@ public class ListMeetingFragment extends InitDatePicker {
                 return true;
 
             case R.id.filter_by_place:
-                initAlertDialog("Choose your room",0);
+                initAlertDialog(R.string.place_alert_dialog_title,0);
                 return true;
 
             case R.id.cancel_filter:
@@ -133,7 +130,7 @@ public class ListMeetingFragment extends InitDatePicker {
             Fragment fragment = AddNewMeetingFragment.newInstance();
             assert getFragmentManager() != null;
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_place_holder, fragment, "NEW_MEETING_FRAG");
+            ft.add(R.id.fragment_place_holder, fragment, String.valueOf(R.string.frag_new_meeting_tag));
             ft.commit();
         });
     }
@@ -149,10 +146,10 @@ public class ListMeetingFragment extends InitDatePicker {
         setAdapter(mMeetings);
     }
 
-    private void initAlertDialog(String title,int position) {
+    private void initAlertDialog(int title, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(title);
-        if (title.contains("Date/Participants")) {
+        if (title == R.string.date_participants_alert_dialog) {
             String date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(mMeetings.get(position).getDate());
             String participants = getParticipantsMail(mMeetings.get(position));
             builder.setMessage(date.concat("\n\n").concat(participants));
@@ -160,9 +157,9 @@ public class ListMeetingFragment extends InitDatePicker {
         else{
             ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((requireContext()), android.R.layout.simple_list_item_single_choice, mRooms);
             builder.setSingleChoiceItems(roomsAdapter, -1, ((dialog, which) -> mRoom = mRooms.get(which)));
-            builder.setPositiveButton("Ok", (dialog, which) -> filterByPlace());
+            builder.setPositiveButton(R.string.positive_button, (dialog, which) -> filterByPlace());
         }
-        builder.setNegativeButton("Back", null);
+        builder.setNegativeButton(R.string.negative_button, null);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -175,7 +172,7 @@ public class ListMeetingFragment extends InitDatePicker {
             }
             setAdapter(mFilteredMeetings);
         } else
-            Toast.makeText(getContext(), "you have not choose a Room", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.toast_filter_room_not_choose, Toast.LENGTH_SHORT).show();
     }
 
     private void filterByDate() {
@@ -199,7 +196,7 @@ public class ListMeetingFragment extends InitDatePicker {
     private void configureOnClickRecyclerView() {
         RecyclerViewOnLongClickUtils.addTo(binding.container, R.layout.fragment_list_meeting)
                 .setOnItemLongClickListener((recyclerView, position, v) -> {
-                    initAlertDialog("Date/Participants",position);
+                    initAlertDialog(R.string.date_participants_alert_dialog,position);
                     return true;
                 });
     }

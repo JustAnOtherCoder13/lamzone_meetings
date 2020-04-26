@@ -2,7 +2,6 @@ package com.picone.lamzonemeetings.view;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -134,7 +133,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
                 && FULL_DATE != null
                 && !mParticipants.isEmpty()){ myBol = true; }
         else {
-            Toast.makeText(getContext(), "You have not choose all parameters", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.toast_parameters, Toast.LENGTH_SHORT).show();
         }
         return myBol;
     }
@@ -146,7 +145,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
                     && binding.roomTextView.getText().toString().equals(meeting.getPlace())
                     && meeting.getHour().equals(FULL_HOUR)){
 
-                Toast.makeText(getContext(), "This room is not free for this date, you must choose other room or other hour.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.toast_room_is_not_free, Toast.LENGTH_LONG).show();
                 myBol = false;
             }
         }

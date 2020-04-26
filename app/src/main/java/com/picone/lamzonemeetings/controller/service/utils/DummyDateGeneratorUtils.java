@@ -11,33 +11,32 @@ import java.util.Locale;
 import java.util.Random;
 
 public class DummyDateGeneratorUtils {
-    public final static Calendar CALENDAR = Calendar.getInstance();
-    private final static int DAY_OF_MONTH = CALENDAR.get(Calendar.DAY_OF_MONTH);
-    private final static int MONTH = CALENDAR.get(Calendar.MONTH);
-    private final static int YEAR = CALENDAR.get(Calendar.YEAR);
+    private final static Calendar CALENDAR = Calendar.getInstance();
+    public final static int MY_DAY_OF_MONTH = CALENDAR.get(Calendar.DAY_OF_MONTH);
+    public final static int MY_MONTH = CALENDAR.get(Calendar.MONTH);
+    public final static int MY_YEAR = CALENDAR.get(Calendar.YEAR);
     public static int RIGHT_NOW_HOUR = CALENDAR.get(Calendar.HOUR_OF_DAY);
     public static int RIGHT_NOW_MINUTE = CALENDAR.get(Calendar.MINUTE);
-    public static Date TODAY = dateOrHour(DAY_OF_MONTH, MONTH, YEAR);
+    public static Date TODAY = formatDateOrHour(MY_DAY_OF_MONTH, MY_MONTH, MY_YEAR);
     private static Random RANDOM = new Random();
 
     private static Date generateRandomDate() {
         int bound;
-        if (MONTH == 2) {
-            bound = 28;
-        } else if (MONTH % 2 == 0 || MONTH == 9 || MONTH == 11 && MONTH != 8 && MONTH != 10 && MONTH != 12) {
+        if (MY_MONTH == 2) {
+            bound = 27;
+        } else if (MY_MONTH % 2 == 0 || MY_MONTH == 9 || MY_MONTH == 11 && MY_MONTH != 8 && MY_MONTH != 10 && MY_MONTH != 12) {
             bound = 29;
         } else {
             bound = 30;
         }
         int randomDay;
-        //for test, to have only first meeting date on today
+        //for test, to have only first meeting's date on today
         do {
             randomDay = new Random().nextInt(bound) + 1;
-        } while (randomDay == DAY_OF_MONTH);
+        } while (randomDay == MY_DAY_OF_MONTH);
 
-        return dateOrHour(randomDay, MONTH, YEAR);
+        return formatDateOrHour(randomDay, MY_MONTH, MY_YEAR);
     }
-
 
     public static void generateDummyDate(List<Meeting> meetings) {
         for (int i = 0; i < meetings.size(); i++) {
@@ -48,9 +47,15 @@ public class DummyDateGeneratorUtils {
     }
 
     private static String generateRandomHour() {
-        int randomHour = RANDOM.nextInt(9) + 8;
-        int randomMinute = RANDOM.nextInt(59);
-        return formatHour(randomHour, randomMinute);
+        int randomHour;
+        int randomMinute;
+        do {
+            randomHour = RANDOM.nextInt(9) + 8;
+        }while (randomHour == 12);
+        do {
+            randomMinute = RANDOM.nextInt(59);
+        }while (randomHour==11 && randomMinute>15);
+        return getHourToString(randomHour, randomMinute);
     }
 
     public static void generateDummyHour(List<Meeting> meetings) {
@@ -63,11 +68,11 @@ public class DummyDateGeneratorUtils {
     //for test get right now
     public static String getRightNow() {
 
-        return formatHour(RIGHT_NOW_HOUR, RIGHT_NOW_MINUTE);
+        return getHourToString(RIGHT_NOW_HOUR, RIGHT_NOW_MINUTE);
     }
 
     //methods to format hour or date
-    private static Date dateOrHour(String format, int time) {
+    private static Date formatDateOrHour(String format, int time) {
         Date value = null;
         try {
             value = new SimpleDateFormat(format, Locale.FRANCE).parse(String.valueOf(time));
@@ -77,7 +82,7 @@ public class DummyDateGeneratorUtils {
         return value;
     }
 
-    public static Date dateOrHour(int day, int month, int year) {
+    public static Date formatDateOrHour(int day, int month, int year) {
         Date value = null;
         try {
             value = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(day + "/" + month + "/" + year);
@@ -87,10 +92,10 @@ public class DummyDateGeneratorUtils {
         return value;
     }
 
-    public static String formatHour(int hour, int minute) {
+    public static String getHourToString(int hour, int minute) {
 
-        return new SimpleDateFormat("HH", Locale.FRANCE).format(dateOrHour("HH", hour))
+        return new SimpleDateFormat("HH", Locale.FRANCE).format(formatDateOrHour("HH", hour))
                 .concat("h")
-                .concat(new SimpleDateFormat("mm", Locale.FRANCE).format(dateOrHour("mm", minute)));
+                .concat(new SimpleDateFormat("mm", Locale.FRANCE).format(formatDateOrHour("mm", minute)));
     }
 }

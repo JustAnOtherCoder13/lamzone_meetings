@@ -1,4 +1,5 @@
 <resources>
+    <!-- for layout -->
     <string name="app_name">Lamzone Meetings</string>
     <string name="add_meeting">Add meeting</string>
     <string name="select_your_town">select your town</string>
@@ -15,5 +16,15 @@
     <string name="filter_by_date">filter by date</string>
     <string name="filter_by_place">filter by place</string>
     <string name="cancel_filter">cancel filter</string>
-
+    <!-- for toast -->
+    <string name="toast_parameters">"You have not choose all parameters"</string>
+    <string name="toast_room_is_not_free">"This room is not free for this date/hour, you must choose an other room or hour."</string>
+    <string name="toast_filter_room_not_choose">"you have not choose a Room"</string>
+    <!-- for alert dialog-->
+    <string name="place_alert_dialog_title">"Choose your room"</string>
+    <string name="date_participants_alert_dialog">"Date/Participants"</string>
+    <string name="positive_button">"Ok"</string>
+    <string name="negative_button">"Back"</string>
+    <!-- for tag -->
+    <string name="frag_new_meeting_tag">"NEW_MEETING_FRAG"</string>
 </resources>
