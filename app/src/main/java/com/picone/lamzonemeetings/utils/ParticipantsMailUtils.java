@@ -6,7 +6,7 @@ import com.picone.lamzonemeetings.model.Meeting;
 import java.util.List;
 
 public class ParticipantsMailUtils {
-
+//participant meeting
     public static String getParticipantsMail(Meeting meeting) {
         List<Employee> participants = meeting.getParticipants();
         String participantsMail = null;

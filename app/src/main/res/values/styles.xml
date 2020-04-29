@@ -8,13 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
-    <!-- TODO customize action bar -->
+
     <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar">
 
         <item name="titleTextStyle">@style/TitleTextStyle</item>
         <item name="background">@color/colorPrimary</item>
         <item name="backgroundStacked">@color/colorPrimary</item>
         <item name="backgroundSplit">@color/colorPrimary</item>
+        <!-- TODO customize action bar -->
         <item name="height">50dp</item>
         <item name="elevation">40dp</item>
     </style>
@@ -27,7 +28,7 @@
     <!-- recycler_view_items style. -->
     <style name="RecyclerViewTextViewTitle">
         <item name="android:fontFamily">"sans-serif-black"</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:layout_marginStart">70dp</item>
         <item name="android:layout_marginEnd">70dp</item>
         <item name="android:gravity">left</item>
@@ -37,6 +38,7 @@
     <style name="RecyclerViewTextViewParticipants">
         <item name="android:fontFamily">"sans-serif-medium"</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="android:layout_marginStart">70dp</item>

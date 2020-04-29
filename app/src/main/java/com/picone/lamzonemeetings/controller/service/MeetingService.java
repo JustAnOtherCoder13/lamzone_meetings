@@ -7,12 +7,12 @@ import com.picone.lamzonemeetings.model.Town;
 
 import java.util.List;
 
-public class DummyMeetingService implements ApiService {
+public class MeetingService implements ApiService {
 
-    private List<Meeting> meetings = DummyApiServiceGenerator.generateMeetings();
-    private List<Room> rooms = DummyApiServiceGenerator.generateRooms();
-    private List<Employee> employees = DummyApiServiceGenerator.generateEmployees();
-    private List<Town> towns = DummyApiServiceGenerator.generateTown();
+    private List<Meeting> meetings = ApiServiceGenerator.generateMeetings();
+    private List<Room> rooms = ApiServiceGenerator.generateRooms();
+    private List<Employee> employees = ApiServiceGenerator.generateEmployees();
+    private List<Town> towns = ApiServiceGenerator.generateTown();
 
     @Override
     public List<Meeting> getMeetings() { return meetings;}

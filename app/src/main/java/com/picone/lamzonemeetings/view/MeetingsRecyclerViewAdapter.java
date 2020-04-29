@@ -36,7 +36,7 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Meeting meeting = mMeetings.get(position);
-        holder.binding.itemCircleImg.setColorFilter(ContextCompat.getColor(holder.binding.itemCircleImg.getContext(), setCircleColor(meeting)));
+        holder.binding.itemCircleImg.setColorFilter(ContextCompat.getColor(holder.binding.itemCircleImg.getContext(), setCircleColor(meeting.getDate())));
         holder.binding.itemMeetingTitleTxt.setText(meeting.getSubject().concat(" - ").concat(String.valueOf(meeting.getHour())).concat(" - ").concat(meeting.getPlace()));
         holder.binding.itemMeetingParticipantsTxt.setText(getParticipantsMail(meeting));
         holder.binding.itemDeleteImgButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteMeetingEvent(meeting)));

@@ -13,13 +13,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import static com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator.DUMMY_EMPLOYEES;
-import static com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator.DUMMY_MEETINGS;
-import static com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator.DUMMY_MEETING_TO_ADD;
-import static com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator.DUMMY_ROOMS;
-import static com.picone.lamzonemeetings.controller.service.DummyApiServiceGenerator.DUMMY_TOWN;
+import static com.picone.lamzonemeetings.controller.service.ApiServiceGenerator.DUMMY_EMPLOYEES;
+import static com.picone.lamzonemeetings.controller.service.ApiServiceGenerator.DUMMY_MEETINGS;
+import static com.picone.lamzonemeetings.controller.service.ApiServiceGenerator.DUMMY_ROOMS;
+import static com.picone.lamzonemeetings.controller.service.ApiServiceGenerator.DUMMY_TOWN;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -71,7 +72,7 @@ public class MeetingServiceUnitTest {
 
     @Test
     public void addMeetingWithSuccess() {
-        Meeting meetingToAdd = DUMMY_MEETING_TO_ADD;
+        Meeting meetingToAdd = new Meeting("", "subject", "Mario", new ArrayList<>(), new Date());;
         service.addMeeting(meetingToAdd);
         assertTrue(service.getMeetings().contains(meetingToAdd));
     }

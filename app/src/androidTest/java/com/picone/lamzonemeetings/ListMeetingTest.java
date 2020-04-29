@@ -24,7 +24,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.picone.lamzonemeetings.Utils.RecyclerViewItemCountAssertion.withItemCount;
-import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.getRightNow;
+import static com.picone.lamzonemeetings.Utils.setTextInTextView.setTextInTextView;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -38,7 +38,6 @@ public class ListMeetingTest {
             new ActivityTestRule(MeetingsActivity.class);
     private ViewInteraction recyclerView = onView(withId(R.id.container));
     private ViewInteraction firstMeetingTitleTxt = onView(withRecyclerView.atPositionOnView(0, R.id.item_meeting_title_txt));
-
 
     @Before
     public void setUp() {
@@ -112,9 +111,8 @@ public class ListMeetingTest {
         //select date to today
         onView(withId(R.id.date_btn)).perform(click());
         onView(withText("OK")).perform(click());
-        //select hour to right now
-        onView(withId(R.id.hour_btn)).perform(click());
-        onView(withText("OK")).perform(click());
+        //select hour
+        onView(withId(R.id.hour_txt)).perform(setTextInTextView("11h00"));
         //select a town to show chip group
         onView(withContentDescription("townDropDown")).perform(click());
         onView(withText("Marseille")).inRoot(RootMatchers.isPlatformPopup()).perform(click());
@@ -126,8 +124,7 @@ public class ListMeetingTest {
         onView(withId(R.id.add_new_meeting_btn)).perform(click());
         //ensure title is well filled
         onView(withRecyclerView.atPositionOnView(10, R.id.item_meeting_title_txt))
-                .check(matches(withText("Meeting test - ".concat(getRightNow()).concat(" - Peach"))));
-        //ensure participants are good ones and mails types
+                .check((matches(withText("Meeting test - 11h00 - Peach"))));
         onView(withRecyclerView.atPositionOnView(10, R.id.item_meeting_participants_txt))
                 .check(matches(withText("alex@lamzone.com, paul@lamzone.com, lino@lamzone.com")));
     }

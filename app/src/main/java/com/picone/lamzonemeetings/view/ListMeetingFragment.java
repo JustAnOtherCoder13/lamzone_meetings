@@ -27,7 +27,6 @@ import com.picone.lamzonemeetings.databinding.FragmentListMeetingBinding;
 import com.picone.lamzonemeetings.model.Employee;
 import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
-import com.picone.lamzonemeetings.utils.DatePickerUtils;
 import com.picone.lamzonemeetings.utils.RecyclerViewOnLongClickUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,17 +34,18 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateDummyDate;
-import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.generateDummyHour;
-import static com.picone.lamzonemeetings.controller.service.utils.DummyParticipantsGeneratorUtils.generateDummyParticipants;
+import static com.picone.lamzonemeetings.controller.service.utils.DateGeneratorUtils.generateDate;
+import static com.picone.lamzonemeetings.controller.service.utils.DateGeneratorUtils.generateHour;
+import static com.picone.lamzonemeetings.controller.service.utils.ParticipantsGeneratorUtils.generateParticipants;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedDate;
 import static com.picone.lamzonemeetings.utils.ParticipantsMailUtils.getParticipantsMail;
 
 
-public class ListMeetingFragment extends InitDatePicker {
+public class ListMeetingFragment extends ShowDatePicker {
 
 
     private FragmentListMeetingBinding binding;
@@ -56,6 +56,7 @@ public class ListMeetingFragment extends InitDatePicker {
     private List<Meeting> mFilteredMeetings = new ArrayList<>();
     private List<Room> mRooms;
     private Room mRoom;
+    private Date mPickedDate;
 
     static ListMeetingFragment newInstance() {
         return new ListMeetingFragment();
@@ -90,7 +91,7 @@ public class ListMeetingFragment extends InitDatePicker {
         switch (item.getItemId()) {
 
             case R.id.filter_by_date:
-                initDatePicker(getContext());
+                showDatePicker(getContext());
                 return true;
 
             case R.id.filter_by_place:
@@ -107,7 +108,7 @@ public class ListMeetingFragment extends InitDatePicker {
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        formatPickedDate(dayOfMonth, month, year);
+        mPickedDate = formatPickedDate(dayOfMonth, month, year);
         filterByDate();
     }
 
@@ -140,9 +141,9 @@ public class ListMeetingFragment extends InitDatePicker {
         mMeetings = mService.getMeetings();
         mRooms = mService.getRooms();
         List<Employee> employees = mService.getEmployees();
-        generateDummyParticipants(mMeetings, employees);
-        generateDummyHour(mMeetings);
-        generateDummyDate(mMeetings);
+        generateParticipants(mMeetings, employees);
+        generateHour(mMeetings);
+        generateDate(mMeetings);
         setAdapter(mMeetings);
     }
 
@@ -170,7 +171,9 @@ public class ListMeetingFragment extends InitDatePicker {
             for (Meeting meeting : mMeetings) {
                 if (meeting.getPlace().equals(mRoom.getRoomName())) mFilteredMeetings.add(meeting);
             }
-            setAdapter(mFilteredMeetings);
+           // mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
+            mAdapter.notifyDataSetChanged();
+            //setAdapter(mFilteredMeetings);
         } else
             Toast.makeText(getContext(), R.string.toast_filter_room_not_choose, Toast.LENGTH_SHORT).show();
     }
@@ -178,7 +181,7 @@ public class ListMeetingFragment extends InitDatePicker {
     private void filterByDate() {
         mFilteredMeetings.clear();
         for (Meeting meeting : mMeetings) {
-            if (meeting.getDate().equals(DatePickerUtils.PICKED_DATE))
+            if (meeting.getDate().equals(mPickedDate))
                 mFilteredMeetings.add(meeting);
         }
         setAdapter(mFilteredMeetings);

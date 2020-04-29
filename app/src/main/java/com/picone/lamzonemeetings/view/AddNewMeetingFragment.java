@@ -27,20 +27,19 @@ import com.picone.lamzonemeetings.model.Town;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
-import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.RIGHT_NOW_HOUR;
-import static com.picone.lamzonemeetings.controller.service.utils.DummyDateGeneratorUtils.RIGHT_NOW_MINUTE;
-import static com.picone.lamzonemeetings.utils.DatePickerUtils.FULL_DATE;
-import static com.picone.lamzonemeetings.utils.DatePickerUtils.FULL_HOUR;
-import static com.picone.lamzonemeetings.utils.DatePickerUtils.PICKED_DATE;
+import static com.picone.lamzonemeetings.utils.CalendarStaticValues.RIGHT_NOW_HOUR;
+import static com.picone.lamzonemeetings.utils.CalendarStaticValues.RIGHT_NOW_MINUTE;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedDate;
 import static com.picone.lamzonemeetings.utils.DatePickerUtils.formatPickedHour;
 
-public class AddNewMeetingFragment extends InitDatePicker {
+public class AddNewMeetingFragment extends ShowDatePicker {
 
     private FragmentAddNewMeetingBinding binding;
     private List<Employee> mParticipants;
@@ -48,6 +47,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
     private List<Town> mTowns;
     private List<Room> mRooms;
     private ApiService mService;
+    private Date mPickedDate;
 
     static AddNewMeetingFragment newInstance() {
         return new AddNewMeetingFragment();
@@ -85,8 +85,8 @@ public class AddNewMeetingFragment extends InitDatePicker {
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        formatPickedDate(dayOfMonth, month, year);
-        binding.dateTxt.setText(FULL_DATE);
+        mPickedDate = formatPickedDate(dayOfMonth, month, year);
+        binding.dateTxt.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(mPickedDate));
     }
 
     private void initViews() {
@@ -95,7 +95,7 @@ public class AddNewMeetingFragment extends InitDatePicker {
         binding.townTextView.setOnItemClickListener((parent, view, position, id) -> initChipGroupParticipants());
         binding.returnButton.setOnClickListener(v -> returnToList());
         binding.hourBtn.setOnClickListener(v -> initTimePicker());
-        binding.dateBtn.setOnClickListener(v -> initDatePicker(getContext()));
+        binding.dateBtn.setOnClickListener(v -> showDatePicker(getContext()));
         binding.addNewMeetingBtn.setOnClickListener(v -> createMeeting());
     }
 
@@ -119,31 +119,32 @@ public class AddNewMeetingFragment extends InitDatePicker {
     private void createMeeting() {
         getCheckedParticipants();
 
-        if (doTextAreFilled() && doesRoomIsFreeOnThisDate()) {
-            Meeting meeting = createNewMeeting(FULL_HOUR,  binding.subjectEditText.getText().toString(), binding.roomTextView.getText().toString() , mParticipants, PICKED_DATE);
+        if (isMeetingIsValid() && isRoomIsFree()) {
+            Meeting meeting = createNewMeeting(binding.hourTxt.getText().toString(),  binding.subjectEditText.getText().toString(), binding.roomTextView.getText().toString() , mParticipants, mPickedDate);
             EventBus.getDefault().post(new AddNewMeetingEvent(meeting));
             returnToList();
         }
     }
-    private boolean doTextAreFilled (){
+
+    private boolean isMeetingIsValid(){
         boolean myBol = false;
         if (!binding.roomTextView.getText().toString().equals("")
                 && !Objects.requireNonNull(binding.subjectEditText.getText()).toString().equals("")
-                && FULL_HOUR != null
-                && FULL_DATE != null
+                && !binding.hourTxt.getText().toString().equals("")
+                && !binding.dateTxt.getText().toString().equals("")
                 && !mParticipants.isEmpty()){ myBol = true; }
         else {
             Toast.makeText(getContext(), R.string.toast_parameters, Toast.LENGTH_SHORT).show();
         }
         return myBol;
     }
-    private boolean doesRoomIsFreeOnThisDate(){
+
+    private boolean isRoomIsFree(){
         boolean myBol = true;
         for (Meeting meeting : mService.getMeetings()){
-
-            if(meeting.getDate().compareTo(PICKED_DATE) == 0
+            if(meeting.getDate().compareTo(mPickedDate) == 0
                     && binding.roomTextView.getText().toString().equals(meeting.getPlace())
-                    && meeting.getHour().equals(FULL_HOUR)){
+                    && meeting.getHour().equals(binding.hourTxt.getText().toString())){
 
                 Toast.makeText(getContext(), R.string.toast_room_is_not_free, Toast.LENGTH_LONG).show();
                 myBol = false;
@@ -166,12 +167,11 @@ public class AddNewMeetingFragment extends InitDatePicker {
     }
 
     private void initTimePicker() {
-        // time picker dialog
         TimePickerDialog picker;
         picker = new TimePickerDialog(getContext(),
+                android.R.style.Theme_Holo_Light_Dialog,
                 (tp, sHour, sMinute) -> {
-                    formatPickedHour(sHour, sMinute);
-                    binding.hourTxt.setText(FULL_HOUR);
+                    binding.hourTxt.setText(formatPickedHour(sHour, sMinute));
                 }, RIGHT_NOW_HOUR, RIGHT_NOW_MINUTE, true);
         picker.show();
     }

@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public abstract class DummyApiServiceGenerator {
+public abstract class ApiServiceGenerator {
     //Meetings list
     public static List<Meeting> DUMMY_MEETINGS = Arrays.asList(
             new Meeting("11h00", "Meeting I", "Peach", new ArrayList<>(), new Date()),
@@ -80,6 +80,5 @@ public abstract class DummyApiServiceGenerator {
         return new ArrayList<>(DUMMY_TOWN);
     }
 
-    public static Meeting DUMMY_MEETING_TO_ADD = new Meeting("", "subject", "Mario", new ArrayList<>(), new Date());
 }
 

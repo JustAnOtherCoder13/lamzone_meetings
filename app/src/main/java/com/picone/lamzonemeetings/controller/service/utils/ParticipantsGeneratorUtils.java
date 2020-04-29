@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class DummyParticipantsGeneratorUtils {
+public class ParticipantsGeneratorUtils {
 
 
-    private static List<Employee> generateDummyParticipantsList(List<Employee> employees) {
+    private static List<Employee> generateParticipantsList(List<Employee> employees) {
         List<Employee> dummyParticipants = new ArrayList<>();
         int numberOfParticipants = new Random().nextInt(2) + 2;
         Employee participant;
@@ -23,11 +23,11 @@ public class DummyParticipantsGeneratorUtils {
         return dummyParticipants;
     }
 
-    public static void generateDummyParticipants(List<Meeting> meetings, List<Employee> employees) {
+    public static void generateParticipants(List<Meeting> meetings, List<Employee> employees) {
 
         for (int i = 0; i < meetings.size(); i++) {
             if (i != 0) {
-                meetings.get(i).setParticipants(generateDummyParticipantsList(employees));
+                meetings.get(i).setParticipants(generateParticipantsList(employees));
             } else {
                 //for ui test
                 List<Employee> participants = new ArrayList<>();
