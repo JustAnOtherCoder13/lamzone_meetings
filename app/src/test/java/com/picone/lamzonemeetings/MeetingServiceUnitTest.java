@@ -72,7 +72,8 @@ public class MeetingServiceUnitTest {
 
     @Test
     public void addMeetingWithSuccess() {
-        Meeting meetingToAdd = new Meeting("", "subject", "Mario", new ArrayList<>(), new Date());;
+        Meeting meetingToAdd = new Meeting("", "subject", "Mario", new ArrayList<>(), new Date());
+        ;
         service.addMeeting(meetingToAdd);
         assertTrue(service.getMeetings().contains(meetingToAdd));
     }

@@ -6,6 +6,8 @@ public class AddNewMeetingEvent {
 
     public Meeting meeting;
 
-    public AddNewMeetingEvent(Meeting meeting){ this.meeting = meeting; }
+    public AddNewMeetingEvent(Meeting meeting) {
+        this.meeting = meeting;
+    }
 }
 

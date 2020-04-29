@@ -23,7 +23,9 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
     private List<Meeting> mMeetings;
 
 
-    MeetingsRecyclerViewAdapter(List<Meeting> items) { mMeetings = items; }
+    MeetingsRecyclerViewAdapter(List<Meeting> items) {
+        mMeetings = items;
+    }
 
     @NonNull
     @Override

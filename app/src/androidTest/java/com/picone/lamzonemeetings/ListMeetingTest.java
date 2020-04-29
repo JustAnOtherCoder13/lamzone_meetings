@@ -24,7 +24,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.picone.lamzonemeetings.Utils.RecyclerViewItemCountAssertion.withItemCount;
-import static com.picone.lamzonemeetings.Utils.setTextInTextView.setTextInTextView;
+import static com.picone.lamzonemeetings.Utils.SetTextInTextView.setTextInTextView;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -112,7 +112,7 @@ public class ListMeetingTest {
         onView(withId(R.id.date_btn)).perform(click());
         onView(withText("OK")).perform(click());
         //select hour
-        onView(withId(R.id.hour_txt)).perform(setTextInTextView("11h00"));
+        onView(withId(R.id.hour_txt)).perform(setTextInTextView("14h00"));
         //select a town to show chip group
         onView(withContentDescription("townDropDown")).perform(click());
         onView(withText("Marseille")).inRoot(RootMatchers.isPlatformPopup()).perform(click());
@@ -124,7 +124,7 @@ public class ListMeetingTest {
         onView(withId(R.id.add_new_meeting_btn)).perform(click());
         //ensure title is well filled
         onView(withRecyclerView.atPositionOnView(10, R.id.item_meeting_title_txt))
-                .check((matches(withText("Meeting test - 11h00 - Peach"))));
+                .check((matches(withText("Meeting test - 14h00 - Peach"))));
         onView(withRecyclerView.atPositionOnView(10, R.id.item_meeting_participants_txt))
                 .check(matches(withText("alex@lamzone.com, paul@lamzone.com, lino@lamzone.com")));
     }

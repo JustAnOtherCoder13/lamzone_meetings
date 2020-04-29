@@ -120,31 +120,32 @@ public class AddNewMeetingFragment extends ShowDatePicker {
         getCheckedParticipants();
 
         if (isMeetingIsValid() && isRoomIsFree()) {
-            Meeting meeting = createNewMeeting(binding.hourTxt.getText().toString(),  binding.subjectEditText.getText().toString(), binding.roomTextView.getText().toString() , mParticipants, mPickedDate);
+            Meeting meeting = createNewMeeting(binding.hourTxt.getText().toString(), binding.subjectEditText.getText().toString(), binding.roomTextView.getText().toString(), mParticipants, mPickedDate);
             EventBus.getDefault().post(new AddNewMeetingEvent(meeting));
             returnToList();
         }
     }
 
-    private boolean isMeetingIsValid(){
+    private boolean isMeetingIsValid() {
         boolean myBol = false;
         if (!binding.roomTextView.getText().toString().equals("")
                 && !Objects.requireNonNull(binding.subjectEditText.getText()).toString().equals("")
                 && !binding.hourTxt.getText().toString().equals("")
                 && !binding.dateTxt.getText().toString().equals("")
-                && !mParticipants.isEmpty()){ myBol = true; }
-        else {
+                && !mParticipants.isEmpty()) {
+            myBol = true;
+        } else {
             Toast.makeText(getContext(), R.string.toast_parameters, Toast.LENGTH_SHORT).show();
         }
         return myBol;
     }
 
-    private boolean isRoomIsFree(){
+    private boolean isRoomIsFree() {
         boolean myBol = true;
-        for (Meeting meeting : mService.getMeetings()){
-            if(meeting.getDate().compareTo(mPickedDate) == 0
+        for (Meeting meeting : mService.getMeetings()) {
+            if (meeting.getDate().compareTo(mPickedDate) == 0
                     && binding.roomTextView.getText().toString().equals(meeting.getPlace())
-                    && meeting.getHour().equals(binding.hourTxt.getText().toString())){
+                    && meeting.getHour().equals(binding.hourTxt.getText().toString())) {
 
                 Toast.makeText(getContext(), R.string.toast_room_is_not_free, Toast.LENGTH_LONG).show();
                 myBol = false;
@@ -170,9 +171,8 @@ public class AddNewMeetingFragment extends ShowDatePicker {
         TimePickerDialog picker;
         picker = new TimePickerDialog(getContext(),
                 android.R.style.Theme_Holo_Light_Dialog,
-                (tp, sHour, sMinute) -> {
-                    binding.hourTxt.setText(formatPickedHour(sHour, sMinute));
-                }, RIGHT_NOW_HOUR, RIGHT_NOW_MINUTE, true);
+                (tp, sHour, sMinute) ->
+                        binding.hourTxt.setText(formatPickedHour(sHour, sMinute)), RIGHT_NOW_HOUR, RIGHT_NOW_MINUTE, true);
         picker.show();
     }
 

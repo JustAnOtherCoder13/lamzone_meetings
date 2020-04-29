@@ -11,7 +11,7 @@ public class Meeting {
     private List<Employee> participants;
     private Date date;
 
-    public Meeting(String hour, String subject,String place, List<Employee> participants, Date date) {
+    public Meeting(String hour, String subject, String place, List<Employee> participants, Date date) {
 
         this.hour = hour;
         this.participants = participants;
@@ -21,20 +21,36 @@ public class Meeting {
 
     }
 
-    public Date getDate() {return date;}
+    public Date getDate() {
+        return date;
+    }
 
-    public void setDate(Date date) { this.date = date;}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-    public String getHour() { return hour;}
+    public String getHour() {
+        return hour;
+    }
 
-    public void setHour(String hour) { this.hour = hour; }
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
 
-    public String getPlace() { return place; }
+    public String getPlace() {
+        return place;
+    }
 
-    public String getSubject() { return subject;}
+    public String getSubject() {
+        return subject;
+    }
 
-    public List<Employee> getParticipants() { return participants; }
+    public List<Employee> getParticipants() {
+        return participants;
+    }
 
-    public void setParticipants(List<Employee> participants) { this.participants = participants;}
+    public void setParticipants(List<Employee> participants) {
+        this.participants = participants;
+    }
 }
 

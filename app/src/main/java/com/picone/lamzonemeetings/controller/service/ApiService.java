@@ -10,20 +10,28 @@ import java.util.List;
 public interface ApiService {
     /**
      * Get all Meeting
+     *
      * @return {@link List}
      */
     List<Meeting> getMeetings();
+
     List<Room> getRooms();
+
     List<Employee> getEmployees();
+
     List<Town> getTowns();
+
     /**
      * Deletes a meeting
+     *
      * @param meeting
      */
-    void deleteMeeting (Meeting meeting);
+    void deleteMeeting(Meeting meeting);
+
     /**
      * Add a meeting
+     *
      * @param meeting
      */
-    void addMeeting (Meeting meeting);
+    void addMeeting(Meeting meeting);
 }

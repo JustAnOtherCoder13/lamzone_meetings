@@ -15,20 +15,32 @@ public class MeetingService implements ApiService {
     private List<Town> towns = ApiServiceGenerator.generateTown();
 
     @Override
-    public List<Meeting> getMeetings() { return meetings;}
+    public List<Meeting> getMeetings() {
+        return meetings;
+    }
 
     @Override
-    public List<Room> getRooms() { return rooms;}
+    public List<Room> getRooms() {
+        return rooms;
+    }
 
     @Override
-    public List<Employee> getEmployees() { return employees;}
+    public List<Employee> getEmployees() {
+        return employees;
+    }
 
     @Override
-    public List<Town> getTowns() { return towns; }
+    public List<Town> getTowns() {
+        return towns;
+    }
 
     @Override
-    public void deleteMeeting(Meeting meeting) { meetings.remove(meeting); }
+    public void deleteMeeting(Meeting meeting) {
+        meetings.remove(meeting);
+    }
 
     @Override
-    public void addMeeting(Meeting meeting) { meetings.add(meeting);}
+    public void addMeeting(Meeting meeting) {
+        meetings.add(meeting);
+    }
 }

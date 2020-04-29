@@ -12,11 +12,11 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_meeting_btn"
-        app:tint="@null"
         style="@style/AddFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:tint="@null" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

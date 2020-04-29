@@ -171,9 +171,7 @@ public class ListMeetingFragment extends ShowDatePicker {
             for (Meeting meeting : mMeetings) {
                 if (meeting.getPlace().equals(mRoom.getRoomName())) mFilteredMeetings.add(meeting);
             }
-           // mAdapter = new MeetingsRecyclerViewAdapter(mFilteredMeetings);
-            mAdapter.notifyDataSetChanged();
-            //setAdapter(mFilteredMeetings);
+            setAdapter(mFilteredMeetings);
         } else
             Toast.makeText(getContext(), R.string.toast_filter_room_not_choose, Toast.LENGTH_SHORT).show();
     }

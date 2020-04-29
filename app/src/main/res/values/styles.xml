@@ -15,9 +15,6 @@
         <item name="background">@color/colorPrimary</item>
         <item name="backgroundStacked">@color/colorPrimary</item>
         <item name="backgroundSplit">@color/colorPrimary</item>
-        <!-- TODO customize action bar -->
-        <item name="height">50dp</item>
-        <item name="elevation">40dp</item>
     </style>
 
     <style name="TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">

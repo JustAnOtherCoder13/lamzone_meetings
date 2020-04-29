@@ -5,11 +5,17 @@ import androidx.annotation.NonNull;
 public class Employee {
     private String name;
 
-    public Employee(String name){this.name = name;}
+    public Employee(String name) {
+        this.name = name;
+    }
 
-    public String getName() { return name;}
+    public String getName() {
+        return name;
+    }
 
-    public String getMail() {return name.toLowerCase().concat("@lamzone.com");}
+    public String getMail() {
+        return name.toLowerCase().concat("@lamzone.com");
+    }
 
     @NonNull
     @Override

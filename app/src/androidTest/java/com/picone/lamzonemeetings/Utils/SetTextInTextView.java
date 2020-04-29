@@ -12,9 +12,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static org.hamcrest.Matchers.allOf;
 
-public class setTextInTextView {
+public class SetTextInTextView {
 
-    public static ViewAction setTextInTextView(final String value){
+    public static ViewAction setTextInTextView(final String value) {
         return new ViewAction() {
             @SuppressWarnings("unchecked")
             @Override

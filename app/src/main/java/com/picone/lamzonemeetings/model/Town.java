@@ -6,7 +6,9 @@ public class Town {
 
     private String townName;
 
-    public Town(String townName) { this.townName = townName; }
+    public Town(String townName) {
+        this.townName = townName;
+    }
 
     @NonNull
     @Override

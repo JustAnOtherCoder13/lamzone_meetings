@@ -1,7 +1,6 @@
 package com.picone.lamzonemeetings.utils;
 
 import com.picone.lamzonemeetings.R;
-import com.picone.lamzonemeetings.model.Meeting;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,12 +25,11 @@ public class CircleColorUtils {
     }
 
 
-    private static Date today()  {
+    private static Date today() {
         Date value = null;
         try {
-            value = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(MY_DAY_OF_MONTH+"/"+ MY_MONTH+"/"+ MY_YEAR);
-        }
-        catch (ParseException e){
+            value = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(MY_DAY_OF_MONTH + "/" + MY_MONTH + "/" + MY_YEAR);
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return value;

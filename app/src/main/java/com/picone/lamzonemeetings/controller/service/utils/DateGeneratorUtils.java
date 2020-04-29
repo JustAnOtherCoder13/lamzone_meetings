@@ -16,7 +16,6 @@ import static com.picone.lamzonemeetings.utils.CalendarStaticValues.MY_YEAR;
 public class DateGeneratorUtils {
 
 
-
     private static Date generateRandomDate() {
         int bound;
         if (MY_MONTH == 2) {
@@ -32,14 +31,14 @@ public class DateGeneratorUtils {
             randomDay = new Random().nextInt(bound) + 1;
         } while (randomDay == MY_DAY_OF_MONTH);
 
-        return formatDateOrHour(randomDay, MY_MONTH, MY_YEAR);
+        return formatDateOrHour(randomDay);
     }
 
     public static void generateDate(List<Meeting> meetings) {
         for (int i = 0; i < meetings.size(); i++) {
             if (i != 0) meetings.get(i).setDate(generateRandomDate());
                 //set first meeting's date to today for tests
-            else meetings.get(0).setDate(formatDateOrHour(MY_DAY_OF_MONTH, MY_MONTH, MY_YEAR));
+            else meetings.get(0).setDate(formatDateOrHour(MY_DAY_OF_MONTH));
         }
     }
 
@@ -48,10 +47,10 @@ public class DateGeneratorUtils {
         int randomMinute;
         do {
             randomHour = new Random().nextInt(9) + 8;
-        }while (randomHour == 12);
+        } while (randomHour == 12);
         do {
             randomMinute = new Random().nextInt(59);
-        }while (randomHour==11 && randomMinute>15);
+        } while (randomHour == 11 && randomMinute > 15);
         return getHourToString(randomHour, randomMinute);
     }
 
@@ -73,17 +72,17 @@ public class DateGeneratorUtils {
         return value;
     }
 
-    public static Date formatDateOrHour(int day, int month, int year) {
+    private static Date formatDateOrHour(int day) {
         Date value = null;
         try {
-            value = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(day + "/" + month + "/" + year);
+            value = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(day + "/" + MY_MONTH + "/" + MY_YEAR);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return value;
     }
 
-    public static String getHourToString(int hour, int minute) {
+    private static String getHourToString(int hour, int minute) {
 
         return new SimpleDateFormat("HH", Locale.FRANCE).format(formatDateOrHour("HH", hour))
                 .concat("h")
