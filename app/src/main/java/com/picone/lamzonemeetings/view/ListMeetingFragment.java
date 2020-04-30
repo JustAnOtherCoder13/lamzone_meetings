@@ -152,7 +152,7 @@ public class ListMeetingFragment extends ShowDatePicker {
         builder.setTitle(title);
         if (title == R.string.date_participants_alert_dialog) {
             String date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(mMeetings.get(position).getDate());
-            String participants = getParticipantsMail(mMeetings.get(position));
+            String participants = getParticipantsMail(mMeetings.get(position).getParticipants());
             builder.setMessage(date.concat("\n\n").concat(participants));
         }
         else{
