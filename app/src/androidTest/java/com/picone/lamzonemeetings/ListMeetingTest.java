@@ -31,12 +31,12 @@ import static com.picone.lamzonemeetings.Utils.SetTextInTextView.setTextInTextVi
 public class ListMeetingTest {
 
     private final int MEETINGS_COUNT = 10;
-    private RecyclerViewMatcher withRecyclerView = new RecyclerViewMatcher(R.id.container);
+    private RecyclerViewMatcher withRecyclerView = new RecyclerViewMatcher(R.id.recycler_view);
 
     @Rule
     public ActivityTestRule<MeetingsActivity> mActivityRule =
             new ActivityTestRule(MeetingsActivity.class);
-    private ViewInteraction recyclerView = onView(withId(R.id.container));
+    private ViewInteraction recyclerView = onView(withId(R.id.recycler_view));
     private ViewInteraction firstMeetingTitleTxt = onView(withRecyclerView.atPositionOnView(0, R.id.item_meeting_title_txt));
 
     @Before

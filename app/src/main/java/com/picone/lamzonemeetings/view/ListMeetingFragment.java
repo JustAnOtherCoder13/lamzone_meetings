@@ -33,6 +33,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,6 +53,8 @@ public class ListMeetingFragment extends ShowDatePicker {
     private RecyclerView.Adapter mAdapter;
     private ApiService mService;
     private List<Meeting> mMeetings;
+    private List<Meeting> mOriginalsMeetings;
+    private List<Meeting> mFilteredMeetings = new ArrayList<>();
     private List<Room> mRooms;
     private Room mRoom;
 
@@ -101,7 +105,7 @@ public class ListMeetingFragment extends ShowDatePicker {
                 return true;
 
             case R.id.cancel_filter:
-                mService.cancelFilter();
+                cancelFilter();
                 setMenuItemsEnable(true);
                 mAdapter.notifyDataSetChanged();
 
@@ -112,7 +116,7 @@ public class ListMeetingFragment extends ShowDatePicker {
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        mService.getFilteredMeetingsByDate(formatPickedDate(dayOfMonth, month, year));
+        getFilteredMeetingsByDate(formatPickedDate(dayOfMonth, month, year));
         setMenuItemsEnable(false);
         mAdapter.notifyDataSetChanged();
     }
@@ -131,7 +135,7 @@ public class ListMeetingFragment extends ShowDatePicker {
 
     private void initView() {
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        binding.container.setLayoutManager(linearLayoutManager);
+        binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.addMeetingBtn.setOnClickListener(v -> {
             Fragment fragment = AddNewMeetingFragment.newInstance();
             assert getFragmentManager() != null;
@@ -144,13 +148,14 @@ public class ListMeetingFragment extends ShowDatePicker {
     private void initList() {
         configureOnClickRecyclerView();
         mMeetings = mService.getMeetings();
+        mOriginalsMeetings = new ArrayList<>(mMeetings);
         mRooms = mService.getRooms();
         List<Employee> employees = mService.getEmployees();
         generateParticipants(mMeetings, employees);
         generateHour(mMeetings);
         generateDate(mMeetings);
         mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
-        binding.container.setAdapter(mAdapter);
+        binding.recyclerView.setAdapter(mAdapter);
     }
 
     private AlertDialog.Builder initAlertDialogBuilder(int title) {
@@ -178,16 +183,47 @@ public class ListMeetingFragment extends ShowDatePicker {
 
     private void filterByPlace() {
         if (mRoom != null) {
-            mService.getFilteredMeetingsByPlace(mRoom.getRoomName());
+            getFilteredMeetingsByPlace(mRoom.getRoomName());
             setMenuItemsEnable(false);
             mAdapter.notifyDataSetChanged();
         } else
             Toast.makeText(getContext(), R.string.toast_filter_room_not_choose, Toast.LENGTH_SHORT).show();
     }
 
+    private void getFilteredMeetingsByDate(Date date) {
+        mFilteredMeetings.clear();
+        for (Meeting meeting : mOriginalsMeetings) {
+            if (meeting.getDate().compareTo(date) == 0) {
+                mFilteredMeetings.add(meeting);
+            }
+        }
+        initMeetings(mFilteredMeetings);
+    }
+
+    private void getFilteredMeetingsByPlace(String placeToCompare) {
+        mFilteredMeetings.clear();
+        for (Meeting meeting : mMeetings) {
+            if (meeting.getPlace().equals(placeToCompare)) {
+                mFilteredMeetings.add(meeting);
+            }
+        }
+        initMeetings(mFilteredMeetings);
+    }
+
+    private void cancelFilter() {
+        mMeetings.clear();
+        mMeetings.addAll(mOriginalsMeetings);
+    }
+
+    private void initMeetings(List<Meeting> meetingsList) {
+        mOriginalsMeetings.clear();
+        mOriginalsMeetings.addAll(mMeetings);
+        mMeetings.clear();
+        mMeetings.addAll(meetingsList);
+    }
 
     private void configureOnClickRecyclerView() {
-        RecyclerViewOnLongClickUtils.addTo(binding.container, R.layout.fragment_list_meeting)
+        RecyclerViewOnLongClickUtils.addTo(binding.recyclerView, R.layout.fragment_list_meeting)
                 .setOnItemLongClickListener((recyclerView, position, v) -> {
                     initAlertDialog(position);
                     return true;

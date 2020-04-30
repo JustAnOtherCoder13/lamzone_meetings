@@ -21,10 +21,4 @@ public interface ApiService {
     void deleteMeeting(Meeting meeting);
 
     void addMeeting(Meeting meeting);
-
-    void getFilteredMeetingsByDate(Date date);
-
-    void getFilteredMeetingsByPlace(String placeToCompare);
-
-    void cancelFilter();
 }

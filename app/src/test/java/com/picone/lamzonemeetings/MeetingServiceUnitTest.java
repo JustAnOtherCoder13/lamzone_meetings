@@ -82,30 +82,4 @@ public class MeetingServiceUnitTest {
         service.addMeeting(meetingToAdd);
         assertTrue(service.getMeetings().contains(meetingToAdd));
     }
-
-    @Test
-    public void filterByPlaceWithSuccess(){
-        //only second meeting is assigned to room Mario
-        Meeting expectedFilteredMeeting = service.getMeetings().get(1);
-        service.getFilteredMeetingsByPlace("Mario");
-        assertTrue(service.getMeetings().contains(expectedFilteredMeeting));
-    }
-    @Test
-    public void filterByDateWithSuccess(){
-        //set first meeting to today
-        Meeting expectedFilteredMeeting = service.getMeetings().get(0);
-        expectedFilteredMeeting.setDate(today());
-        service.getFilteredMeetingsByDate(today());
-        assertTrue(service.getMeetings().contains(expectedFilteredMeeting));
-    }
-
-    private Date today() {
-        Date value = null;
-        try {
-            value = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(MY_DAY_OF_MONTH + "/" + MY_MONTH + "/" + MY_YEAR);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return value;
-    }
 }
