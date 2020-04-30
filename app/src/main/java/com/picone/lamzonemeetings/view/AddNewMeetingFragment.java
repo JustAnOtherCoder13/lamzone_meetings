@@ -106,13 +106,15 @@ public class AddNewMeetingFragment extends ShowDatePicker {
     }
 
     private void initChipGroupParticipants() {
-        for (Employee employee : mEmployees) {
-            Chip chip = new Chip(requireContext());
-            chip.setText(employee.getName());
-            chip.setCheckable(true);
-            chip.setCheckedIconVisible(true);
-            chip.setCheckedIconResource(R.drawable.ic_check);
-            binding.participantsChipGroup.addView(chip);
+        if (binding.participantsChipGroup.getChildCount() == 0) {
+            for (Employee employee : mEmployees) {
+                Chip chip = new Chip(requireContext());
+                chip.setText(employee.getName());
+                chip.setCheckable(true);
+                chip.setCheckedIconVisible(true);
+                chip.setCheckedIconResource(R.drawable.ic_check);
+                binding.participantsChipGroup.addView(chip);
+            }
         }
     }
 
