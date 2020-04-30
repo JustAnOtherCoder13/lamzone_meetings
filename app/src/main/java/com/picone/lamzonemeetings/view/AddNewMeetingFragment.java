@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.chip.Chip;
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
-import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
+import com.picone.lamzonemeetings.controller.event.CreateNewMeetingEvent;
 import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.databinding.FragmentAddNewMeetingBinding;
 import com.picone.lamzonemeetings.model.Employee;
@@ -116,12 +116,21 @@ public class AddNewMeetingFragment extends ShowDatePicker {
         }
     }
 
+    private void initTimePicker() {
+        TimePickerDialog picker;
+        picker = new TimePickerDialog(getContext(),
+                android.R.style.Theme_Holo_Light_Dialog,
+                (tp, sHour, sMinute) ->
+                        binding.hourTxt.setText(formatPickedHour(sHour, sMinute)), RIGHT_NOW_HOUR, RIGHT_NOW_MINUTE, true);
+        picker.show();
+    }
+
     private void createMeeting() {
         getCheckedParticipants();
 
         if (isMeetingIsValid() && isRoomIsFree()) {
             Meeting meeting = createNewMeeting(binding.hourTxt.getText().toString(), binding.subjectEditText.getText().toString(), binding.roomTextView.getText().toString(), mParticipants, mPickedDate);
-            EventBus.getDefault().post(new AddNewMeetingEvent(meeting));
+            EventBus.getDefault().post(new CreateNewMeetingEvent(meeting));
             returnToList();
         }
     }
@@ -146,7 +155,6 @@ public class AddNewMeetingFragment extends ShowDatePicker {
             if (meeting.getDate().compareTo(mPickedDate) == 0
                     && binding.roomTextView.getText().toString().equals(meeting.getPlace())
                     && meeting.getHour().equals(binding.hourTxt.getText().toString())) {
-
                 Toast.makeText(getContext(), R.string.toast_room_is_not_free, Toast.LENGTH_LONG).show();
                 myBol = false;
             }
@@ -165,15 +173,6 @@ public class AddNewMeetingFragment extends ShowDatePicker {
             }
         }
         mParticipants = participantsChecked;
-    }
-
-    private void initTimePicker() {
-        TimePickerDialog picker;
-        picker = new TimePickerDialog(getContext(),
-                android.R.style.Theme_Holo_Light_Dialog,
-                (tp, sHour, sMinute) ->
-                        binding.hourTxt.setText(formatPickedHour(sHour, sMinute)), RIGHT_NOW_HOUR, RIGHT_NOW_MINUTE, true);
-        picker.show();
     }
 
     private Meeting createNewMeeting(String hour, String subject, String place, List<Employee> participants, Date date) {

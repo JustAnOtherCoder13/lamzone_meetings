@@ -24,7 +24,6 @@ public class CircleColorUtils {
         } else return R.color.future_meeting;
     }
 
-
     private static Date today() {
         Date value = null;
         try {
@@ -34,5 +33,4 @@ public class CircleColorUtils {
         }
         return value;
     }
-
 }

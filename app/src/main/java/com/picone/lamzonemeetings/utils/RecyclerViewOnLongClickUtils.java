@@ -11,7 +11,6 @@ public class RecyclerViewOnLongClickUtils {
     private final RecyclerView mRecyclerView;
     private OnItemLongClickListener mOnItemLongClickListener;
 
-
     private View.OnLongClickListener mOnLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {

@@ -13,14 +13,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.picone.lamzonemeetings.controller.service.ApiServiceGenerator.DUMMY_EMPLOYEES;
 import static com.picone.lamzonemeetings.controller.service.ApiServiceGenerator.DUMMY_MEETINGS;
 import static com.picone.lamzonemeetings.controller.service.ApiServiceGenerator.DUMMY_ROOMS;
 import static com.picone.lamzonemeetings.controller.service.ApiServiceGenerator.DUMMY_TOWN;
+import static com.picone.lamzonemeetings.utils.CalendarStaticValues.MY_DAY_OF_MONTH;
+import static com.picone.lamzonemeetings.utils.CalendarStaticValues.MY_MONTH;
+import static com.picone.lamzonemeetings.utils.CalendarStaticValues.MY_YEAR;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -73,8 +79,33 @@ public class MeetingServiceUnitTest {
     @Test
     public void addMeetingWithSuccess() {
         Meeting meetingToAdd = new Meeting("", "subject", "Mario", new ArrayList<>(), new Date());
-        ;
         service.addMeeting(meetingToAdd);
         assertTrue(service.getMeetings().contains(meetingToAdd));
+    }
+
+    @Test
+    public void filterByPlaceWithSuccess(){
+        //only second meeting is assigned to room Mario
+        Meeting expectedFilteredMeeting = service.getMeetings().get(1);
+        service.getFilteredMeetingsByPlace("Mario");
+        assertTrue(service.getMeetings().contains(expectedFilteredMeeting));
+    }
+    @Test
+    public void filterByDateWithSuccess(){
+        //set first meeting to today
+        Meeting expectedFilteredMeeting = service.getMeetings().get(0);
+        expectedFilteredMeeting.setDate(today());
+        service.getFilteredMeetingsByDate(today());
+        assertTrue(service.getMeetings().contains(expectedFilteredMeeting));
+    }
+
+    private Date today() {
+        Date value = null;
+        try {
+            value = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(MY_DAY_OF_MONTH + "/" + MY_MONTH + "/" + MY_YEAR);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

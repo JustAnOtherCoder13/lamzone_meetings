@@ -7,7 +7,6 @@ import java.util.Locale;
 
 public class DatePickerUtils {
 
-
     public static Date formatPickedDate(int dayOfMonth, int monthOfYear, int year) {
         Date value = null;
         try {
@@ -33,5 +32,4 @@ public class DatePickerUtils {
         }
         return value;
     }
-
 }

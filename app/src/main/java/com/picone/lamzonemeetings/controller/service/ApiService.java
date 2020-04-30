@@ -5,14 +5,11 @@ import com.picone.lamzonemeetings.model.Meeting;
 import com.picone.lamzonemeetings.model.Room;
 import com.picone.lamzonemeetings.model.Town;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ApiService {
-    /**
-     * Get all Meeting
-     *
-     * @return {@link List}
-     */
+
     List<Meeting> getMeetings();
 
     List<Room> getRooms();
@@ -21,17 +18,13 @@ public interface ApiService {
 
     List<Town> getTowns();
 
-    /**
-     * Deletes a meeting
-     *
-     * @param meeting
-     */
     void deleteMeeting(Meeting meeting);
 
-    /**
-     * Add a meeting
-     *
-     * @param meeting
-     */
     void addMeeting(Meeting meeting);
+
+    void getFilteredMeetingsByDate(Date date);
+
+    void getFilteredMeetingsByPlace(String placeToCompare);
+
+    void cancelFilter();
 }

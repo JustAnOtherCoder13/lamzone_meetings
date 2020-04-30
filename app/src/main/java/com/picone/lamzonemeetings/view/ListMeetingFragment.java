@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.picone.lamzonemeetings.R;
 import com.picone.lamzonemeetings.controller.di.DI;
-import com.picone.lamzonemeetings.controller.event.AddNewMeetingEvent;
+import com.picone.lamzonemeetings.controller.event.CreateNewMeetingEvent;
 import com.picone.lamzonemeetings.controller.event.DeleteMeetingEvent;
 import com.picone.lamzonemeetings.controller.service.ApiService;
 import com.picone.lamzonemeetings.databinding.FragmentListMeetingBinding;
@@ -33,8 +33,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -53,10 +51,11 @@ public class ListMeetingFragment extends ShowDatePicker {
     private RecyclerView.Adapter mAdapter;
     private ApiService mService;
     private List<Meeting> mMeetings;
-    private List<Meeting> mFilteredMeetings = new ArrayList<>();
     private List<Room> mRooms;
     private Room mRoom;
-    private Date mPickedDate;
+
+    private MenuItem mFilterDateItem;
+    private MenuItem mFilterPlaceItem;
 
     static ListMeetingFragment newInstance() {
         return new ListMeetingFragment();
@@ -82,8 +81,11 @@ public class ListMeetingFragment extends ShowDatePicker {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.lamzone_meeting_menu, menu);
+        mFilterDateItem = menu.findItem(R.id.filter_by_date);
+        mFilterPlaceItem = menu.findItem(R.id.filter_by_place);
         super.onCreateOptionsMenu(menu, inflater);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -95,11 +97,13 @@ public class ListMeetingFragment extends ShowDatePicker {
                 return true;
 
             case R.id.filter_by_place:
-                initAlertDialog(R.string.place_alert_dialog_title,0);
+                initAlertDialog();
                 return true;
 
             case R.id.cancel_filter:
-                cancelFilter();
+                mService.cancelFilter();
+                setMenuItemsEnable(true);
+                mAdapter.notifyDataSetChanged();
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -108,8 +112,9 @@ public class ListMeetingFragment extends ShowDatePicker {
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        mPickedDate = formatPickedDate(dayOfMonth, month, year);
-        filterByDate();
+        mService.getFilteredMeetingsByDate(formatPickedDate(dayOfMonth, month, year));
+        setMenuItemsEnable(false);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -144,62 +149,54 @@ public class ListMeetingFragment extends ShowDatePicker {
         generateParticipants(mMeetings, employees);
         generateHour(mMeetings);
         generateDate(mMeetings);
-        setAdapter(mMeetings);
+        mAdapter = new MeetingsRecyclerViewAdapter(mMeetings);
+        binding.container.setAdapter(mAdapter);
     }
 
-    private void initAlertDialog(int title, int position) {
+    private AlertDialog.Builder initAlertDialogBuilder(int title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(title);
-        if (title == R.string.date_participants_alert_dialog) {
-            String date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(mMeetings.get(position).getDate());
-            String participants = getParticipantsMail(mMeetings.get(position).getParticipants());
-            builder.setMessage(date.concat("\n\n").concat(participants));
-        }
-        else{
-            ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((requireContext()), android.R.layout.simple_list_item_single_choice, mRooms);
-            builder.setSingleChoiceItems(roomsAdapter, -1, ((dialog, which) -> mRoom = mRooms.get(which)));
-            builder.setPositiveButton(R.string.positive_button, (dialog, which) -> filterByPlace());
-        }
         builder.setNegativeButton(R.string.negative_button, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        return builder;
+    }
+
+    private void initAlertDialog(int position) {
+        AlertDialog.Builder builder = initAlertDialogBuilder(R.string.date_participants_alert_dialog);
+        String date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(mMeetings.get(position).getDate());
+        String participants = getParticipantsMail(mMeetings.get(position).getParticipants());
+        builder.setMessage(date.concat("\n\n").concat(participants));
+        builder.create().show();
+    }
+
+    private void initAlertDialog() {
+        AlertDialog.Builder builder = initAlertDialogBuilder(R.string.place_alert_dialog_title);
+        ArrayAdapter<Room> roomsAdapter = new ArrayAdapter<>((requireContext()), android.R.layout.simple_list_item_single_choice, mRooms);
+        builder.setSingleChoiceItems(roomsAdapter, -1, ((dialog, which) -> mRoom = mRooms.get(which)));
+        builder.setPositiveButton(R.string.positive_button, (dialog, which) -> filterByPlace());
+        builder.create().show();
     }
 
     private void filterByPlace() {
-        mFilteredMeetings.clear();
         if (mRoom != null) {
-            for (Meeting meeting : mMeetings) {
-                if (meeting.getPlace().equals(mRoom.getRoomName())) mFilteredMeetings.add(meeting);
-            }
-            setAdapter(mFilteredMeetings);
+            mService.getFilteredMeetingsByPlace(mRoom.getRoomName());
+            setMenuItemsEnable(false);
+            mAdapter.notifyDataSetChanged();
         } else
             Toast.makeText(getContext(), R.string.toast_filter_room_not_choose, Toast.LENGTH_SHORT).show();
     }
 
-    private void filterByDate() {
-        mFilteredMeetings.clear();
-        for (Meeting meeting : mMeetings) {
-            if (meeting.getDate().equals(mPickedDate))
-                mFilteredMeetings.add(meeting);
-        }
-        setAdapter(mFilteredMeetings);
-    }
-
-    private void cancelFilter() {
-        setAdapter(mMeetings);
-    }
-
-    private void setAdapter(List<Meeting> meetings) {
-        mAdapter = new MeetingsRecyclerViewAdapter(meetings);
-        binding.container.setAdapter(mAdapter);
-    }
 
     private void configureOnClickRecyclerView() {
         RecyclerViewOnLongClickUtils.addTo(binding.container, R.layout.fragment_list_meeting)
                 .setOnItemLongClickListener((recyclerView, position, v) -> {
-                    initAlertDialog(R.string.date_participants_alert_dialog,position);
+                    initAlertDialog(position);
                     return true;
                 });
+    }
+
+    private void setMenuItemsEnable(boolean bool) {
+        mFilterPlaceItem.setEnabled(bool);
+        mFilterDateItem.setEnabled(bool);
     }
 
     @Subscribe
@@ -209,7 +206,7 @@ public class ListMeetingFragment extends ShowDatePicker {
     }
 
     @Subscribe
-    public void onAddNewMeeting(AddNewMeetingEvent event) {
+    public void onAddNewMeeting(CreateNewMeetingEvent event) {
         mService.addMeeting(event.meeting);
         mAdapter.notifyDataSetChanged();
     }

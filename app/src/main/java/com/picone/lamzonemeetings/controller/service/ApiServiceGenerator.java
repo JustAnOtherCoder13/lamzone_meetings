@@ -79,6 +79,4 @@ public abstract class ApiServiceGenerator {
     static List<Town> generateTown() {
         return new ArrayList<>(DUMMY_TOWN);
     }
-
 }
-
