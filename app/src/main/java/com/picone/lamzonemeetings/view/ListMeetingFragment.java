@@ -55,8 +55,6 @@ public class ListMeetingFragment extends ShowDatePicker {
     private MeetingsRecyclerViewAdapter mAdapter;
     private ApiService mService;
     private List<Meeting> mMeetings;
-    private List<Meeting> mOriginalsMeetings;
-    private List<Meeting> mFilteredMeetings = new ArrayList<>();
     private List<Room> mRooms;
     private Room mRoom;
 
@@ -95,7 +93,6 @@ public class ListMeetingFragment extends ShowDatePicker {
         mFilterPlaceItem = menu.findItem(R.id.filter_by_place);
         super.onCreateOptionsMenu(menu, inflater);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -154,7 +151,6 @@ public class ListMeetingFragment extends ShowDatePicker {
     private void initList() {
         configureOnClickRecyclerView();
         mMeetings = mService.getMeetings();
-        mOriginalsMeetings = new ArrayList<>(mMeetings);
         mRooms = mService.getRooms();
         List<Employee> employees = mService.getEmployees();
         generateParticipants(mMeetings, employees);
@@ -196,17 +192,16 @@ public class ListMeetingFragment extends ShowDatePicker {
     }
 
     private void getFilteredMeetingsByDate(Date date) {
-        mFilteredMeetings.clear();
+        ArrayList<Meeting> filtered = new ArrayList<>();
         for (Meeting meeting : mOriginalsMeetings) {
             if (meeting.getDate().compareTo(date) == 0) {
-                mFilteredMeetings.add(meeting);
+                filtered.add(meeting);
             }
         }
-        initMeetings(mFilteredMeetings);
+        mAdapter.setmMeetings(filtered);
     }
 
     private void getFilteredMeetingsByPlace(String placeToCompare) {
-        mFilteredMeetings.clear();
         ArrayList<Meeting> filtered = new ArrayList<>();
         for (Meeting meeting : mMeetings) {
             if (meeting.getPlace().equals(placeToCompare)) {
@@ -217,15 +212,7 @@ public class ListMeetingFragment extends ShowDatePicker {
     }
 
     private void removeFilters() {
-        mMeetings = mService.getMeetings();
-        mAdapter.notifyDataSetChanged();
-    }
-
-    private void initMeetings(List<Meeting> meetingsList) {
-        mOriginalsMeetings.clear();
-        mOriginalsMeetings.addAll(mMeetings);
-        mMeetings.clear();
-        mMeetings.addAll(meetingsList);
+        mAdapter.setmMeetings(mMeetings);
     }
 
     private void configureOnClickRecyclerView() {
