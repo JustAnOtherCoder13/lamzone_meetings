@@ -105,9 +105,9 @@ public class ListMeetingFragment extends ShowDatePicker {
                 return true;
 
             case R.id.cancel_filter:
-                cancelFilter();
+                removeFilters();
                 setMenuItemsEnable(true);
-                mAdapter.notifyDataSetChanged();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -210,9 +210,9 @@ public class ListMeetingFragment extends ShowDatePicker {
         initMeetings(mFilteredMeetings);
     }
 
-    private void cancelFilter() {
-        mMeetings.clear();
-        mMeetings.addAll(mOriginalsMeetings);
+    private void removeFilters() {
+        mMeetings = mService.getMeetings();
+        mAdapter.notifyDataSetChanged();
     }
 
     private void initMeetings(List<Meeting> meetingsList) {
