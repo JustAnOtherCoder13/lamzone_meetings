@@ -12,6 +12,8 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -50,7 +52,7 @@ public class ListMeetingFragment extends ShowDatePicker {
 
     private FragmentListMeetingBinding binding;
 
-    private RecyclerView.Adapter mAdapter;
+    private MeetingsRecyclerViewAdapter mAdapter;
     private ApiService mService;
     private List<Meeting> mMeetings;
     private List<Meeting> mOriginalsMeetings;
@@ -69,17 +71,21 @@ public class ListMeetingFragment extends ShowDatePicker {
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+        mService = DI.getMeetingApiService();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentListMeetingBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-        mService = DI.getMeetingApiService();
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initList();
         initView();
-        return view;
     }
 
     @Override
@@ -185,7 +191,6 @@ public class ListMeetingFragment extends ShowDatePicker {
         if (mRoom != null) {
             getFilteredMeetingsByPlace(mRoom.getRoomName());
             setMenuItemsEnable(false);
-            mAdapter.notifyDataSetChanged();
         } else
             Toast.makeText(getContext(), R.string.toast_filter_room_not_choose, Toast.LENGTH_SHORT).show();
     }
@@ -202,12 +207,13 @@ public class ListMeetingFragment extends ShowDatePicker {
 
     private void getFilteredMeetingsByPlace(String placeToCompare) {
         mFilteredMeetings.clear();
+        ArrayList<Meeting> filtered = new ArrayList<>();
         for (Meeting meeting : mMeetings) {
             if (meeting.getPlace().equals(placeToCompare)) {
-                mFilteredMeetings.add(meeting);
+                filtered.add(meeting);
             }
         }
-        initMeetings(mFilteredMeetings);
+        mAdapter.setmMeetings(filtered);
     }
 
     private void removeFilters() {

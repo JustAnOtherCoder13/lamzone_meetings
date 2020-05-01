@@ -57,4 +57,9 @@ public class MeetingsRecyclerViewAdapter extends RecyclerView.Adapter<MeetingsRe
             this.binding = binding;
         }
     }
+
+    public void setmMeetings(List<Meeting> mMeetings) {
+        this.mMeetings = mMeetings;
+        notifyDataSetChanged();
+    }
 }
