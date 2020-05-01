@@ -50,10 +50,10 @@ public class ListMeetingFragment extends ShowDatePicker {
 
     private FragmentListMeetingBinding binding;
 
-    private RecyclerView.Adapter mAdapter;
+    private MeetingsRecyclerViewAdapter mAdapter;
     private ApiService mService;
     private List<Meeting> mMeetings;
-    private List<Meeting> mOriginalsMeetings;
+    private List<Meeting> mOriginalsMeetings = new ArrayList<>();
     private List<Meeting> mFilteredMeetings = new ArrayList<>();
     private List<Room> mRooms;
     private Room mRoom;
@@ -69,17 +69,16 @@ public class ListMeetingFragment extends ShowDatePicker {
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+        mService = DI.getMeetingApiService();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentListMeetingBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-        mService = DI.getMeetingApiService();
         initList();
         initView();
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -89,7 +88,6 @@ public class ListMeetingFragment extends ShowDatePicker {
         mFilterPlaceItem = menu.findItem(R.id.filter_by_place);
         super.onCreateOptionsMenu(menu, inflater);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -148,7 +146,6 @@ public class ListMeetingFragment extends ShowDatePicker {
     private void initList() {
         configureOnClickRecyclerView();
         mMeetings = mService.getMeetings();
-        mOriginalsMeetings = new ArrayList<>(mMeetings);
         mRooms = mService.getRooms();
         List<Employee> employees = mService.getEmployees();
         generateParticipants(mMeetings, employees);
@@ -192,7 +189,7 @@ public class ListMeetingFragment extends ShowDatePicker {
 
     private void getFilteredMeetingsByDate(Date date) {
         mFilteredMeetings.clear();
-        for (Meeting meeting : mOriginalsMeetings) {
+        for (Meeting meeting : mMeetings) {
             if (meeting.getDate().compareTo(date) == 0) {
                 mFilteredMeetings.add(meeting);
             }

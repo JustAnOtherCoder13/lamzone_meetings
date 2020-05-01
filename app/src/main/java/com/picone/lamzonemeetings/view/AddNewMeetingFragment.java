@@ -139,10 +139,10 @@ public class AddNewMeetingFragment extends ShowDatePicker {
 
     private boolean isMeetingIsValid() {
         boolean myBol = false;
-        if (!binding.roomTextView.getText().toString().equals("")
-                && !Objects.requireNonNull(binding.subjectEditText.getText()).toString().equals("")
-                && !binding.hourTxt.getText().toString().equals("")
-                && !binding.dateTxt.getText().toString().equals("")
+        if (!binding.roomTextView.getText().toString().trim().isEmpty()
+                && !Objects.requireNonNull(binding.subjectEditText.getText()).toString().trim().isEmpty()
+                && !binding.hourTxt.getText().toString().trim().isEmpty()
+                && !binding.dateTxt.getText().toString().trim().isEmpty()
                 && !mParticipants.isEmpty()) {
             myBol = true;
         } else {
