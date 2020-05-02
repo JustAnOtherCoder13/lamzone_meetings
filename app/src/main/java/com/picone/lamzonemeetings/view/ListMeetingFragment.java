@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -53,7 +54,6 @@ public class ListMeetingFragment extends ShowDatePicker {
     private MeetingsRecyclerViewAdapter mAdapter;
     private ApiService mService;
     private List<Meeting> mMeetings;
-    private List<Meeting> mOriginalsMeetings = new ArrayList<>();
     private List<Meeting> mFilteredMeetings = new ArrayList<>();
     private List<Room> mRooms;
     private Room mRoom;
@@ -76,9 +76,14 @@ public class ListMeetingFragment extends ShowDatePicker {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentListMeetingBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initList();
         initView();
-        return binding.getRoot();
     }
 
     @Override
@@ -105,7 +110,7 @@ public class ListMeetingFragment extends ShowDatePicker {
             case R.id.cancel_filter:
                 cancelFilter();
                 setMenuItemsEnable(true);
-                mAdapter.notifyDataSetChanged();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -116,7 +121,6 @@ public class ListMeetingFragment extends ShowDatePicker {
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         getFilteredMeetingsByDate(formatPickedDate(dayOfMonth, month, year));
         setMenuItemsEnable(false);
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -182,7 +186,6 @@ public class ListMeetingFragment extends ShowDatePicker {
         if (mRoom != null) {
             getFilteredMeetingsByPlace(mRoom.getRoomName());
             setMenuItemsEnable(false);
-            mAdapter.notifyDataSetChanged();
         } else
             Toast.makeText(getContext(), R.string.toast_filter_room_not_choose, Toast.LENGTH_SHORT).show();
     }
@@ -194,7 +197,7 @@ public class ListMeetingFragment extends ShowDatePicker {
                 mFilteredMeetings.add(meeting);
             }
         }
-        initMeetings(mFilteredMeetings);
+        mAdapter.setmMeetings(mFilteredMeetings);
     }
 
     private void getFilteredMeetingsByPlace(String placeToCompare) {
@@ -204,19 +207,11 @@ public class ListMeetingFragment extends ShowDatePicker {
                 mFilteredMeetings.add(meeting);
             }
         }
-        initMeetings(mFilteredMeetings);
+        mAdapter.setmMeetings(mFilteredMeetings);
     }
 
     private void cancelFilter() {
-        mMeetings.clear();
-        mMeetings.addAll(mOriginalsMeetings);
-    }
-
-    private void initMeetings(List<Meeting> meetingsList) {
-        mOriginalsMeetings.clear();
-        mOriginalsMeetings.addAll(mMeetings);
-        mMeetings.clear();
-        mMeetings.addAll(meetingsList);
+        mAdapter.setmMeetings(mMeetings);
     }
 
     private void configureOnClickRecyclerView() {
