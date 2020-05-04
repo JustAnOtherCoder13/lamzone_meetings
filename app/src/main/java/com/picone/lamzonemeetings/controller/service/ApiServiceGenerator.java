@@ -67,7 +67,7 @@ public abstract class ApiServiceGenerator {
     static List<Employee> generateEmployees() {
         return new ArrayList<>(DUMMY_EMPLOYEES);
     }
-
+    //Town list
     public static List<Town> DUMMY_TOWN = Arrays.asList(
             new Town("Marseille"),
             new Town("Paris"),

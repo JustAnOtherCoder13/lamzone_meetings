@@ -66,14 +66,13 @@ public class AddNewMeetingFragment extends ShowDatePicker {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentAddNewMeetingBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-        initViews();
-        return view;
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initViews();
         setHasOptionsMenu(true);
     }
 
